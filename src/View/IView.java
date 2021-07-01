@@ -1,2 +1,8 @@
-package View;public interface IView {
+package View;
+
+public interface IView {
+
+    public void openGameWindow();
+
+    public void closeGameWindow();
 }
