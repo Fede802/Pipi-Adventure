@@ -7,8 +7,5 @@ public class Main {
 
         MapGenerator mapGenerator = new MapGenerator();
 
-        for (int i =0; i<100; i++){
-            mapGenerator.updateMap();
-        }
     }
 }
