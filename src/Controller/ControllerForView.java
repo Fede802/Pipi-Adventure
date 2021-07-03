@@ -7,7 +7,7 @@ public class ControllerForView implements IControllerForView{
     public static IControllerForView getIstance(){
 
         if (istance == null){
-            istance = new ControllerForView();c
+            istance = new ControllerForView();
         }
         return istance;
     }
