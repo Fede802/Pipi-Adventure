@@ -1,7 +1,6 @@
 package Model;
 
 import Utils.CostantField;
-import com.sun.security.jgss.GSSUtil;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,7 +30,7 @@ public class MapGenerator {
 
     private void generateMap(){
 
-        for (int i =0; i< CostantField.SIZE_OF_GENERETED_MAP;i++){
+        for (int i = 0; i< CostantField.SIZE_OF_GENERATED_MAP; i++){
             generatedMap.add(sectionList[0]);
         }
     }
@@ -40,6 +39,7 @@ public class MapGenerator {
 
         generatedMap.remove(0);
         generatedMap.add(sectionList[random.nextInt(3)]);
+        System.out.println(random.nextInt(3));
 //        generatedMap.add(sectionList[1]);
     }
 
