@@ -1,5 +1,6 @@
 package Model;
 
+import Utils.CostantField;
 import com.sun.security.jgss.GSSUtil;
 
 import java.util.ArrayList;
@@ -16,10 +17,11 @@ public class MapGenerator {
 
     public MapGenerator(){
 
-        sectionList = new MapSection[2];
+        sectionList = new MapSection[3];
 
         sectionList[0] = new PlainSection1();
         sectionList[1] = new PlainSection2();
+        sectionList[2] = null;
 
         generatedMap = new ArrayList<MapSection>();
 
@@ -29,7 +31,7 @@ public class MapGenerator {
 
     private void generateMap(){
 
-        for (int i =0; i<MAP_LENGHT;i++){
+        for (int i =0; i< CostantField.SIZE_OF_GENERETED_MAP;i++){
             generatedMap.add(sectionList[0]);
         }
     }
@@ -38,6 +40,12 @@ public class MapGenerator {
 
         generatedMap.remove(0);
         generatedMap.add(sectionList[random.nextInt(2)]);
+//        generatedMap.add(sectionList[1]);
+    }
+
+    public int getTileData(int mapIndex, int iIndex, int jIndex){
+
+        return generatedMap.get(mapIndex).getCell(15-iIndex,jIndex);
     }
 
 }

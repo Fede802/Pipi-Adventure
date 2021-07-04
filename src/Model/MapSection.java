@@ -13,5 +13,8 @@ public abstract class MapSection {
 
         return map;
     }
+    public int getCell(int i,int j){
+        return map[i][j];
+    }
 
 }

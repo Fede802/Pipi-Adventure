@@ -1,8 +1,7 @@
 package Model;
 
-public class PlainSection1 extends MapSection{
-
-    public PlainSection1(){
+public class PlainSection3 extends MapSection{
+    public PlainSection3(){
 
         //super();
 
@@ -35,10 +34,9 @@ public class PlainSection1 extends MapSection{
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5},
+                {6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6},
+                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15},
         };
     }
-
 }
