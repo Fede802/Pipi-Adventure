@@ -21,7 +21,7 @@ public class MapGenerator {
 
         sectionList[0] = new PlainSection1();
         sectionList[1] = new PlainSection2();
-        sectionList[2] = null;
+        sectionList[2] = new PlainSection3();
 
         generatedMap = new ArrayList<MapSection>();
 
@@ -39,7 +39,7 @@ public class MapGenerator {
     public void updateMap(){
 
         generatedMap.remove(0);
-        generatedMap.add(sectionList[random.nextInt(2)]);
+        generatedMap.add(sectionList[random.nextInt(3)]);
 //        generatedMap.add(sectionList[1]);
     }
 
