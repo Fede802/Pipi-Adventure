@@ -1,5 +1,7 @@
 package Model;
 
+
+
 import Utils.CostantField;
 
 import java.util.ArrayList;
@@ -16,11 +18,12 @@ public class MapGenerator {
 
     public MapGenerator(){
 
-        sectionList = new MapSection[3];
+        sectionList = new MapSection[4];
 
         sectionList[0] = new PlainSection1();
         sectionList[1] = new PlainSection2();
         sectionList[2] = new PlainSection3();
+        sectionList[3] = new PlainSection4();
 
         generatedMap = new ArrayList<MapSection>();
 
@@ -38,8 +41,8 @@ public class MapGenerator {
     public void updateMap(){
 
         generatedMap.remove(0);
-        generatedMap.add(sectionList[random.nextInt(3)]);
-        System.out.println(random.nextInt(3));
+        generatedMap.add(sectionList[random.nextInt(4)]);
+        System.out.println(random.nextInt(4));
 //        generatedMap.add(sectionList[1]);
     }
 

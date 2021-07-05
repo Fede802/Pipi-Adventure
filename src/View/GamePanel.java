@@ -4,6 +4,7 @@ package View;
 import Model.MapGenerator;
 import Utils.CostantField;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -13,16 +14,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class GamePanel extends JPanel {
-    private Image pinguino;
+    private Image background;
     private Image[] tileArray;
     public static final int NUM_TILES = CostantField.NUM_COLUMNS_OF_PNG*CostantField.NUM_ROWS_OF_PNG;
     private MapGenerator generator;
 
     private int traslX;
     private int traslY = 16;
-    private static final int VEL_X = 25;
+    private static final int VEL_X = 30;
     private Timer timer;
 //    private int img;
+
+    private int traslmg;
 
     public GamePanel(){
         generator = new MapGenerator();
@@ -30,8 +33,15 @@ public class GamePanel extends JPanel {
         System.out.println(NUM_TILES);
 
         try {
+            background = ImageIO.read(new File("Pipi-Adventure/Sfondo_Prova.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
             int rows = 1;
             int col = 0;
+
             for(int i = 0; i < NUM_TILES; i++){
              tileArray[i] = ImageIO.read(new File(CostantField.MAP_URL)).getSubimage(CostantField.TILE_SIZE *col,(rows-1)*CostantField.TILE_SIZE,CostantField.TILE_SIZE,CostantField.TILE_SIZE);
              col++;
@@ -46,10 +56,11 @@ public class GamePanel extends JPanel {
         }
         setBackground(Color.CYAN);
         setPreferredSize(new Dimension(200,200));
-//        pinguino = new ImageIcon("piok.gif").getImage();
+
         timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                traslmg+=5;
                 traslX+=VEL_X;
                 if(traslX == CostantField.RENDERED_TILE_SIZE *CostantField.NUM_SECTION_COLUMN) {
                     traslX = 0;
@@ -69,6 +80,7 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(background, - (traslmg), 0,this.getWidth()*2 - (traslmg),this.getHeight(), null);
         for(int i = 0; i < CostantField.SIZE_OF_GENERATED_MAP; i++){
             for(int k = 0; k < CostantField.NUM_SECTION_COLUMN; k++)
                 for(int j = 0; j < CostantField.NUM_SECTION_ROWS_TO_DRAW; j++){
