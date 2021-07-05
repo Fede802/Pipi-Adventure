@@ -1,7 +1,7 @@
 package Utils;
 
 public class CostantField {
-    public static final String MAP_URL = "Pipi-Adventure/Tileset2.png";
+    public static final String MAP_URL = "Tileset2.png";
     public static final int NUM_ROWS_OF_PNG = 5;
     public static final int NUM_COLUMNS_OF_PNG = 7;
     public static final int NUM_SECTION_ROWS_TO_DRAW = 11;

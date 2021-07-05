@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
         System.out.println(NUM_TILES);
 
         try {
-            background = ImageIO.read(new File("Pipi-Adventure/Sfondo_Prova.png"));
+            background = ImageIO.read(new File("Sfondo_Prova.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,12 +60,15 @@ public class GamePanel extends JPanel {
         timer = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                traslmg+=5;
+                traslmg+=50;
                 traslX+=VEL_X;
                 if(traslX == CostantField.RENDERED_TILE_SIZE *CostantField.NUM_SECTION_COLUMN) {
                     traslX = 0;
                     System.out.println("ok");
                     generator.updateMap();
+                }
+                if(traslmg>=getWidth()){
+                    traslmg = 0;
                 }
 //                traslY -= 2;
 //                if(traslY == 0)
@@ -80,7 +83,8 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(background, - (traslmg), 0,this.getWidth()*2 - (traslmg),this.getHeight(), null);
+        g2d.drawImage(background, - (traslmg), 0,this.getWidth(),this.getHeight()+100, null);
+        g2d.drawImage(background, this.getWidth()- (traslmg), 0,this.getWidth(),this.getHeight()+100, null);
         for(int i = 0; i < CostantField.SIZE_OF_GENERATED_MAP; i++){
             for(int k = 0; k < CostantField.NUM_SECTION_COLUMN; k++)
                 for(int j = 0; j < CostantField.NUM_SECTION_ROWS_TO_DRAW; j++){
