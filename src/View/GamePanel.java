@@ -1,6 +1,7 @@
 package View;
 
 
+import Controller.GameEngineForView;
 import Model.MapGenerator;
 import Utils.CostantField;
 
@@ -17,18 +18,16 @@ public class GamePanel extends JPanel {
     private Image background;
     private Image[] tileArray;
     public static final int NUM_TILES = CostantField.NUM_COLUMNS_OF_PNG*CostantField.NUM_ROWS_OF_PNG;
-    private MapGenerator generator;
 
-    private int traslX;
-    private int traslY = 16;
-    private static final int VEL_X = 30;
+
+
     private Timer timer;
 //    private int img;
 
     private int traslmg;
 
     public GamePanel(){
-        generator = new MapGenerator();
+
         tileArray = new Image[NUM_TILES];
         System.out.println(NUM_TILES);
 
@@ -61,12 +60,9 @@ public class GamePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 traslmg+=50;
-                traslX+=VEL_X;
-                if(traslX == CostantField.RENDERED_TILE_SIZE *CostantField.NUM_SECTION_COLUMN) {
-                    traslX = 0;
-                    System.out.println("ok");
-                    generator.updateMap();
-                }
+                GameEngineForView.getInstance().setMapTraslation();
+
+
                 if(traslmg>=getWidth()){
                     traslmg = 0;
                 }
@@ -89,7 +85,7 @@ public class GamePanel extends JPanel {
             for(int k = 0; k < CostantField.NUM_SECTION_COLUMN; k++)
                 for(int j = 0; j < CostantField.NUM_SECTION_ROWS_TO_DRAW; j++){
 //                    if((img = generator.getTileData(i,j,k)) != CostantField.EMPTY_TILE_CODE)
-                    g2d.drawImage(tileArray[generator.getTileData(i,j,k)],CostantField.RENDERED_TILE_SIZE *(16*i+k)-traslX,this.getHeight()-CostantField.RENDERED_TILE_SIZE *(j+1),CostantField.RENDERED_TILE_SIZE,CostantField.RENDERED_TILE_SIZE,this);
+                    g2d.drawImage(tileArray[GameEngineForView.getInstance().getTileData(i,j,k)],CostantField.RENDERED_TILE_SIZE *(16*i+k)-(int) GameEngineForView.getInstance().getMapTraslation(),this.getHeight()-CostantField.RENDERED_TILE_SIZE *(j+1),CostantField.RENDERED_TILE_SIZE,CostantField.RENDERED_TILE_SIZE,this);
                 }
         }
 

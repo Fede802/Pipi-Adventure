@@ -10,7 +10,22 @@ import java.util.Random;
 public class MapGenerator {
 
     public static final int MAP_LENGHT = 5;
+    public static final double VEL_X = 20;
     private Random random;
+
+    private double traslX;
+
+    public static double getVelX() {
+        return VEL_X;
+    }
+
+    public double getTraslX() {
+        return traslX;
+    }
+
+    public void setTraslX(double traslX) {
+        this.traslX = traslX;
+    }
 
     private final MapSection[] sectionList;
 
