@@ -58,4 +58,14 @@ public class GameEngineForView implements IGameEngineForView{
     public int getTileData(int mapIndex, int iIndex, int jIndex) {
         return GameModel.getInstance().getTileData(mapIndex,iIndex,jIndex);
     }
+
+    @Override
+    public void jump() {
+
+    }
+
+    @Override
+    public int[] getPlayerPosition() {
+        return GameModel.getInstance().getPlayerPosition();
+    }
 }

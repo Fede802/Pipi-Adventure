@@ -61,4 +61,10 @@ public class GameModel implements IGameModel{
     public int getTileData(int mapIndex, int iIndex, int jIndex) {
         return generator.getTileData(mapIndex,iIndex,jIndex);
     }
+
+    @Override
+    public int[] getPlayerPosition() {
+        return generator.getPlayerPosition();
+    }
+
 }

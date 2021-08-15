@@ -10,4 +10,5 @@ public interface IGameModel {
     void updateGameStatus();
     void updateMap();
     int getTileData(int mapIndex, int iIndex, int jIndex);
+    int[] getPlayerPosition();
 }

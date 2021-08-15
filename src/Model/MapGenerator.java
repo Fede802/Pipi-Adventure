@@ -10,7 +10,7 @@ import java.util.Random;
 public class MapGenerator {
 
     public static final int MAP_LENGHT = 5;
-    public static final double VEL_X = 20;
+    public static final double VEL_X = 5;
     private Random random;
 
     private double traslX;
@@ -28,11 +28,12 @@ public class MapGenerator {
     }
 
     private final MapSection[] sectionList;
+    private Player player;
 
     private ArrayList <MapSection> generatedMap;
 
     public MapGenerator(){
-
+        player = new Player(160,"player",14,3);
         sectionList = new MapSection[4];
 
         sectionList[0] = new PlainSection1();
@@ -64,6 +65,9 @@ public class MapGenerator {
     public int getTileData(int mapIndex, int iIndex, int jIndex){
 
         return generatedMap.get(mapIndex).getCell(15-iIndex,jIndex);
+    }
+    public int[] getPlayerPosition(){
+        return new int[]{player.mapI*40,player.mapJ*40};
     }
 
 }

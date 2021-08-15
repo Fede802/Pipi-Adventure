@@ -9,5 +9,7 @@ public interface IGameEngineForView {
     void restartGame();
     void stopGame();
     int getTileData(int mapIndex, int iIndex, int jIndex);
+    void jump();
+    int[] getPlayerPosition();
 
 }

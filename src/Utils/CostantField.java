@@ -7,7 +7,7 @@ public class CostantField {
     public static final int NUM_SECTION_ROWS_TO_DRAW = 11;
     public static final int NUM_SECTION_COLUMN = 16;//if modified cut the tile map vertically
     public static final int TILE_SIZE = 160; //length of image tile (in pixel)
-    public static final int RENDERED_TILE_SIZE = 45; //length of rendered tile (in pixel)
+    public static final int RENDERED_TILE_SIZE = 40; //length of rendered tile (in pixel)
     public static final int SIZE_OF_GENERATED_MAP = 7; //Number of section pre-loaded to the map
     
 }

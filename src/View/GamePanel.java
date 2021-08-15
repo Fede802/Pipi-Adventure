@@ -9,13 +9,12 @@ import Utils.CostantField;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class GamePanel extends JPanel {
-    private Image background;
+public class GamePanel extends JPanel implements KeyListener {
+    private Image background,player;
     private Image[] tileArray;
     public static final int NUM_TILES = CostantField.NUM_COLUMNS_OF_PNG*CostantField.NUM_ROWS_OF_PNG;
 
@@ -30,9 +29,11 @@ public class GamePanel extends JPanel {
 
         tileArray = new Image[NUM_TILES];
         System.out.println(NUM_TILES);
+        this.addKeyListener(this);
 
         try {
             background = ImageIO.read(new File("Sfondo_Prova.png"));
+            player = ImageIO.read(new File("PInguino_Definitivo4.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,10 +57,10 @@ public class GamePanel extends JPanel {
         setBackground(Color.CYAN);
         setPreferredSize(new Dimension(200,200));
 
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                traslmg+=50;
+                traslmg+=10;
                 GameEngineForView.getInstance().setMapTraslation();
 
 
@@ -79,6 +80,7 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+
         g2d.drawImage(background, - (traslmg), 0,this.getWidth(),this.getHeight()+100, null);
         g2d.drawImage(background, this.getWidth()- (traslmg), 0,this.getWidth(),this.getHeight()+100, null);
         for(int i = 0; i < CostantField.SIZE_OF_GENERATED_MAP; i++){
@@ -88,6 +90,22 @@ public class GamePanel extends JPanel {
                     g2d.drawImage(tileArray[GameEngineForView.getInstance().getTileData(i,j,k)],CostantField.RENDERED_TILE_SIZE *(16*i+k)-(int) GameEngineForView.getInstance().getMapTraslation(),this.getHeight()-CostantField.RENDERED_TILE_SIZE *(j+1),CostantField.RENDERED_TILE_SIZE,CostantField.RENDERED_TILE_SIZE,this);
                 }
         }
+        g2d.drawImage(player,GameEngineForView.getInstance().getPlayerPosition()[0],this.getHeight()-GameEngineForView.getInstance().getPlayerPosition()[1],40,40,null);
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        GameEngineForView.getInstance().jump();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 }
