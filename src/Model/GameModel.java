@@ -67,4 +67,14 @@ public class GameModel implements IGameModel{
         return generator.getPlayerPosition();
     }
 
+    @Override
+    public void jump() {
+        generator.jump();
+    }
+
+    @Override
+    public void jumping() {
+        generator.jumper();
+    }
+
 }

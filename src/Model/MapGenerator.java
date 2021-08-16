@@ -33,7 +33,7 @@ public class MapGenerator {
     private ArrayList <MapSection> generatedMap;
 
     public MapGenerator(){
-        player = new Player(160,"player",14,3);
+        player = new Player(160,"player",4,3,this);
         sectionList = new MapSection[4];
 
         sectionList[0] = new PlainSection1();
@@ -67,7 +67,15 @@ public class MapGenerator {
         return generatedMap.get(mapIndex).getCell(15-iIndex,jIndex);
     }
     public int[] getPlayerPosition(){
-        return new int[]{player.mapI*40,player.mapJ*40};
+
+        return new int[]{player.mapI*40,player.mapJ*40+player.getTraslY()};
+
+    }
+    public void jump(){
+        player.setJumping(true);
+    }
+    public void jumper(){
+        player.jump();
     }
 
 }

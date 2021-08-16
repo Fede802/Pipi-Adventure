@@ -26,6 +26,7 @@ public class GameEngineForView implements IGameEngineForView{
 
     @Override
     public void setMapTraslation() {
+        GameModel.getInstance().jumping();
         GameModel.getInstance().updateGameStatus();
         if(GameModel.getInstance().getMapTralsX() == CostantField.RENDERED_TILE_SIZE *CostantField.NUM_SECTION_COLUMN) {
             GameModel.getInstance().setMapTraslX(0);
@@ -61,7 +62,7 @@ public class GameEngineForView implements IGameEngineForView{
 
     @Override
     public void jump() {
-
+        GameModel.getInstance().jump();
     }
 
     @Override

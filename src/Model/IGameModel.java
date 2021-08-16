@@ -11,4 +11,6 @@ public interface IGameModel {
     void updateMap();
     int getTileData(int mapIndex, int iIndex, int jIndex);
     int[] getPlayerPosition();
+    void jump();
+    void jumping();
 }

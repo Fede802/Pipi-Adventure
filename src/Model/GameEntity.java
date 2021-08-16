@@ -1,6 +1,7 @@
 package Model;
 
 public abstract class GameEntity {
+    protected MapGenerator generator;
     protected static final int VEL_X = 10;
     protected int traslX;
     protected int mapIndex;
@@ -9,11 +10,12 @@ public abstract class GameEntity {
     protected boolean isAlive = true;
     protected String id;
 
-    public GameEntity(int TRASL_X, String id,int mapJ,int mapI){
+    public GameEntity(int TRASL_X, String id,int mapJ,int mapI,MapGenerator generator){
         this.traslX = traslX;
         this.id = id;
         this.mapJ = mapJ;
         this.mapI = mapI;
+        this.generator = generator;
     }
 
     public abstract void moveRight();

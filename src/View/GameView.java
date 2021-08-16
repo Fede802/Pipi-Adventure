@@ -14,10 +14,7 @@ public class GameView implements IGameView{
 
     }
 
-    @Override
-    public double jump() {
-        return 0;
-    }
+
 
     @Override
     public void openGameWindow() {
