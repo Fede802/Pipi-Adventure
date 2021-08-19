@@ -1,5 +1,7 @@
 package View;
 
+import Controller.GameStateHandler;
+
 import javax.swing.*;
 
 public class MainFrame extends JFrame {
@@ -19,5 +21,12 @@ public class MainFrame extends JFrame {
 
     }
 
-    public  void switchGameAndMenu
+    public  void switchState(){
+        if (GameStateHandler.getInstance().getPreviousState() == GameStateHandler.MENU_STATE){
+            if (GameStateHandler.getInstance().getCurrentState() == GameStateHandler.GAME_STATE){
+                mainMenu.setVisible(false);
+                gamePanel.setVisible(true);
+            }
+        }
+    }
 }

@@ -22,8 +22,7 @@ public class GameView implements IGameView{
     }
 
     @Override
-    public void openGameWindow() {
-        MAIN_FRAME.setVisible();}
+    public void openGameWindow() {MAIN_FRAME.switchState();}
 
     @Override
     public void openGameMenu() { MAIN_FRAME.setVisible(true);}
