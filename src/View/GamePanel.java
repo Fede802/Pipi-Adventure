@@ -85,7 +85,10 @@ public class GamePanel extends JPanel {
             for(int k = 0; k < CostantField.NUM_SECTION_COLUMN; k++)
                 for(int j = 0; j < CostantField.NUM_SECTION_ROWS_TO_DRAW; j++){
 //                    if((img = generator.getTileData(i,j,k)) != CostantField.EMPTY_TILE_CODE)
-                    g2d.drawImage(tileArray[GameEngineForView.getInstance().getTileData(i,j,k)],CostantField.RENDERED_TILE_SIZE *(16*i+k)-(int) GameEngineForView.getInstance().getMapTraslation(),this.getHeight()-CostantField.RENDERED_TILE_SIZE *(j+1),CostantField.RENDERED_TILE_SIZE,CostantField.RENDERED_TILE_SIZE,this);
+                    g2d.drawImage(tileArray[GameEngineForView.getInstance().getTileData(i,j,k)],
+                            CostantField.RENDERED_TILE_SIZE *(16*i+k)-(int) GameEngineForView.getInstance().getMapTraslation(),
+                            this.getHeight()-CostantField.RENDERED_TILE_SIZE *(j+1),CostantField.RENDERED_TILE_SIZE,CostantField.RENDERED_TILE_SIZE,
+                            this);
                 }
         }
 

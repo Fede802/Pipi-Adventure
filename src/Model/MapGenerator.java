@@ -52,7 +52,7 @@ public class MapGenerator {
             generatedMap.add(sectionList[0]);
         }
     }
-
+    
     public void updateMap(){
 
         generatedMap.remove(0);

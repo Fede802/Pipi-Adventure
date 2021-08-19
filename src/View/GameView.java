@@ -2,7 +2,9 @@ package View;
 
 public class GameView implements IGameView{
     private static GameView instance = null;
-    private GameView(){}
+    private final MainFrame MAIN_FRAME;
+    private GameView(){
+        MAIN_FRAME = new MainFrame();}
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();
@@ -21,6 +23,8 @@ public class GameView implements IGameView{
 
     @Override
     public void openGameWindow() {
-        new MainFrame().setVisible(true);
-    }
+        MAIN_FRAME.setVisible();}
+
+    @Override
+    public void openGameMenu() { MAIN_FRAME.setVisible(true);}
 }
