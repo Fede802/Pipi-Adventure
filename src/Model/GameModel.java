@@ -50,6 +50,7 @@ public class GameModel implements IGameModel{
     @Override
     public void updateGameStatus() {
         generator.setTraslX(getMapTralsX()+MapGenerator.VEL_X);
+        generator.playerCollision();
     }
 
     @Override

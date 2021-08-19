@@ -77,5 +77,8 @@ public class MapGenerator {
     public void jumper(){
         player.jump();
     }
+    public void playerCollision(){
+        player.checkCollision();
+    }
 
 }

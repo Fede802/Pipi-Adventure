@@ -26,9 +26,9 @@ public class GamePanel extends JPanel implements KeyListener {
     private int traslmg;
 
     public GamePanel(){
-
+        this.setFocusable(true);
         tileArray = new Image[NUM_TILES];
-        System.out.println(NUM_TILES);
+        System.out.println("num tiles: "+NUM_TILES);
         this.addKeyListener(this);
 
         try {

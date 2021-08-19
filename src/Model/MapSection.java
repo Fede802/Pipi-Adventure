@@ -5,7 +5,6 @@ public abstract class MapSection {
     protected int[][] map;
 
     public MapSection(){
-
         map = new int[16][16];
     }
 

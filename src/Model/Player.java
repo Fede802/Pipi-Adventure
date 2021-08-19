@@ -6,7 +6,7 @@ public class Player extends GameEntity{
     private final static int MAX_Y = 50;
     private final static int VEL_Y = 8;
     private int traslY;
-    private int prevMapJ = mapJ;
+    private int prevMapI = mapI;
     private int currentJumpStep;
     private final static int JUMP_STEP = 18;
     private boolean isJumping = false;
@@ -34,18 +34,18 @@ public class Player extends GameEntity{
             if (currentJumpStep < JUMP_STEP / 2) {
                 traslY += VEL_Y;
                 if(traslY > 40) {
-                    prevMapJ = mapJ;
-                    mapJ++;
+                    prevMapI = mapI;
+                    mapI++;
                     traslY-=40;
                 }
 
-                System.out.println("MAPJ: "+mapJ);
+                System.out.println("MAPJ: "+mapI);
             } else {
                 traslY -= VEL_Y;
 
                 if(traslY < 40) {
 //                    prevMapJ = mapJ;
-                    mapJ--;
+                    mapI--;
                     traslY+=40;
                 }
             }
@@ -69,8 +69,11 @@ public class Player extends GameEntity{
 
     @Override
     public void checkCollision() {
-        if (generator.getTileData(0,mapI,mapJ-1) != 34 && prevMapJ!= mapJ){
-            prevMapJ = mapJ;
+        if (generator.getTileData(0,mapI-1,mapJ) != 34 && prevMapI!= mapI){
+            if(!isJumping){
+                mapJ--;
+            }
+            prevMapI = mapI;
             traslY = 0;
             isJumping = false;
         }
