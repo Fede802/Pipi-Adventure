@@ -42,7 +42,8 @@ public class GamePanel extends JPanel {
             int col = 0;
 
             for(int i = 0; i < NUM_TILES; i++){
-             tileArray[i] = ImageIO.read(new File(CostantField.MAP_URL)).getSubimage(CostantField.TILE_SIZE *col,(rows-1)*CostantField.TILE_SIZE,CostantField.TILE_SIZE,CostantField.TILE_SIZE);
+             tileArray[i] = ImageIO.read(new File(CostantField.MAP_URL)).getSubimage(CostantField.TILE_SIZE *col,
+                     (rows-1)*CostantField.TILE_SIZE,CostantField.TILE_SIZE,CostantField.TILE_SIZE);
              col++;
              if(rows*CostantField.NUM_COLUMNS_OF_PNG-1 == i){
                  rows++;
@@ -54,9 +55,9 @@ public class GamePanel extends JPanel {
             e.printStackTrace();
         }
         setBackground(Color.CYAN);
-        setPreferredSize(new Dimension(200,200));
+        setPreferredSize(new Dimension(600,600));
 
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 traslmg+=50;
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel {
                 repaint();
             }
         });
-        timer.start();
+       //timer.start();
     }
     @Override
     public void paint(Graphics g) {
