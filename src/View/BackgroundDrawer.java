@@ -12,8 +12,11 @@ public class BackgroundDrawer {
 
     private int x;
     private int dx;
+    private int maxY;
 
-    public BackgroundDrawer(File background, JPanel panel, final int dx) {
+
+
+    public BackgroundDrawer(File background, JPanel panel, final int dx){
         this.panel = panel;
         this.dx = dx;
         try {
@@ -23,6 +26,11 @@ public class BackgroundDrawer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        this.maxY = panel.getHeight();
+    }
+    public BackgroundDrawer(File background, JPanel panel, final int dx, final int maxY) {
+        this(background,panel,dx);
+        this.maxY = maxY;
     }
 
     public void update() {
@@ -33,8 +41,8 @@ public class BackgroundDrawer {
     }
 
     public void drawBackground(Graphics2D g2d) {
-        g2d.drawImage(image, - (x), 0,panel.getWidth(),panel.getHeight()+100, null);
-        g2d.drawImage(image, panel.getWidth()- (x), 0,panel.getWidth(),panel.getHeight()+100, null);
+        g2d.drawImage(image, - (x), 0,panel.getWidth(),panel.getHeight()-120, null);
+        g2d.drawImage(image, panel.getWidth()- (x), 0,panel.getWidth(),panel.getHeight()-120, null);
     }
 }
 

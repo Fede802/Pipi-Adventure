@@ -21,7 +21,14 @@ public class GamePanel extends JPanel implements KeyListener {
     //TODO later make gameBar useful
     //TODO whenRefactor, use background class to draw background
     //TODO later, add animated player
-    private final File tileSet = new File("Tileset2.png");
+    private final File tileSet = new File("Resources/TileSet/Tileset2.png");
+
+    private final BackgroundDrawer backgroundLayer_1 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_1.png"), this, 5);
+    private final BackgroundDrawer backgroundLayer_2 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_2.png"), this, 4);
+    private final BackgroundDrawer backgroundLayer_3 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_3.png"), this, 3);
+    private final BackgroundDrawer backgroundLayer_4 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_4.png"), this, 1);
+    private final BackgroundDrawer backgroundLayer_5 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_5.png"), this, 2);
+
     private final File coin = new File("Monetona.png");
     private final MapDrawer mapDrawer = new MapDrawer(this,tileSet);
     private final GameBar gameBar = new GameBar(this,coin);
@@ -29,6 +36,12 @@ public class GamePanel extends JPanel implements KeyListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             GameEngine.getInstance().updateGameStatus();
+            gameBar.setScore(gameBar.getScore()+100000000);
+            backgroundLayer_1.update();
+            backgroundLayer_2.update();
+            backgroundLayer_3.update();
+            backgroundLayer_4.update();
+            backgroundLayer_5.update();
             repaint();
         }
     });
@@ -42,7 +55,7 @@ public class GamePanel extends JPanel implements KeyListener {
 //        gameTimer.start();
 
         try {
-            player = ImageIO.read(new File("PInguino_Definitivo4.png"));
+            player = ImageIO.read(new File("Resources/Entities/Player/PInguino_Definitivo1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,6 +70,12 @@ public class GamePanel extends JPanel implements KeyListener {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
+
+        backgroundLayer_5.drawBackground(g2d);
+        backgroundLayer_4.drawBackground(g2d);
+        backgroundLayer_3.drawBackground(g2d);
+        backgroundLayer_2.drawBackground(g2d);
+        backgroundLayer_1.drawBackground(g2d);
         mapDrawer.drawMap(g2d);
         gameBar.drawGameBar(g2d);
         int[] playerInfo = GameEngine.getInstance().getPlayerInfo();

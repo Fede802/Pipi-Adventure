@@ -36,11 +36,15 @@ public class GameEngine implements IGameEngine{
     @Override
     public void updateGameStatus() {
         GameModel.getInstance().updateGameStatus();
+        System.out.println(CollisionHandler.rightCollision(GameModel.getInstance().getPlayerInfo()));
         if(GameModel.getInstance().getMapTraslX() == GameView.getInstance().getRenderedTileSize()*GameModel.getInstance().getSectionSize()) {
             GameModel.getInstance().setMapTraslX(0);
             GameModel.getInstance().updateMap();
         }
         JumpAndFallHandler.jumpAndFall(isJumping(),getPlayerInfo());
+        if(CollisionHandler.rightCollision(GameModel.getInstance().getPlayerInfo())){
+            GameStateHandler.getInstance().openGameOverWindow();
+        }
     }
 
     @Override

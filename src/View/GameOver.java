@@ -13,13 +13,14 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 
-public class MainMenu extends JPanel implements KeyListener {
+public class GameOver extends JPanel implements KeyListener {
     //TODO later when back there requestFocus()
     public static final int DX = 1;
-    private final String TITLE = "Pipi Adventure";
+    private final String TITLE = "Game Over";
 
+    private final Image bed;
     private final BackgroundDrawer BG_DRAWER;
-    private final Timer MENU_TIMER = new Timer(16, new ActionListener() {
+    private final Timer GAMEOVER_TIMER = new Timer(16, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             BG_DRAWER.update();
@@ -29,28 +30,33 @@ public class MainMenu extends JPanel implements KeyListener {
 
     private int currentChoice = 0;
     private String[] options = {
-            "Start",
+            "Restart",
             "Help",
             "Quit"
     };
 
+
+    private String[] score = {
+            "Score:",
+            "Best Score:",
+            "Coin:"
+    };
+
     private final Color titleColor;
     private final Font titleFont;
+
     private final Font font;
 
-    private Image menuGIF;
+    public GameOver(){
 
-    public MainMenu(){
+        bed = new ImageIcon("GameOver.gif").getImage();
+        BG_DRAWER = new BackgroundDrawer(new File("GameOver_BackGround.png"),this,DX);
 
-        BG_DRAWER = new BackgroundDrawer(new File("Resources/Backgrounds/Menu/menubg.gif"),this,DX);
+        titleColor = Color.RED;
+        titleFont = new Font("Century Gothic", Font.BOLD, 75);
+        font = new Font("Arial", Font.PLAIN, 40 );
 
-        menuGIF = new ImageIcon("Resources/Backgrounds/Menu/Sfondo_Menu.gif").getImage();
-
-        titleColor = new Color(255, 216, 0);
-        titleFont = new Font("04b", Font.BOLD, 45);
-        font = new Font("04b", Font.PLAIN, 30 );
-
-        MENU_TIMER.start();
+        GAMEOVER_TIMER.start();
 
         this.setPreferredSize(new Dimension(800,800));
         this.setFocusable(true);
@@ -62,27 +68,55 @@ public class MainMenu extends JPanel implements KeyListener {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         BG_DRAWER.drawBackground(g2d);
-        g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , this);
 
-        StringDrawer.drawString(g2d, TITLE, titleFont, new Color(255, 120, 0),titleColor,100, 0, this,StringDrawer.CENTER);
+        g.drawImage(bed, 130,70,this);
 
-        for(int i = 0; i < options.length; i++) {
-            if(i == currentChoice) {
-                g2d.setColor(Color.DARK_GRAY);
-            }
-            else {
-                g2d.setColor(new Color(255, 120, 0));
-            }
-            //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
-            StringDrawer.drawString(g2d, options[i], font, null,titleColor,50+i*60+this.getHeight()/3, 0, this,StringDrawer.CENTER);
-        }
-
-
+        this.drawGUI(g2d);
     }
 
+    public void drawGUI(Graphics2D g2d){
 
 
+        g2d.setColor(titleColor);
+        g2d.setFont(titleFont);
 
+        FontMetrics fm = g2d.getFontMetrics(titleFont);
+        AffineTransform transform = g2d.getTransform();
+        transform.translate(this.getWidth()/2 - fm.stringWidth(TITLE)/2,100+this.getHeight()/7);
+        g2d.transform(transform);
+        g2d.setColor(new Color(100, 0, 0));
+        FontRenderContext frc = g2d.getFontRenderContext();
+
+
+        TextLayout tl = new TextLayout(TITLE, g2d.getFont().deriveFont(45F), frc);
+        Shape shape = tl.getOutline(null);
+        g2d.setStroke(new BasicStroke(10));
+        g2d.draw(shape);
+        g2d.setColor(Color.RED);
+        g2d.fill(shape);
+
+
+        //g2d.drawString(TITLE, this.getWidth()/2 - fm.stringWidth(TITLE)/2, 100+this.getHeight()/7);
+
+        g2d.setFont(font);
+        FontMetrics fm1 = g2d.getFontMetrics(font);
+        for(int i = 0; i < options.length; i++) {
+            if(i == currentChoice) {
+                g2d.setColor(new Color(255, 198, 26));
+            }
+            else {
+                g2d.setColor(Color.WHITE);
+            }
+            //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
+            g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
+        }
+
+        g2d.setColor(Color.WHITE);
+        for(int i = 0; i < score.length; i++) {
+            g2d.drawString(score[i], this.getWidth()/6 - fm1.stringWidth(score[i])/2, 50+i*60+this.getHeight()/3);
+        }
+
+    }
 
     private void select() {
         if(currentChoice == 0) {

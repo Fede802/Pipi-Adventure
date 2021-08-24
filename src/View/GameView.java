@@ -25,4 +25,9 @@ public class GameView implements IGameView {
     public int getRenderedTileSize() {
         return MapDrawer.RENDERED_TILE_SIZE;
     }
+
+    @Override
+    public void openGameOverWindow() {
+        MAIN_FRAME.moveScreen();
+    }
 }

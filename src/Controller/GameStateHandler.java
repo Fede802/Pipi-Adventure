@@ -33,4 +33,9 @@ public class GameStateHandler implements IGameStateHandler{
         currentState = GAME_STATE;
         GameView.getInstance().openGameWindow();
     }
+
+    @Override
+    public void openGameOverWindow() {
+        GameView.getInstance().openGameOverWindow();
+    }
 }
