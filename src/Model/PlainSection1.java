@@ -3,20 +3,14 @@ package Model;
 public class PlainSection1 extends MapSection{
 
     public PlainSection1(){
-
         //super();
-
         map = new int[][]{
+                //TODO later, in all section refactor tile list
                 /*
                      1 normal grass
-                     0 left grass
-                     2 right grass
                      6 worm grass
                      13 pink flower grass
                      20 red flower grass
-                     21 left floating grass
-                     22 centre floating grass
-                     23 right floating grass
                      -----
                      8 dirt
                      28 worm dirt
@@ -26,9 +20,6 @@ public class PlainSection1 extends MapSection{
                      32 helix dirt
                      ------
                      15 normal base
-                     ----
-                     27 coin
-                     34 empty
                 */
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -48,5 +39,4 @@ public class PlainSection1 extends MapSection{
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
-
 }

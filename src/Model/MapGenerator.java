@@ -2,7 +2,7 @@ package Model;
 
 
 
-import Utils.CostantField;
+
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,60 +10,49 @@ import java.util.Random;
 public class MapGenerator {
 
     public static final int MAP_LENGHT = 5;
-    public static final double VEL_X = 20;
-    private Random random;
+    public static final int MAP_VEL_X = 5;
+    public static final int NUM_MAP_SECTION = 5;
 
-    private double traslX;
+    private final MapSection[] sectionList = new MapSection[NUM_MAP_SECTION];
+    private final Random random = new Random();
 
-    public static double getVelX() {
-        return VEL_X;
-    }
-
-    public double getTraslX() {
-        return traslX;
-    }
-
-    public void setTraslX(double traslX) {
-        this.traslX = traslX;
-    }
-
-    private final MapSection[] sectionList;
-
-    private ArrayList <MapSection> generatedMap;
+    private int mapTraslX;
+    private ArrayList<MapSection> generatedMap;
 
     public MapGenerator(){
-
-        sectionList = new MapSection[4];
-
         sectionList[0] = new PlainSection1();
         sectionList[1] = new PlainSection2();
         sectionList[2] = new PlainSection3();
         sectionList[3] = new PlainSection4();
-
+        sectionList[4] = new PlainStartSection();
         generatedMap = new ArrayList<MapSection>();
-
         generateMap();
-        random = new Random();
     }
 
     private void generateMap(){
-
-        for (int i = 0; i< CostantField.SIZE_OF_GENERATED_MAP; i++){
+        generatedMap.add(sectionList[4]);
+        for (int i = 1; i< MAP_LENGHT; i++){
             generatedMap.add(sectionList[0]);
         }
     }
-
-    public void updateMap(){
-
+    public void updateMap() {
         generatedMap.remove(0);
-        generatedMap.add(sectionList[random.nextInt(4)]);
-        System.out.println(random.nextInt(4));
-//        generatedMap.add(sectionList[1]);
+        //TODO later, if the player could start from MapX 0 and move don't know if could be useful a start section
+        //-1 because last section is the start section
+        generatedMap.add(sectionList[random.nextInt(NUM_MAP_SECTION-1)]);
+        System.out.println(random.nextInt(MAP_LENGHT));
     }
 
-    public int getTileData(int mapIndex, int iIndex, int jIndex){
-
-        return generatedMap.get(mapIndex).getCell(15-iIndex,jIndex);
+    public int getMapTraslX() {
+        return mapTraslX;
     }
 
+    public void setMapTraslX(final int mapTraslX) {
+        this.mapTraslX = mapTraslX;
+    }
+
+    public int getTileData(final int mapIndex,final int mapX,final int mapY){
+        return generatedMap.get(mapIndex).getCell(mapX,mapY);
+    }
 }
+

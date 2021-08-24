@@ -2,19 +2,17 @@ package Model;
 
 public abstract class MapSection {
 
+    public static final int SECTION_SIZE = 16;
+
     protected int[][] map;
 
     public MapSection(){
-
-        map = new int[16][16];
+        map = new int[SECTION_SIZE][SECTION_SIZE];
     }
 
-    public int[][] getMap(){
-
-        return map;
-    }
-    public int getCell(int i,int j){
-        return map[i][j];
+    public int getCell(final int mapX,final int mapY){
+        return map[mapY][mapX];
     }
 
 }
+

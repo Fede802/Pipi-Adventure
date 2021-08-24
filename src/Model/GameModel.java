@@ -1,15 +1,11 @@
 package Model;
 
-import View.GameView;
-import View.IGameView;
-
 public class GameModel implements IGameModel{
 
     private static GameModel instance = null;
-    private MapGenerator generator;
-    private GameModel(){
-        generator = new MapGenerator();
-    }
+    private final MapGenerator mapGenerator = new MapGenerator();
+    private final Player player = new Player("PLAYER",0,2,12);
+    private GameModel(){}
     public static IGameModel getInstance() {
         if (instance == null)
             instance = new GameModel();
@@ -17,48 +13,68 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public double getMapTralsX() {
-        return generator.getTraslX();
+    public int getSectionSize() {
+        return MapSection.SECTION_SIZE;
     }
 
     @Override
-    public void setMapTraslX(int mapTraslX) {
-        generator.setTraslX(mapTraslX);
-    }
-
-
-    @Override
-    public int[] getEntityPosition() {
-        return new int[0];
+    public int getMapLength() {
+        return MapGenerator.MAP_LENGHT;
     }
 
     @Override
-    public void setEntityPosition(int[] entityPosition) {
-
+    public int getMapTraslX() {
+        return mapGenerator.getMapTraslX();
     }
 
     @Override
-    public double getEntityTraslY() {
-        return 0;
+    public int getTileData(final int mapIndex,final int mapX,final int mapY) {
+        return mapGenerator.getTileData(mapIndex,mapX,mapY);
     }
 
     @Override
-    public void setEntityTraslY(double entityTraslY) {
-
+    public void setMapTraslX(final int mapTraslX) {
+        mapGenerator.setMapTraslX(mapTraslX);
     }
 
     @Override
     public void updateGameStatus() {
-        generator.setTraslX(getMapTralsX()+MapGenerator.VEL_X);
+        mapGenerator.setMapTraslX(mapGenerator.getMapTraslX()+MapGenerator.MAP_VEL_X);
+        player.setTraslX(player.getTraslX()+MapGenerator.MAP_VEL_X);
     }
 
     @Override
     public void updateMap() {
-        generator.updateMap();
+        mapGenerator.updateMap();
     }
 
     @Override
-    public int getTileData(int mapIndex, int iIndex, int jIndex) {
-        return generator.getTileData(mapIndex,iIndex,jIndex);
+    public int[] getPlayerInfo() {
+        return player.getPlayerInfo();
+    }
+
+    @Override
+    public void setPlayerInfo(final int mapIndex, final int mapX, final int traslX, final int mapY, final int traslY) {
+        player.setPlayerInfo(mapIndex,mapX,traslX,mapY,traslY);
+    }
+
+    @Override
+    public void setJumping(final boolean jumping) {
+        player.setJumping(jumping);
+    }
+
+    @Override
+    public boolean isJumping() {
+        return player.isJumping();
+    }
+
+    @Override
+    public void jump() {
+        player.jump();
+    }
+
+    @Override
+    public void fall() {
+        player.fall();
     }
 }
