@@ -13,9 +13,10 @@ import java.util.ArrayList;
 public class MainFrame extends JFrame{
     private int dx = 0;
     private int dy = 0;
-    private static final int SLIDING_STEP = 20;
+    private static final int SLIDING_STEP = 10;
     private int gameOverSliding = 0;
     private Dimension size = MainFrame.MINIMUM_SIZE;
+    private boolean hasSlide = false;
 
 
     Timer t = new Timer(16, new ActionListener() {
@@ -23,7 +24,7 @@ public class MainFrame extends JFrame{
         public void actionPerformed(ActionEvent e) {
 
             GAME_OVER.setLocation(GAME_OVER.getX(), GAME_OVER.getY() - SLIDING_STEP);
-            if (GAME_OVER.getY() <= 200) {
+            if (GAME_OVER.getY() <= (int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2) {
                 ((Timer) e.getSource()).stop();
                 System.out.println("Timer stopped");
             }
@@ -50,15 +51,20 @@ public class MainFrame extends JFrame{
             @Override
             public void componentResized(ComponentEvent e) {
                 size = GAME_SCREEN.getSize();
-                for(int i = 0; i < GAME_SCREEN.getComponentCount(); i++){
-                    GAME_SCREEN.getComponent(i).setSize(size);
-                }
+//                for(int i = 0; i < GAME_SCREEN.getComponentCount()-1; i++){
+//                    GAME_SCREEN.getComponent(i).setSize(size);
+//                }
+                GAME_PANEL.setSize(size);
                 dx =(int)size.getWidth()/10;
                 dy =(int)size.getHeight()/10;
-                if(t.isRunning())
-                    GAME_OVER.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int) size.getHeight()-gameOverSliding,GameOver.DEFAULT_WIDTH+dx,GameOver.DEFAULT_HEIGHT+dy);
-                else
+                if(t.isRunning()) {
+                    hasSlide = true;
+                    GAME_OVER.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight() - gameOverSliding, GameOver.DEFAULT_WIDTH + dx, GameOver.DEFAULT_HEIGHT + dy);
+                }else if(hasSlide){
                     GAME_OVER.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2,GameOver.DEFAULT_WIDTH+dx,GameOver.DEFAULT_HEIGHT+dy);
+                }else{
+                    GAME_OVER.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH + dx, GameOver.DEFAULT_HEIGHT + dy);
+                }
                 GAME_SCREEN.moveToFront(GAME_OVER);
                 revalidate();
                 repaint();
