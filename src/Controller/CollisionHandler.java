@@ -29,8 +29,19 @@ public class CollisionHandler {
 
     public static boolean rightCollision(final int[] playerPosition){
         boolean isColliding = false;
-        if(GameEngine.getInstance().getTileData(playerPosition[0],playerPosition[1], playerPosition[3]) != 34)
-            isColliding = true;
+        if(playerPosition[2] == 0){
+            int mapIndex = playerPosition[0];
+            int mapX = playerPosition[1];
+            if(playerPosition[1] == 15){
+                mapIndex++;
+                mapX = -1;
+            }
+            if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, playerPosition[3]) != 34)
+                isColliding = true;
+            if(playerPosition[4] != 0)
+                if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, playerPosition[3]-1) != 34)
+                    isColliding = true;
+        }
         return isColliding;
     }
 

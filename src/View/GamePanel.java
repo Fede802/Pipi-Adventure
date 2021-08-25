@@ -8,14 +8,11 @@ import Controller.GameEngine;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener{
 
     public static final int GAME_TICK = 16;
     //TODO later make gameBar useful
@@ -23,11 +20,11 @@ public class GamePanel extends JPanel implements KeyListener {
     //TODO later, add animated player
     private final File tileSet = new File("Resources/TileSet/Tileset2.png");
 
-    private final BackgroundDrawer backgroundLayer_1 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_1.png"), this, 5);
-    private final BackgroundDrawer backgroundLayer_2 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_2.png"), this, 4);
-    private final BackgroundDrawer backgroundLayer_3 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_3.png"), this, 3);
-    private final BackgroundDrawer backgroundLayer_4 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_4.png"), this, 1);
-    private final BackgroundDrawer backgroundLayer_5 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_5.png"), this, 2);
+    private final BackgroundDrawer backgroundLayer_1 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_1.png"), this, 5,3*MapDrawer.RENDERED_TILE_SIZE);
+    private final BackgroundDrawer backgroundLayer_2 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_2.png"), this, 4,3*MapDrawer.RENDERED_TILE_SIZE);
+    private final BackgroundDrawer backgroundLayer_3 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_3.png"), this, 3,3*MapDrawer.RENDERED_TILE_SIZE);
+    private final BackgroundDrawer backgroundLayer_4 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_4.png"), this, 1,3*MapDrawer.RENDERED_TILE_SIZE);
+    private final BackgroundDrawer backgroundLayer_5 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Nuovo_Sfondo_5.png"), this, 2,3*MapDrawer.RENDERED_TILE_SIZE);
 
     private final File coin = new File("Monetona.png");
     private final MapDrawer mapDrawer = new MapDrawer(this,tileSet);
@@ -89,6 +86,10 @@ public class GamePanel extends JPanel implements KeyListener {
         this.requestFocus();
     }
 
+    public void stopGame(){
+        gameTimer.stop();
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
         //do nothing
@@ -105,4 +106,5 @@ public class GamePanel extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
         //do nothing
     }
+
 }
