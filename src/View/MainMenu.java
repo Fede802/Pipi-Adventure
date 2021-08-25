@@ -11,9 +11,12 @@ import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 
 public class MainMenu extends JPanel implements KeyListener {
+
     //TODO later when back there requestFocus()
     public static final int DX = 1;
     private final String TITLE = "Pipi Adventure";
@@ -64,7 +67,7 @@ public class MainMenu extends JPanel implements KeyListener {
         BG_DRAWER.drawBackground(g2d);
         g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , this);
 
-        StringDrawer.drawString(g2d, TITLE, titleFont, new Color(255, 120, 0),titleColor,100, 0, this,StringDrawer.CENTER);
+        StringDrawer.drawString(g2d, TITLE, titleFont, new Color(255, 120, 0),StringDrawer.TITLE_STROKE,titleColor,100, 0, this,StringDrawer.CENTER);
 
         for(int i = 0; i < options.length; i++) {
             if(i == currentChoice) {
@@ -74,8 +77,12 @@ public class MainMenu extends JPanel implements KeyListener {
                 g2d.setColor(new Color(255, 120, 0));
             }
             //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
-            StringDrawer.drawString(g2d, options[i], font, null,titleColor,50+i*60+this.getHeight()/3, 0, this,StringDrawer.CENTER);
+            StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,50+i*60+this.getHeight()/3, 0, this,StringDrawer.CENTER);
         }
+        /*Area shape = new Area(new Rectangle(0,0,this.getWidth(),this.getHeight()));
+        shape.subtract(new Area(new RoundRectangle2D.Double(0,0,100,100,20,20)));
+        g2d.fill(shape);*/
+
 
 
     }

@@ -12,6 +12,9 @@ public class StringDrawer {
     //TODO change name
     public static final int PADDALO = 1;
 
+    public static final int TITLE_STROKE=10;
+    public static final int DEFAULT_STROKE=4;
+
 
     private StringDrawer(){}
 
@@ -26,7 +29,7 @@ public class StringDrawer {
         return g2d.getFontMetrics(textFont).getHeight();
     }
 
-    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor, Color fillColor,final double paddingTop,final double paddingRight, final JPanel panel, int position){
+    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor,int strokeWidth, Color fillColor,final double paddingTop,final double paddingRight, final JPanel panel, int position){
         Color prevColor = g2d.getColor();
         Font prevFont = g2d.getFont();
         AffineTransform affineTransform = g2d.getTransform();
@@ -42,7 +45,7 @@ public class StringDrawer {
         FontRenderContext frc = g2d.getFontRenderContext();
         TextLayout tl = new TextLayout(text, g2d.getFont(), frc);
         Shape shape = tl.getOutline(null);
-        g2d.setStroke(new BasicStroke(4));
+        g2d.setStroke(new BasicStroke(strokeWidth));
         g2d.setColor(boundColor);
         g2d.draw(shape);
         g2d.setColor(fillColor);

@@ -15,10 +15,13 @@ import java.io.File;
 
 public class GameOver extends JPanel implements KeyListener {
     //TODO later when back there requestFocus()
+    public  static final int DEFAULT_WIDTH = 450;
+    public  static final int DEFAULT_HEIGHT = 450;
     public static final int DX = 1;
     private final String TITLE = "Game Over";
 
-    private final Image bed;
+    private final Image bed, frame;
+
     private final BackgroundDrawer BG_DRAWER;
     private final Timer GAMEOVER_TIMER = new Timer(16, new ActionListener() {
         @Override
@@ -49,11 +52,12 @@ public class GameOver extends JPanel implements KeyListener {
 
     public GameOver(){
 
-        bed = new ImageIcon("Resources/Backgrounds/GameOver/GameOver.gif").getImage();
         BG_DRAWER = new BackgroundDrawer(new File("Resources/Backgrounds/GameOver/GameOver_BackGround.png"),this,DX);
+        bed = new ImageIcon("Resources/Backgrounds/GameOver/GameOver.gif").getImage();
+        frame = new ImageIcon("Resources/Backgrounds/PictureFrame.png").getImage();
 
         titleColor = Color.RED;
-        titleFont = new Font("04b", Font.BOLD, 68);
+        titleFont = new Font("04b", Font.BOLD, 60);
         font = new Font("04b", Font.PLAIN, 20);
 
         GAMEOVER_TIMER.start();
@@ -69,11 +73,13 @@ public class GameOver extends JPanel implements KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         BG_DRAWER.drawBackground(g2d);
 
-        g.drawImage(bed, this.getWidth()/2-this.getWidth()/4,this.getHeight()/3-this.getHeight()/4,this.getWidth()/2,this.getHeight()/2,this);
+        g2d.drawImage(bed, this.getWidth()/2-this.getWidth()/4,this.getHeight()/3-this.getHeight()/4,this.getWidth()/2,this.getHeight()/2,this);
+
+        g2d.drawImage(frame,0 , 0,this.getWidth(),this.getHeight(), this );
 
         //this.drawGUI(g2d);
 
-        StringDrawer.drawString(g2d, TITLE, titleFont, Color.WHITE,titleColor,65, 0, this,StringDrawer.CENTER);
+        StringDrawer.drawString(g2d, TITLE, titleFont, Color.WHITE,StringDrawer.TITLE_STROKE,titleColor,65, 0, this,StringDrawer.CENTER);
 
         for(int i = 0; i < options.length; i++) {
             if(i == currentChoice) {
@@ -83,12 +89,12 @@ public class GameOver extends JPanel implements KeyListener {
                 g2d.setColor(Color.BLACK);
             }
             //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
-            StringDrawer.drawString(g2d, options[i], font, null,titleColor,150+i*60+this.getHeight()/3, 450, this,StringDrawer.PADDALO);;
+            StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*60+this.getHeight()/3, 470, this,StringDrawer.PADDALO);;
         }
 
         g2d.setColor(Color.BLACK);
         for(int i = 0; i < score.length; i++) {
-            StringDrawer.drawString(g2d, score[i], font, null,titleColor,150+i*60+this.getHeight()/3, 25, this,StringDrawer.PADDALO);;
+            StringDrawer.drawString(g2d, score[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*60+this.getHeight()/3, 25, this,StringDrawer.PADDALO);;
         }
 
     }

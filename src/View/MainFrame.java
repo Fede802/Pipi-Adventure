@@ -11,15 +11,23 @@ import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 public class MainFrame extends JFrame{
-    int ao = 600;
+    private int dx = 0;
+    private int dy = 0;
+    private static final int SLIDING_STEP = 20;
+    private int gameOverSliding = 0;
+    private Dimension size = MainFrame.MINIMUM_SIZE;
+
+
     Timer t = new Timer(16, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            GAME_OVER.setLocation(200, GAME_OVER.getY() - 20);
+
+            GAME_OVER.setLocation(GAME_OVER.getX(), GAME_OVER.getY() - SLIDING_STEP);
             if (GAME_OVER.getY() <= 200) {
                 ((Timer) e.getSource()).stop();
                 System.out.println("Timer stopped");
             }
+            gameOverSliding+=SLIDING_STEP;
         }
     });
 
@@ -36,20 +44,21 @@ public class MainFrame extends JFrame{
 
     public MainFrame(){
         super(FRAME_TITLE);
-        GAME_PANEL.setBounds(0,0,600,600);
-        GAME_PANEL.setOpaque(true);
-        GAME_OVER.setBounds(200,600,200,200);
-        GAME_OVER.setOpaque(true);
-        GAME_SCREEN.setBounds(0,0,600,600);
+        GAME_SCREEN.setBounds(0,0,this.getWidth(),this.getHeight());
         GAME_SCREEN.setOpaque(true);
         GAME_SCREEN.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
-                Dimension size = GAME_SCREEN.getSize();
+                size = GAME_SCREEN.getSize();
                 for(int i = 0; i < GAME_SCREEN.getComponentCount(); i++){
                     GAME_SCREEN.getComponent(i).setSize(size);
                 }
-                GAME_OVER.setBounds(200,ao,200,200);
+                dx =(int)size.getWidth()/10;
+                dy =(int)size.getHeight()/10;
+                if(t.isRunning())
+                    GAME_OVER.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int) size.getHeight()-gameOverSliding,GameOver.DEFAULT_WIDTH+dx,GameOver.DEFAULT_HEIGHT+dy);
+                else
+                    GAME_OVER.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2,GameOver.DEFAULT_WIDTH+dx,GameOver.DEFAULT_HEIGHT+dy);
                 GAME_SCREEN.moveToFront(GAME_OVER);
                 revalidate();
                 repaint();
@@ -62,7 +71,7 @@ public class MainFrame extends JFrame{
 
             @Override
             public void componentShown(ComponentEvent e) {
-
+                ;
             }
 
             @Override
@@ -70,6 +79,7 @@ public class MainFrame extends JFrame{
 
             }
         });
+        GAME_OVER.setVisible(false);
         GAME_SCREEN.add(GAME_PANEL);
         GAME_SCREEN.add(GAME_OVER,Integer.valueOf(0));
         STATE_LIST.add(MAIN_MENU);
@@ -100,10 +110,12 @@ public class MainFrame extends JFrame{
 
     public void moveScreen(){
         GAME_PANEL.stopGame();
-        ao = 200;
+        GAME_PANEL.setOpaqueScreen(true);
+        GAME_OVER.setVisible(true);
 
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         GAME_SCREEN.moveToFront(GAME_OVER);
+        GAME_OVER.requestFocus();
         t.start();
         //TODO slide gameOver and maybe pause
     }
