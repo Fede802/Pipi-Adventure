@@ -37,9 +37,9 @@ public class GameOver extends JPanel implements KeyListener {
 
 
     private String[] score = {
-            "Score:",
-            "Best Score:",
-            "Coin:"
+            "Score : prova",
+            "Best Score : provaaa",
+            "Coin : 9999"
     };
 
     private final Color titleColor;
@@ -49,12 +49,12 @@ public class GameOver extends JPanel implements KeyListener {
 
     public GameOver(){
 
-        bed = new ImageIcon("GameOver.gif").getImage();
-        BG_DRAWER = new BackgroundDrawer(new File("GameOver_BackGround.png"),this,DX);
+        bed = new ImageIcon("Resources/Backgrounds/GameOver/GameOver.gif").getImage();
+        BG_DRAWER = new BackgroundDrawer(new File("Resources/Backgrounds/GameOver/GameOver_BackGround.png"),this,DX);
 
         titleColor = Color.RED;
-        titleFont = new Font("Century Gothic", Font.BOLD, 75);
-        font = new Font("Arial", Font.PLAIN, 40 );
+        titleFont = new Font("04b", Font.BOLD, 68);
+        font = new Font("04b", Font.PLAIN, 20);
 
         GAMEOVER_TIMER.start();
 
@@ -69,9 +69,28 @@ public class GameOver extends JPanel implements KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         BG_DRAWER.drawBackground(g2d);
 
-        g.drawImage(bed, 130,70,this);
+        g.drawImage(bed, this.getWidth()/2-this.getWidth()/4,this.getHeight()/3-this.getHeight()/4,this.getWidth()/2,this.getHeight()/2,this);
 
-        this.drawGUI(g2d);
+        //this.drawGUI(g2d);
+
+        StringDrawer.drawString(g2d, TITLE, titleFont, Color.WHITE,titleColor,65, 0, this,StringDrawer.CENTER);
+
+        for(int i = 0; i < options.length; i++) {
+            if(i == currentChoice) {
+                g2d.setColor(Color.WHITE);
+            }
+            else {
+                g2d.setColor(Color.BLACK);
+            }
+            //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
+            StringDrawer.drawString(g2d, options[i], font, null,titleColor,150+i*60+this.getHeight()/3, 450, this,StringDrawer.PADDALO);;
+        }
+
+        g2d.setColor(Color.BLACK);
+        for(int i = 0; i < score.length; i++) {
+            StringDrawer.drawString(g2d, score[i], font, null,titleColor,150+i*60+this.getHeight()/3, 25, this,StringDrawer.PADDALO);;
+        }
+
     }
 
     public void drawGUI(Graphics2D g2d){

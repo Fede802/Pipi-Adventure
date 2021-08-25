@@ -42,7 +42,7 @@ public class StringDrawer {
         FontRenderContext frc = g2d.getFontRenderContext();
         TextLayout tl = new TextLayout(text, g2d.getFont(), frc);
         Shape shape = tl.getOutline(null);
-        g2d.setStroke(new BasicStroke(10));
+        g2d.setStroke(new BasicStroke(4));
         g2d.setColor(boundColor);
         g2d.draw(shape);
         g2d.setColor(fillColor);

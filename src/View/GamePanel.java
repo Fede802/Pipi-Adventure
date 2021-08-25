@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements KeyListener{
 //        gameTimer.start();
 
         try {
-            player = ImageIO.read(new File("Resources/Entities/Player/PInguino_Definitivo1.png"));
+            player = ImageIO.read(new File(/*"Resources/Entities/Player/PInguino_Definitivo1.png"*/"PInguino_Definitivo4.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
