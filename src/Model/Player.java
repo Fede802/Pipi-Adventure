@@ -2,6 +2,7 @@ package Model;
 
 public class Player extends GameEntity{
 
+
     public static final int PLAYER_VEL_Y = 5;
 
     private boolean isJumping = false;

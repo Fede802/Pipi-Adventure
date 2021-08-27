@@ -4,5 +4,5 @@ public interface IGameView {
     void openGameMenu();
     void openGameWindow();
     int getRenderedTileSize();
-    void openGameOverWindow();
+    //void openGameOverWindow();
 }

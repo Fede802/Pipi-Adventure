@@ -4,6 +4,7 @@ public class GameView implements IGameView {
 
     private static GameView instance = null;
     private final MainFrame MAIN_FRAME = new MainFrame();
+    private final ComponentContainer CONTAINER = MAIN_FRAME.getComponentContainer();
     private GameView(){}
     public static IGameView getInstance() {
         if (instance == null)
@@ -17,8 +18,8 @@ public class GameView implements IGameView {
     @Override
     public void openGameWindow() {
         //TODO later, when created starts gamePanel loading, check this for loading screen
-        MAIN_FRAME.switchState();
-        MAIN_FRAME.startGame();
+        CONTAINER.switchState();
+        CONTAINER.startGame();
     }
 
     @Override
@@ -26,8 +27,8 @@ public class GameView implements IGameView {
         return MapDrawer.RENDERED_TILE_SIZE;
     }
 
-    @Override
-    public void openGameOverWindow() {
-        MAIN_FRAME.moveScreen();
-    }
+//    @Override
+//    public void openGameOverWindow() {
+//        MAIN_FRAME.moveScreen();
+//    }
 }

@@ -5,6 +5,8 @@ import View.GameView;
 public class GameStateHandler implements IGameStateHandler{
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
+    public final static int PAUSE_STATE = 2;
+    public final static int GAME_OVER_STATE = 3;
     private int currentState = MENU_STATE;
     private int previousState = currentState;
 
@@ -36,6 +38,6 @@ public class GameStateHandler implements IGameStateHandler{
 
     @Override
     public void openGameOverWindow() {
-        GameView.getInstance().openGameOverWindow();
+        //GameView.getInstance().openGameOverWindow();
     }
 }

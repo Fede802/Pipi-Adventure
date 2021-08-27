@@ -2,9 +2,7 @@ package View;
 
 
 import Controller.GameEngine;
-
-
-
+import Utils.SoundManager;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +10,13 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
-public class GamePanel extends JPanel implements KeyListener{
+public class GamePanel extends JPanel implements KeyListener, IPlayable{
+
+    //
+
+    private SoundManager plain;
+    private SoundManager gameOver;
+    //
 
     public static final int GAME_TICK = 16;
     //TODO later make gameBar useful
@@ -58,6 +62,11 @@ public class GamePanel extends JPanel implements KeyListener{
             e.printStackTrace();
         }
 
+
+            plain = new SoundManager("Resources/Audio/Level1.wav");
+            gameOver = new SoundManager("Resources/Audio/GameOverTheme.wav");
+
+
         this.setFocusable(true);
         this.addKeyListener(this);
         this.setPreferredSize(MainFrame.MINIMUM_SIZE);
@@ -95,7 +104,7 @@ public class GamePanel extends JPanel implements KeyListener{
         this.requestFocus();
     }
 
-    public void stopGame(){
+    public void stopGame(){ ;
         gameTimer.stop();
     }
     public void setOpaqueScreen(final boolean opaqueScreen){
@@ -118,5 +127,16 @@ public class GamePanel extends JPanel implements KeyListener{
     public void keyReleased(KeyEvent e) {
         //do nothing
     }
+
+    @Override
+    public void play() {
+        plain.startLoop();
+    }
+
+    @Override
+    public void stop() {
+        plain.stopLoop();
+    }
+
 
 }

@@ -1,12 +1,20 @@
 package Controller;
 
+import Utils.SoundManager;
+
 public class JumpAndFallHandler {
     public static final int JUMP_STEP = 13;
 
     private static int currentJumpStep;
 
+    private static SoundManager jump = new SoundManager("Resources/Audio/Jump.wav");
+
     public static void jumpAndFall(boolean isJumping, int[] playerPosition){
 
+
+
+        if(isJumping && currentJumpStep == 0)
+            jump.playOnce();
         if(isJumping){
             GameEngine.getInstance().jump();
             currentJumpStep++;
@@ -18,6 +26,7 @@ public class JumpAndFallHandler {
             GameEngine.getInstance().fall();
 //            System.out.println("jumpandfall");
         }
+
 
 
     }

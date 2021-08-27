@@ -1,18 +1,13 @@
 package View;
 
 import Controller.GameStateHandler;
-
+import Utils.SoundManager;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 
 public class MainMenu extends JPanel implements KeyListener {
@@ -43,6 +38,13 @@ public class MainMenu extends JPanel implements KeyListener {
 
     private Image menuGIF;
 
+
+    private SoundManager menuConfirm;
+    private SoundManager menuScroll;
+
+
+
+
     public MainMenu(){
 
         BG_DRAWER = new BackgroundDrawer(new File("Resources/Backgrounds/Menu/menubg.gif"),this,DX);
@@ -54,6 +56,9 @@ public class MainMenu extends JPanel implements KeyListener {
         font = new Font("04b", Font.PLAIN, 30 );
 
         MENU_TIMER.start();
+
+        menuConfirm = new SoundManager("Resources/Audio/MenuConfirm.wav");
+        menuScroll = new SoundManager("Resources/Audio/MenuScroll.wav");
 
         this.setPreferredSize(new Dimension(800,800));
         this.setFocusable(true);
@@ -111,15 +116,18 @@ public class MainMenu extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            menuConfirm.playOnce();
             select();
         }
         if(e.getKeyCode() == KeyEvent.VK_UP) {
+            menuScroll.playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            menuScroll.playOnce();
             currentChoice++;
             if(currentChoice == options.length) {
                 currentChoice = 0;
