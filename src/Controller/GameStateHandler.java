@@ -3,11 +3,14 @@ package Controller;
 import View.GameView;
 
 public class GameStateHandler implements IGameStateHandler{
-
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
-    private int currentState = 0;
-    private int previousState = 0;
+    public final static int PAUSE_STATE = 2;
+    public final static int GAME_OVER_STATE = 2;
+    public static boolean overlay = false;
+
+    private int currentState = MENU_STATE;
+    private int previousState = currentState;
 
 
     private static GameStateHandler instance = null;
@@ -32,21 +35,15 @@ public class GameStateHandler implements IGameStateHandler{
     public void openGameWindow() {
         previousState = currentState;
         currentState = GAME_STATE;
+        overlay = false;
         GameView.getInstance().openGameWindow();
     }
 
     @Override
-    public void closeProgram() {
-
-    }
-
-    @Override
-    public void openOptions() {
-
-    }
-
-    @Override
-    public void closeOptions() {
-
+    public void openGameOverWindow() {
+        previousState = currentState;
+        currentState = GAME_OVER_STATE;
+        overlay = true;
+        //GameView.getInstance().openGameOverWindow(overlay);
     }
 }

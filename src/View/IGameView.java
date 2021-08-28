@@ -1,8 +1,8 @@
 package View;
 
 public interface IGameView {
-    void gameOver();
-    double jump();
-    void openGameWindow();
     void openGameMenu();
+    void openGameWindow();
+    int getRenderedTileSize();
+//    void openGameOverWindow();
 }

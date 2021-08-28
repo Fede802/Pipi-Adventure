@@ -1,27 +1,12 @@
 package Model;
 
+import Commons.EntityCoordinates;
+
 public class PlainSection4 extends MapSection{
 
     public PlainSection4(){
-
         //super();
-
         map = new int[][]{
-                /*
-                     1 normal grass
-                     6 worm grass
-                     13 pink flower grass
-                     20 red flower grass
-                     -----
-                     8 dirt
-                     28 worm dirt
-                     29 skull dirt
-                     30 bone dirt
-                     31 dead fish dirt
-                     32 helix dirt
-                     ------
-                     15 normal base
-                */
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -33,12 +18,17 @@ public class PlainSection4 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,0,2,34,34,34,34,34,34,34,34,34},
-                {34,27,27,34,34,7,9,34,34,34,34,34,34,34,34,34},
+                {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
+                {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {1,1,1,1,1,8,8,1,1,1,1,1,1,1,1,1},
                 {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
+    @Override
+    protected void spawnEntities() {
+         mapEntities.add(new Slime(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
+    }
 }
+

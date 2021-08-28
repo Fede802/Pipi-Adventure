@@ -1,20 +1,30 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class MapSection {
+
+    public static final int SECTION_SIZE = 16;
+    protected ArrayList<GameEntity> mapEntities;
 
     protected int[][] map;
 
     public MapSection(){
-
-        map = new int[16][16];
+        map = new int[SECTION_SIZE][SECTION_SIZE];
     }
 
-    public int[][] getMap(){
+    public int getCell(final int mapX,final int mapY){
+        return map[mapY][mapX];
+    }
 
-        return map;
+    public ArrayList<GameEntity> getMapEntities(){
+        mapEntities = new ArrayList<>();
+        spawnEntities();
+        return mapEntities;
     }
-    public int getCell(int i,int j){
-        return map[i][j];
-    }
+
+    protected abstract void spawnEntities();
 
 }
