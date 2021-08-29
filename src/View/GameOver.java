@@ -15,7 +15,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 
-public class GameOver extends JPanel implements KeyListener {
+public class GameOver extends JPanel implements KeyListener,IApplicationScreen {
     //TODO later when back there requestFocus()
     public  static final int DEFAULT_WIDTH = 450;
     public  static final int DEFAULT_HEIGHT = 450;
@@ -28,6 +28,7 @@ public class GameOver extends JPanel implements KeyListener {
 
     private SoundManager menuScroll;
     private SoundManager menuConfirm;
+    private SoundManager gameoverTheme;
 
     private final Timer GAMEOVER_TIMER = new Timer(16, new ActionListener() {
         @Override
@@ -72,6 +73,7 @@ public class GameOver extends JPanel implements KeyListener {
 
         menuConfirm = new SoundManager("Resources/Audio/MenuConfirm.wav");
         menuScroll =  new SoundManager("Resources/Audio/MenuScroll.wav");
+        gameoverTheme =  new SoundManager("Resources/Audio/GameOverTheme.wav");
 
         this.setPreferredSize(new Dimension(450,450));
         this.setFocusable(true);
@@ -157,6 +159,18 @@ public class GameOver extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         //nothing to do
+    }
+
+    @Override
+    public void start() {
+        this.GAMEOVER_TIMER.start();
+        this.gameoverTheme.startLoop();
+    }
+
+    @Override
+    public void stop() {
+        this.GAMEOVER_TIMER.stop();
+        this.gameoverTheme.stopLoop();
     }
 }
 

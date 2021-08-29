@@ -17,7 +17,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 
-public class Pause extends JPanel implements KeyListener {
+public class Pause extends JPanel implements KeyListener, IApplicationScreen {
     //TODO later when back there requestFocus()
     public  static final int DEFAULT_WIDTH = 450;
     public  static final int DEFAULT_HEIGHT = 450;
@@ -154,6 +154,17 @@ public class Pause extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         //nothing to do
+    }
+
+    @Override
+    public void start() {
+        //TODO musichina
+        this.PAUSE_TIMER.start();
+    }
+
+    @Override
+    public void stop() {
+        this.PAUSE_TIMER.stop();
     }
 }
 

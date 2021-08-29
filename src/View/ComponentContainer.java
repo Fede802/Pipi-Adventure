@@ -28,7 +28,7 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
         @Override
         public void actionPerformed(ActionEvent e) {
             gameOver.setLocation(gameOver.getX(), gameOver.getY() - SLIDING_STEP);
-            if (getComponent(GameStateHandler.GAME_OVER_STATE).getY() <= (int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2) {
+            if (gameOver.getY() <= (int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2) {
                 ((Timer) e.getSource()).stop();
                 System.out.println("Timer stopped");
             }
@@ -65,11 +65,11 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
         }
         if(gameOverSlidingTimer.isRunning()) {
             isGameOverSliding = true;
-            gameOver.setBounds((int) size.getWidth() - GameOver.DEFAULT_WIDTH / 2, (int) size.getHeight() - gameOverSliding, GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
+            gameOver.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight() - gameOverSliding, GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
         }else if(isGameOverSliding){
-            gameOver.setBounds((int) size.getWidth()-GameOver.DEFAULT_WIDTH/2,(int)size.getHeight()-GameOver.DEFAULT_HEIGHT/2,GameOver.DEFAULT_WIDTH,GameOver.DEFAULT_HEIGHT);
+            gameOver.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2,GameOver.DEFAULT_WIDTH,GameOver.DEFAULT_HEIGHT);
         }else{
-            gameOver.setBounds((int) size.getWidth() - GameOver.DEFAULT_WIDTH / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
+            gameOver.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
         }
 
         if(PauseSlidingTimer.isRunning()) {
@@ -120,6 +120,12 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
                 prev.setVisible(false);
             setLayer(prev,DEFAULT_LAYER);
             setLayer(curr,DRAG_LAYER);
+            if (prev instanceof IApplicationScreen){
+                ((IApplicationScreen) prev).stop();
+            }
+            if (curr instanceof IApplicationScreen){
+                ((IApplicationScreen) curr).start();
+            }
             curr.setVisible(true);
             curr.requestFocus();
         }
@@ -136,7 +142,7 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             gameOver = componentPair.getValue();
     }
 
-    public void startGame(){
+   /* public void startGame(){
 //        Component temp = this.getComponent(GameStateHandler.getInstance().getCurrentState());
         Component temp = this.getComponent(0);
 
@@ -151,6 +157,8 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
         if(temp instanceof GamePanel)
             ((GamePanel) temp).stopGame();
     }
+    */
+
 
     public void pause(){
 //        Component temp = this.getComponent(GameStateHandler.getInstance().getPreviousState());

@@ -49,9 +49,9 @@ public class GameEngine implements IGameEngine{
             GameModel.getInstance().updateMap();
         }
         JumpAndFallHandler.jumpAndFall(isJumping(),GameModel.getInstance().getPlayerCoordinates());
-//        if(CollisionHandler.rightCollision(GameModel.getInstance().getPlayerInfo())){
-//            GameStateHandler.getInstance().openGameOverWindow();
-//        }
+       if(CollisionHandler.rightCollision(GameModel.getInstance().getPlayerCoordinates())){
+            GameStateHandler.getInstance().gameOver();
+        }
     }
 
     @Override

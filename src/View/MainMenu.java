@@ -16,7 +16,7 @@ import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 
-public class MainMenu extends JPanel implements KeyListener {
+public class MainMenu extends JPanel implements KeyListener, IApplicationScreen {
 
     //TODO later when back there requestFocus()
     public static final int DX = 1;
@@ -137,6 +137,18 @@ public class MainMenu extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         //nothing to do
+    }
+
+    @Override
+    public void start() {
+        //TODO musichina
+        // this.
+        this.MENU_TIMER.start();
+    }
+
+    @Override
+    public void stop() {
+        this.MENU_TIMER.stop();
     }
 }
 

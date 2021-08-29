@@ -19,19 +19,19 @@ public class GameView implements IGameView {
     public void openGameWindow() {
         //TODO later, when created starts gamePanel loading, check this for loading screen
         CONTAINER.switchState();
-        CONTAINER.startGame();
+       // CONTAINER.startGame();
     }
 
     @Override
     public void openPauseWindow() {
-        CONTAINER.stopGame();
+       // CONTAINER.stopGame();
         CONTAINER.switchState();
         CONTAINER.pause();
     }
 
     @Override
     public void openGameOverWindow() {
-        CONTAINER.stopGame();
+        //CONTAINER.stopGame();
         CONTAINER.switchState();
         CONTAINER.gameOver();
     }

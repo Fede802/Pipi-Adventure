@@ -29,19 +29,19 @@ public class CollisionHandler {
         return isColliding;
     }
 //TODO refactor with EntityCoordinates
-    public static boolean rightCollision(final int[] playerPosition){
+    public static boolean rightCollision(final EntityCoordinates entityCoordinates){
         boolean isColliding = false;
-        if(playerPosition[2] == 0){
-            int mapIndex = playerPosition[0];
-            int mapX = playerPosition[1];
-            if(playerPosition[1] == 15){
+        if(entityCoordinates.getTraslX() == 0){
+            int mapIndex = entityCoordinates.getMapIndex();
+            int mapX = entityCoordinates.getMapX();
+            if(mapX == 15){
                 mapIndex++;
                 mapX = -1;
             }
-            if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, playerPosition[3]) != 34)
+            if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, entityCoordinates.getMapY()) != 34)
                 isColliding = true;
-            if(playerPosition[4] != 0)
-                if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, playerPosition[3]-1) != 34)
+            if(entityCoordinates.getTraslY() != 0)
+                if(GameEngine.getInstance().getTileData(mapIndex,mapX+1, entityCoordinates.getMapY()-1) != 34)
                     isColliding = true;
         }
         return isColliding;

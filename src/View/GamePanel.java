@@ -6,6 +6,7 @@ import Commons.EntityCoordinates;
 import Commons.Pairs;
 import Controller.GameEngine;
 import Controller.GameStateHandler;
+import Utils.SoundManager;
 
 
 import javax.imageio.ImageIO;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class GamePanel extends JPanel implements KeyListener{
+public class GamePanel extends JPanel implements KeyListener, IApplicationScreen{
 
     public static final int GAME_TICK = 16;
     int tick;
@@ -39,6 +40,12 @@ public class GamePanel extends JPanel implements KeyListener{
     private final MapDrawer mapDrawer = new MapDrawer(this,tileSet);
     private final GameBar gameBar = new GameBar(this,coin);
     private boolean opaqueScreen = false;
+
+    private SoundManager level1Theme = new SoundManager("Resources/Audio/Level1.wav");
+
+    private Image gun;
+    private  Image bullet;
+
     private final Timer gameTimer = new Timer(GAME_TICK, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -67,6 +74,12 @@ public class GamePanel extends JPanel implements KeyListener{
 
         coins = new ImageIcon("Resources/Entities/Coin/Monetina.gif").getImage();
         slimo = new ImageIcon("Resources/Entities/Enemy/Slimo/Slime2t.gif").getImage();
+
+        //
+        gun = new ImageIcon("Resources/Entities/Player/Guns/Pistola_2.png").getImage();
+        bullet = new ImageIcon("Resources/Entities/Player/Guns/Proiettile2.gif").getImage();
+        //
+
         try {
             player = ImageIO.read(new File("Resources/Entities/Player/PInguino_Definitivo1.png"));
         } catch (IOException e) {
@@ -103,6 +116,9 @@ public class GamePanel extends JPanel implements KeyListener{
 //        }
         EntityCoordinates entityPos;
 
+        g2d.drawImage(gun, 3 * MapDrawer.RENDERED_TILE_SIZE -5, this.getHeight() - (GameEngine.getInstance().getSectionSize() - 12) * MapDrawer.RENDERED_TILE_SIZE , MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
+        g2d.drawImage(bullet, 3 * MapDrawer.RENDERED_TILE_SIZE -20, this.getHeight() - (GameEngine.getInstance().getSectionSize() - 12) * MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
+
         for (Pairs<EntityCoordinates, Animation> entityCoordinate : entityCoordinates) {
             entityPos = entityCoordinate.getKey();
             if (entityCoordinate.getKey().getID() == 0) {
@@ -122,6 +138,8 @@ public class GamePanel extends JPanel implements KeyListener{
 
 
 
+
+
 //        g2d.drawImage(player,(entityPos.getSTART_MAP_X())*MapDrawer.RENDERED_TILE_SIZE,this.getHeight()-(GameEngine.getInstance().getSectionSize()- entityPos.getMapY())*MapDrawer.RENDERED_TILE_SIZE+ entityPos.getTraslY(),MapDrawer.RENDERED_TILE_SIZE,MapDrawer.RENDERED_TILE_SIZE,null);
 //        if(opaqueScreen){
 //            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
@@ -129,17 +147,6 @@ public class GamePanel extends JPanel implements KeyListener{
 //            g2d.fillRect(0,0,this.getWidth(), this.getHeight());
 //            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 //        }
-    }
-
-    public void startGame(){
-        System.out.println("start");
-        gameTimer.start();
-        this.requestFocus();
-    }
-
-    public void stopGame(){
-        tick = 0;
-        gameTimer.stop();
     }
     public void setOpaqueScreen(final boolean opaqueScreen){
         this.opaqueScreen = opaqueScreen;
@@ -156,7 +163,6 @@ public class GamePanel extends JPanel implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_SPACE)
             GameEngine.getInstance().setJumping(true);
         if(e.getKeyCode() == KeyEvent.VK_P){
-            stopGame();
             GameStateHandler.getInstance().pause();
         }
     }
@@ -166,4 +172,16 @@ public class GamePanel extends JPanel implements KeyListener{
         //do nothing
     }
 
+    @Override
+    public void start() {
+        this.level1Theme.startLoop();
+        this.gameTimer.start();
+    }
+
+    @Override
+    public void stop() {
+        this.level1Theme.stopLoop();
+        this.gameTimer.stop();
+        tick = 0;
+    }
 }
