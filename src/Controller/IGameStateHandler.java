@@ -4,7 +4,9 @@ public interface IGameStateHandler {
 
     int getPreviousState();
     int getCurrentState();
-    void openGameWindow();
-    void openGameOverWindow();
+    void startGame();
+    void menu();
+    void gameOver();
+    void pause();
 
 }

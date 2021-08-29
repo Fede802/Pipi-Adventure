@@ -5,7 +5,7 @@ import Commons.Animation;
 import Commons.EntityCoordinates;
 import Commons.Pairs;
 import Controller.GameEngine;
-
+import Controller.GameStateHandler;
 
 
 import javax.imageio.ImageIO;
@@ -112,7 +112,7 @@ public class GamePanel extends JPanel implements KeyListener{
             } else {
 
 //                System.out.println("x: "+((entityPos.getSTART_MAP_X()+GameEngine.getInstance().getSectionSize()*entityPos.getMapIndex())) +" y: "+(this.getHeight()-(GameEngine.getInstance().getSectionSize()- entityPos.getMapY())*MapDrawer.RENDERED_TILE_SIZE));
-                g2d.drawImage(entityCoordinate.getValue().getFrame(), (entityPos.getSTART_MAP_X() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), this.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE - entityPos.getTraslY(), mapDrawer.RENDERED_TILE_SIZE, mapDrawer.RENDERED_TILE_SIZE, this);
+                g2d.drawImage(entityCoordinate.getValue().getFrame(), (entityPos.getSTART_MAP_X() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), this.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE - entityPos.getTraslY(), mapDrawer.RENDERED_TILE_SIZE, mapDrawer.RENDERED_TILE_SIZE, null);
             }
             if(tick == 3){
                 entityCoordinate.getValue().update();
@@ -138,6 +138,7 @@ public class GamePanel extends JPanel implements KeyListener{
     }
 
     public void stopGame(){
+        tick = 0;
         gameTimer.stop();
     }
     public void setOpaqueScreen(final boolean opaqueScreen){
@@ -154,6 +155,10 @@ public class GamePanel extends JPanel implements KeyListener{
         //TODO later, add P for pause the game
         if(e.getKeyCode() == KeyEvent.VK_SPACE)
             GameEngine.getInstance().setJumping(true);
+        if(e.getKeyCode() == KeyEvent.VK_P){
+            stopGame();
+            GameStateHandler.getInstance().pause();
+        }
     }
 
     @Override
