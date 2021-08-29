@@ -6,7 +6,6 @@ import Commons.EntityCoordinates;
 import Commons.Pairs;
 import Model.GameModel;
 import View.GameView;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Map;

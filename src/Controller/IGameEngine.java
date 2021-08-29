@@ -3,7 +3,6 @@ package Controller;
 import Commons.Animation;
 import Commons.EntityCoordinates;
 import Commons.Pairs;
-import javafx.util.Pair;
 
 
 import java.util.ArrayList;

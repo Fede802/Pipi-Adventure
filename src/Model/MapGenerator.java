@@ -3,7 +3,6 @@ package Model;
 import Commons.Animation;
 import Commons.EntityCoordinates;
 import Commons.Pairs;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ public class MapGenerator {
     private final Random random = new Random();
 
     private int mapTraslX;
-    private ArrayList<Pair<MapSection,ArrayList<GameEntity>>> generatedMap = new ArrayList<>();
+    private ArrayList<Pairs<MapSection,ArrayList<GameEntity>>> generatedMap = new ArrayList<>();
 
 
     public MapGenerator(){
@@ -31,9 +30,9 @@ public class MapGenerator {
         generateMap();
     }
     private void generateMap(){
-        generatedMap.add(new Pair<>(sectionList.get(4),sectionList.get(4).getMapEntities()));
+        generatedMap.add(new Pairs<>(sectionList.get(4),sectionList.get(4).getMapEntities()));
         for (int i = 1; i< MAP_LENGHT; i++){
-            generatedMap.add(new Pair<>(sectionList.get(0),sectionList.get(0).getMapEntities()));
+            generatedMap.add(new Pairs<>(sectionList.get(0),sectionList.get(0).getMapEntities()));
         }
         updateEntityMapIndex();
     }
@@ -52,7 +51,7 @@ public class MapGenerator {
         //TODO later, if the player could start from MapX 0 and move don't know if could be useful a start section
         //-1 because last section is the start section
         int nextSection = random.nextInt(sectionList.size()-1);
-        generatedMap.add(new Pair<>(sectionList.get(nextSection),sectionList.get(nextSection).getMapEntities()));
+        generatedMap.add(new Pairs<>(sectionList.get(nextSection),sectionList.get(nextSection).getMapEntities()));
         updateEntityMapIndex();
     }
 
