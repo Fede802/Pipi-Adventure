@@ -1,7 +1,6 @@
 package View;
 
 import Controller.GameStateHandler;
-import Utils.SoundManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,9 +20,6 @@ public class MainMenu extends JPanel implements KeyListener {
     //TODO later when back there requestFocus()
     public static final int DX = 1;
     private final String TITLE = "Pipi Adventure";
-
-    private final SoundManager menuScroll = new SoundManager("Resources/Audio/MenuConfirm.wav");
-    private final SoundManager menuConfirm = new SoundManager("Resources/Audio/MenuScroll.wav");
 
     private final BackgroundDrawer BG_DRAWER;
     private final Timer MENU_TIMER = new Timer(16, new ActionListener() {
@@ -97,7 +93,7 @@ public class MainMenu extends JPanel implements KeyListener {
 
     private void select() {
         if(currentChoice == 0) {
-            GameStateHandler.getInstance().startGame();
+            GameStateHandler.getInstance().openGameWindow();
         }
         if(currentChoice == 1) {
             // help
@@ -115,18 +111,15 @@ public class MainMenu extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            menuConfirm.playOnce();
             select();
         }
         if(e.getKeyCode() == KeyEvent.VK_UP) {
-            menuScroll.playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            menuScroll.playOnce();
             currentChoice++;
             if(currentChoice == options.length) {
                 currentChoice = 0;

@@ -16,6 +16,6 @@ public class Main {
         } catch(FontFormatException e){} catch (IOException e){
             System.out.println("Failed loading font");
         }
-        GameView.getInstance().openMenuWindow();
+        GameView.getInstance().openGameMenu();
     }
 }

@@ -27,7 +27,7 @@ public class GameBar {
     }
     private void importImage(File coin){
         try {
-            this.coin = ImageIO.read(new File("Resources/Entities/Coin/Monetona.png"));
+            this.coin = ImageIO.read(new File("Monetona.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

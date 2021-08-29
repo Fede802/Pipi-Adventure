@@ -12,28 +12,14 @@ public class GameView implements IGameView {
         return instance;
     }
     @Override
-    public void openMenuWindow(){
-        CONTAINER.switchState();
+    public void openGameMenu(){
+        MAIN_FRAME.setVisible(true);
     }
     @Override
     public void openGameWindow() {
         //TODO later, when created starts gamePanel loading, check this for loading screen
         CONTAINER.switchState();
         CONTAINER.startGame();
-    }
-
-    @Override
-    public void openPauseWindow() {
-        CONTAINER.stopGame();
-        CONTAINER.switchState();
-        CONTAINER.pause();
-    }
-
-    @Override
-    public void openGameOverWindow() {
-        CONTAINER.stopGame();
-        CONTAINER.switchState();
-        CONTAINER.gameOver();
     }
 
     @Override
