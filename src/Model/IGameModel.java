@@ -2,27 +2,36 @@ package Model;
 
 import Commons.Animation;
 import Commons.EntityCoordinates;
-import Commons.Pairs;
+import Commons.Pair;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface IGameModel {
+    void updateMap();
+    int getMapTraslX();
+    void setMapTraslX(int mapTraslX);
+    void updateMapTraslX();
+    int getTileData(int mapIndex,int mapX,int mapY);
     int getSectionSize();
     int getMapLength();
-    int getMapTraslX();
-    //TODO later, there're final needed?
-    int getTileData(int mapIndex,int mapX,int mapY);
-    void setMapTraslX(int mapTraslX);
-    void updateGameStatus();
-    void updateMap();
-    //TODO later, maybe all this chain has to be named getEntityInfo()?
-    ArrayList<Pairs<EntityCoordinates,Animation>> getEntityCoordinates();
     EntityCoordinates getPlayerCoordinates();
+    ArrayList<Pair<Integer,EntityCoordinates>> getPlayerBullets();
+    ArrayList<Pair<Integer,EntityCoordinates>> getEntities();
+    ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates();
+    void updateEntitiesStatus(int entityID);
+    void updatePlayerStatus(int entityID);
+    void updatePlayerMapPosition();
+    boolean isPlayerJumping();
+    void setPlayerJumping(boolean isPlayerJumping);
+    void playerJump();
+    void playerFall();
+    void updateEntitiesMapPosition();
+    void addCoin();
+    void updateScore();
+    int getScore();
+    int getCoin();
+    void looseLife();
+    int getLife();
 
-//    void setPlayerInfo(int mapIndex,int mapX,int traslX,int mapY,int traslY);
-    void setJumping(boolean jumping);
-    boolean isJumping();
-    void jump();
-    void fall();
+
 }

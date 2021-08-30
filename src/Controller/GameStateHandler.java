@@ -2,7 +2,7 @@ package Controller;
 
 import View.GameView;
 
-public class GameStateHandler implements IGameStateHandler{
+public class GameStateHandler implements IGameStateHandler {
 
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
@@ -13,7 +13,10 @@ public class GameStateHandler implements IGameStateHandler{
     private int previousState = currentState;
 
     private static GameStateHandler instance = null;
-    private GameStateHandler(){}
+
+    private GameStateHandler() {
+    }
+
     public static GameStateHandler getInstance() {
         if (instance == null)
             instance = new GameStateHandler();
@@ -58,5 +61,4 @@ public class GameStateHandler implements IGameStateHandler{
         currentState = PAUSE_STATE;
         GameView.getInstance().openPauseWindow();
     }
-
 }

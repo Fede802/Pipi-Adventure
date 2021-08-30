@@ -1,6 +1,7 @@
 package View;
 
 import Controller.GameEngine;
+import Utils.Config;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,7 +13,7 @@ public class MapDrawer {
 
     public static final int NUM_ROWS_OF_TILESET = 5;
     public static final int NUM_COLUMNS_OF_TILESET = 7;
-    public static final int RENDERED_TILE_SIZE = 40;
+    public static final int RENDERED_TILE_SIZE = Config.getInstance().getRenderedTileSize();
     public static final int TILE_SIZE = 160;
     public static final int NUM_TILES = NUM_COLUMNS_OF_TILESET*NUM_ROWS_OF_TILESET;
 

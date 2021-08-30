@@ -29,4 +29,3 @@ public class PlainSection2 extends MapSection{
 
     }
 }
-

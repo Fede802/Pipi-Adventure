@@ -2,9 +2,6 @@ package Model;
 
 import Commons.EntityCoordinates;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PlainSection1 extends MapSection{
 
     public PlainSection1(){

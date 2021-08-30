@@ -1,0 +1,2 @@
+bestScore=0
+totalCoin=0

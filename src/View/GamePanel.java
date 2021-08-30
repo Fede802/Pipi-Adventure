@@ -1,27 +1,25 @@
 package View;
 
-
 import Commons.Animation;
 import Commons.EntityCoordinates;
-import Commons.Pairs;
 import Controller.GameEngine;
 import Controller.GameStateHandler;
 import Utils.SoundManager;
 
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class GamePanel extends JPanel implements KeyListener, IApplicationScreen{
 
     public static final int GAME_TICK = 16;
-    int tick;
     private static final ArrayList<Integer> KEYS = new ArrayList<>();
     private static final ArrayList<Animation> ANIMATIONS = new ArrayList<>();
     private static final ArrayList<EntityCoordinates> COORDS = new ArrayList<>();
@@ -38,8 +36,8 @@ public class GamePanel extends JPanel implements KeyListener, IApplicationScreen
 
     private final File coin = new File("Monetona.png");
     private final MapDrawer mapDrawer = new MapDrawer(this,tileSet);
-    private final GameBar gameBar = new GameBar(this,coin);
-    private boolean opaqueScreen = false;
+    private final GameBar gameBar = new GameBar(this);
+
 
     private SoundManager level1Theme = new SoundManager("Resources/Audio/Level1.wav");
 
@@ -50,10 +48,7 @@ public class GamePanel extends JPanel implements KeyListener, IApplicationScreen
         @Override
         public void actionPerformed(ActionEvent e) {
             GameEngine.getInstance().updateGameStatus();
-            System.out.println(tick);
-            tick++;
-            if(tick == 4)
-                tick = 0;
+//            System.out.println(tick);
 
 //            gameBar.setScore(gameBar.getScore()+5);
             backgroundLayer_1.update();
@@ -96,61 +91,17 @@ public class GamePanel extends JPanel implements KeyListener, IApplicationScreen
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        System.out.println("paintUpdate");
+//        System.out.println("paintUpdate");
         backgroundLayer_5.drawBackground(g2d);
         backgroundLayer_4.drawBackground(g2d);
         backgroundLayer_3.drawBackground(g2d);
         backgroundLayer_2.drawBackground(g2d);
         backgroundLayer_1.drawBackground(g2d);
         mapDrawer.drawMap(g2d);
-//        gameBar.drawGameBar(g2d);
-        //int[] playerInfo = GameEngine.getInstance().getPlayerInfo();
-        //TODO later, maybe move positioning of constant RENDERED_TILE_SIZE?
-        //TODO later, find a way to get player startMapX instead of currentMapX
-        ArrayList<Pairs<EntityCoordinates,Animation>> entityCoordinates = GameEngine.getInstance().getEntityCoordinates();
-//        for(int i = 0; i < entityCoordinates.size(); i++){
-//            KEYS.add(entityCoordinates.get(i).getKey());
-//            ANIMATIONS.add(entityCoordinates.get(i).getValue().getValue());
-//            COORDS.add(entityCoordinates.get(i).getValue().getKey());
-//
-//        }
-        EntityCoordinates entityPos;
-
-        g2d.drawImage(gun, 3 * MapDrawer.RENDERED_TILE_SIZE -5, this.getHeight() - (GameEngine.getInstance().getSectionSize() - 12) * MapDrawer.RENDERED_TILE_SIZE , MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-        g2d.drawImage(bullet, 3 * MapDrawer.RENDERED_TILE_SIZE -20, this.getHeight() - (GameEngine.getInstance().getSectionSize() - 12) * MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-
-        for (Pairs<EntityCoordinates, Animation> entityCoordinate : entityCoordinates) {
-            entityPos = entityCoordinate.getKey();
-            if (entityCoordinate.getKey().getID() == 0) {
-//                System.out.println("pipi");
-
-                g2d.drawImage(entityCoordinate.getValue().getFrame(), entityPos.getSTART_MAP_X() * MapDrawer.RENDERED_TILE_SIZE, this.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-            } else {
-
-//                System.out.println("x: "+((entityPos.getSTART_MAP_X()+GameEngine.getInstance().getSectionSize()*entityPos.getMapIndex())) +" y: "+(this.getHeight()-(GameEngine.getInstance().getSectionSize()- entityPos.getMapY())*MapDrawer.RENDERED_TILE_SIZE));
-                g2d.drawImage(entityCoordinate.getValue().getFrame(), (entityPos.getSTART_MAP_X() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), this.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE - entityPos.getTraslY(), mapDrawer.RENDERED_TILE_SIZE, mapDrawer.RENDERED_TILE_SIZE, null);
-            }
-            if(tick == 3){
-                entityCoordinate.getValue().update();
-
-            }
-        }
-
-
-
-
-
-//        g2d.drawImage(player,(entityPos.getSTART_MAP_X())*MapDrawer.RENDERED_TILE_SIZE,this.getHeight()-(GameEngine.getInstance().getSectionSize()- entityPos.getMapY())*MapDrawer.RENDERED_TILE_SIZE+ entityPos.getTraslY(),MapDrawer.RENDERED_TILE_SIZE,MapDrawer.RENDERED_TILE_SIZE,null);
-//        if(opaqueScreen){
-//            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
-//            g2d.setColor(Color.black);
-//            g2d.fillRect(0,0,this.getWidth(), this.getHeight());
-//            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-//        }
+        gameBar.drawGameBar(g2d);
+        EntitiesDrawer.drawEntities(g2d,this);
     }
-    public void setOpaqueScreen(final boolean opaqueScreen){
-        this.opaqueScreen = opaqueScreen;
-    }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -182,6 +133,9 @@ public class GamePanel extends JPanel implements KeyListener, IApplicationScreen
     public void stop() {
         this.level1Theme.stopLoop();
         this.gameTimer.stop();
-        tick = 0;
+    }
+    public void updateGameBar(int score, int coin, int life, int bullet) {
+        gameBar.updateBar(score,coin,life,bullet);
     }
 }
+

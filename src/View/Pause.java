@@ -2,19 +2,13 @@ package View;
 
 import Controller.GameStateHandler;
 import Utils.SoundManager;
-import View.BackgroundDrawer;
-import View.StringDrawer;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
 import java.io.File;
 
 public class Pause extends JPanel implements KeyListener, IApplicationScreen {
@@ -167,4 +161,5 @@ public class Pause extends JPanel implements KeyListener, IApplicationScreen {
         this.PAUSE_TIMER.stop();
     }
 }
+
 

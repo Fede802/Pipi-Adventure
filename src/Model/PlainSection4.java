@@ -28,7 +28,6 @@ public class PlainSection4 extends MapSection{
 
     @Override
     protected void spawnEntities() {
-         mapEntities.add(new Slime(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
+        mapEntities.add(new Snail(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
     }
 }
-

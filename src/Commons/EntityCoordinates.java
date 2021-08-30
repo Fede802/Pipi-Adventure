@@ -1,6 +1,7 @@
 package Commons;
 
 public class EntityCoordinates {
+    //TODO maybe id not needed
     private final int START_MAP_X;
     private final int START_MAP_Y;
     private final int ID;
@@ -52,6 +53,10 @@ public class EntityCoordinates {
 
     public void setTraslX(int traslX) {
         this.traslX = traslX;
+    }
+
+    public void updateTraslX(int traslXVariation){
+        this.traslX+=traslXVariation;
     }
 
     public int getMapY() {
@@ -114,6 +119,11 @@ public class EntityCoordinates {
         }
         public Builder setTraslY(int traslY) {
             this.traslY = traslY;
+            return this;
+        }
+
+        public Builder setMapX(int mapX) {
+            this.mapX = mapX;
             return this;
         }
     }

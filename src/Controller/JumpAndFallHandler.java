@@ -1,33 +1,27 @@
 package Controller;
 
-import Commons.EntityCoordinates;
-import Utils.SoundManager;
+
+import Model.GameModel;
 
 public class JumpAndFallHandler {
+
     public static final int JUMP_STEP = 13;
+    private int currentJumpStep;
+    private boolean isJumping = false;
+    public JumpAndFallHandler(){}
 
-    private static int currentJumpStep;
-
-    private static SoundManager jumpSound = new SoundManager("Resources/Audio/Jump.wav");
-
-    public static void jumpAndFall(boolean isJumping, EntityCoordinates playerPosition){
-
-        if (isJumping && currentJumpStep == 0){
-            jumpSound.playOnce();
-        }
-
+    public void jumpAndFall(){
+        isJumping = GameModel.getInstance().isPlayerJumping();
         if(isJumping){
-            GameEngine.getInstance().jump();
+            GameModel.getInstance().playerJump();
             currentJumpStep++;
             if(currentJumpStep == JUMP_STEP) {
                 currentJumpStep = 0;
-                GameEngine.getInstance().setJumping(false);
+                GameModel.getInstance().setPlayerJumping(false);
             }
-        }else if(!CollisionHandler.bottomCollision(playerPosition)){
-            GameEngine.getInstance().fall();
-//            System.out.println("jumpandfall");
+        }else if(!CollisionHandler.playerBottomCollision()){
+            GameModel.getInstance().playerFall();
         }
-
-
     }
+
 }

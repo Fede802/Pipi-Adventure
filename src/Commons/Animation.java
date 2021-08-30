@@ -1,7 +1,5 @@
 package Commons;
 
-import View.MapDrawer;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -16,8 +14,8 @@ public class Animation {
     private int currentAnimationStep;
 
     public Animation(String imagePath){
-       animationTile.add(new ImageIcon(imagePath).getImage());
-       animationStep = 1;
+        animationTile.add(new ImageIcon(imagePath).getImage());
+        animationStep = 1;
     }
     public Animation(File image, int numColumns){
         for(int i = 0;i < numColumns;i++){
@@ -42,7 +40,6 @@ public class Animation {
 
     public Image getFrame(){
         Image frame = animationTile.get(currentAnimationStep);
-
         return frame;
     }
     public void update(){

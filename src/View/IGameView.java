@@ -5,7 +5,5 @@ public interface IGameView {
     void openGameWindow();
     void openPauseWindow();
     void openGameOverWindow();
-
-    int getRenderedTileSize();
-//    void openGameOverWindow();
+    void updateGameBar(int score, int coin, int life, int bullet);
 }
