@@ -1,6 +1,9 @@
 package Commons;
 
+import Utils.Config;
+
 public class EntityCoordinates {
+    //TODO maybe id not needed
     private final int START_MAP_X;
     private final int START_MAP_Y;
     private final int ID;
@@ -54,6 +57,10 @@ public class EntityCoordinates {
         this.traslX = traslX;
     }
 
+    public void updateTraslX(int traslXVariation){
+        this.traslX+=traslXVariation;
+    }
+
     public int getMapY() {
         return mapY;
     }
@@ -68,6 +75,14 @@ public class EntityCoordinates {
 
     public void setTraslY(int traslY) {
         this.traslY = traslY;
+    }
+    public boolean intersects(EntityCoordinates r) {
+        int size = Config.getInstance().getRenderedTileSize();
+        int x1 = this.mapX*size+this.traslX;//+this.mapIndex*16*size;
+        int y1 = this.mapY*size+this.traslY;
+        int x2 = r.mapX*size+r.traslX;//+r.mapIndex*16*size;
+        int y2 = r.mapY*size+r.traslY;
+        return x2 < x1 + size && x2 + size > x1 && y2 < y1 + size && y2 + size > y1;
     }
 
     public static class Builder{
@@ -114,6 +129,11 @@ public class EntityCoordinates {
         }
         public Builder setTraslY(int traslY) {
             this.traslY = traslY;
+            return this;
+        }
+
+        public Builder setMapX(int mapX) {
+            this.mapX = mapX;
             return this;
         }
     }

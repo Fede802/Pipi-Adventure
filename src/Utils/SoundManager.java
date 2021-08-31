@@ -6,6 +6,9 @@ import java.io.IOException;
 
 public class SoundManager {
 
+    private static boolean isAudioActive = Config.getInstance().isAudioActive();
+    private static int audioVolume = Config.getInstance().getAudioVolume();
+
     private Clip clip;
 
     public SoundManager(String s) {
@@ -52,12 +55,14 @@ public class SoundManager {
     }
 
     public void playOnce() {
+        if(isAudioActive)
         this.clip.stop();
         this.clip.setMicrosecondPosition(0);
         this.clip.start();
     }
 
     public  void startLoop(){
+        if(isAudioActive)
         this.clip.setMicrosecondPosition(0);
         this.clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
@@ -65,4 +70,13 @@ public class SoundManager {
     public  void stopLoop(){
         this.clip.stop();
     }
+
+    public static void setIsAudioActive(boolean isAudioActive) {
+        SoundManager.isAudioActive = isAudioActive;
+    }
+
+    public static void setAudioVolume(int audioVolume) {
+        SoundManager.audioVolume = audioVolume;
+    }
 }
+

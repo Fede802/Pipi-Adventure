@@ -20,7 +20,7 @@ public class PlainSection4 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {1,13,1,6,1,13,20,13,1,1,6,1,6,1,1,1},
+                {1,1,1,1,1,8,8,1,1,1,1,1,1,1,1,1},
                 {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
@@ -28,7 +28,6 @@ public class PlainSection4 extends MapSection{
 
     @Override
     protected void spawnEntities() {
-         mapEntities.add(new Slime(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
+        mapEntities.add(new Snail(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
     }
 }
-

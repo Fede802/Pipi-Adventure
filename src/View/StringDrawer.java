@@ -19,17 +19,14 @@ public class StringDrawer {
     private StringDrawer(){}
 
     public static double getStringWidth(final Graphics2D g2d, final String text, final Font textFont){
-        //width
         return g2d.getFontMetrics(textFont).stringWidth(text);
     }
 
     public static double getStringHeight(final Graphics2D g2d, final Font textFont){
-        //height
-        //TODO later maybe is not the right method
         return g2d.getFontMetrics(textFont).getHeight();
     }
-
-    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor,int strokeWidth, Color fillColor,final double paddingTop,final double paddingRight, final JPanel panel, int position){
+    //TODO maybePanel field non serve
+    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor, int strokeWidth, Color fillColor, final double paddingTop, final double paddingRight, final JPanel panel, int position){
         Color prevColor = g2d.getColor();
         Font prevFont = g2d.getFont();
         AffineTransform affineTransform = g2d.getTransform();
@@ -56,4 +53,3 @@ public class StringDrawer {
         g2d.setColor(prevColor);
     }
 }
-

@@ -1,6 +1,6 @@
 package View;
 
-import Commons.Pairs;
+import Commons.Pair;
 import Controller.GameStateHandler;
 
 import javax.swing.*;
@@ -11,7 +11,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
-
 public class ComponentContainer extends JLayeredPane implements ComponentListener {
 
     private static final int SLIDING_STEP = 10;
@@ -21,8 +20,7 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
     private boolean isPauseSliding = false;
     private Dimension size;
     private Component pause,gameOver;
-    private ArrayList<Pairs<Integer,Component>> components = new ArrayList<>();
-
+    private ArrayList<Pair<Integer,Component>> components = new ArrayList<>();
 
     Timer gameOverSlidingTimer = new Timer(16, new ActionListener() {
         @Override
@@ -35,7 +33,7 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             gameOverSliding+=SLIDING_STEP;
         }
     });
-    Timer PauseSlidingTimer = new Timer(16, new ActionListener() {
+    Timer pauseSlidingTimer = new Timer(16, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             pause.setLocation(pause.getX(), pause.getY() - SLIDING_STEP);
@@ -49,16 +47,12 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
 
     public ComponentContainer(){
         super();
-        //this.setBounds(0,0,(int)MainFrame.MINIMUM_SIZE.getWidth(),(int)MainFrame.MINIMUM_SIZE.getHeight());
         this.setOpaque(true);
         this.addComponentListener(this);
-
     }
-
 
     @Override
     public void componentResized(ComponentEvent e) {
-
         size = this.getSize();
         for(int i = 0; i < this.getComponentCount(); i++){
             this.getComponent(i).setSize(size);
@@ -72,19 +66,14 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             gameOver.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
         }
 
-        if(PauseSlidingTimer.isRunning()) {
+        if(pauseSlidingTimer.isRunning()) {
             isPauseSliding = true;
-            pause.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight() - pauseSliding, GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
+            pause.setBounds((int) (size.getWidth() - Pause.DEFAULT_WIDTH) / 2, (int) size.getHeight() - pauseSliding, Pause.DEFAULT_WIDTH, Pause.DEFAULT_HEIGHT);
         }else if(isPauseSliding){
-            pause.setBounds((int) (size.getWidth()-GameOver.DEFAULT_WIDTH)/2,(int)(size.getHeight()-GameOver.DEFAULT_HEIGHT)/2,GameOver.DEFAULT_WIDTH,GameOver.DEFAULT_HEIGHT);
+            pause.setBounds((int) (size.getWidth()-Pause.DEFAULT_WIDTH)/2,(int)(size.getHeight()-Pause.DEFAULT_HEIGHT)/2,Pause.DEFAULT_WIDTH,Pause.DEFAULT_HEIGHT);
         }else{
-            pause.setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
+            pause.setBounds((int) (size.getWidth() - Pause.DEFAULT_WIDTH) / 2, (int) size.getHeight(), Pause.DEFAULT_WIDTH, Pause.DEFAULT_HEIGHT);
         }
-
-
-
-//        revalidate();
-//        repaint();
     }
 
     @Override
@@ -129,11 +118,9 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             curr.setVisible(true);
             curr.requestFocus();
         }
-//        this.getComponent(GameStateHandler.PAUSE_STATE).setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
-
     }
 
-    public void add(Pairs<Integer,Component> componentPair){
+    public void add(Pair<Integer,Component> componentPair){
         add(componentPair.getValue());
         components.add(componentPair);
         if(componentPair.getKey() == GameStateHandler.PAUSE_STATE)
@@ -142,59 +129,21 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             gameOver = componentPair.getValue();
     }
 
-   /* public void startGame(){
-//        Component temp = this.getComponent(GameStateHandler.getInstance().getCurrentState());
-        Component temp = this.getComponent(0);
-
-        System.out.println("starting");
-        if(temp instanceof GamePanel){
-            ((GamePanel) temp).startGame();
-            System.out.println("start");
-        }
-    }
-    public void stopGame(){
-        Component temp = this.getComponent(0);
-        if(temp instanceof GamePanel)
-            ((GamePanel) temp).stopGame();
-    }
-    */
-
-
     public void pause(){
-//        Component temp = this.getComponent(GameStateHandler.getInstance().getPreviousState());
-//        this.getComponent(GameStateHandler.PAUSE_STATE).setBounds((int) (size.getWidth() - GameOver.DEFAULT_WIDTH) / 2, (int) size.getHeight(), GameOver.DEFAULT_WIDTH, GameOver.DEFAULT_HEIGHT);
-//        if(temp instanceof Pause)
-//            moveToBack(temp);
-//            ((Pause) temp).start();
-//        this.setLayer(this.getComponent(GameStateHandler.getInstance().getPreviousState()),0,1);
-//        this.setLayer(temp,0,0);
-//        revalidate();
-//        repaint();
-
         isPauseSliding = true;
-        PauseSlidingTimer.start();
+        pauseSlidingTimer.start();
 
     }
 
     public void gameOver(){
-//        Component temp = this.getComponent(GameStateHandler.getInstance().getCurrentState());
-//        if(temp instanceof Pause)
-//            ((Pause) temp).start();
-//        this.setLayer(temp,1,0);
         isGameOverSliding = true;
         gameOverSlidingTimer.start();
     }
+    public void updateGameBar(int score, int coin, int life, int bullet) {
+        Component c = this.getComponent(0);
+        if(c instanceof GamePanel)
+            ((GamePanel) c).updateGameBar(score,coin,life,bullet);
+    }
 
-//    public void moveScreen(){
-//        GAME_PANEL.stopGame();
-//        GAME_PANEL.setOpaqueScreen(true);
-//        GAME_OVER.setVisible(true);
-//
-//        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-//        GAME_SCREEN.moveToFront(GAME_OVER);
-//        GAME_OVER.requestFocus();
-//        t.start();
-//        //TODO slide gameOver and maybe pause
-//    }
 
 }

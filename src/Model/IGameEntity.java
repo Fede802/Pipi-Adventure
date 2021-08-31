@@ -11,7 +11,8 @@ public interface IGameEntity {
     boolean isAlive();
     void setAlive(boolean isAlive);
     int getID();
-    void update(int traslX);
-    boolean isRemovable();
+    void setID(int id);
+    boolean isDying();
+    void setDying(boolean isDying);
 
 }

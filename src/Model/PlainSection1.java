@@ -2,9 +2,6 @@ package Model;
 
 import Commons.EntityCoordinates;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PlainSection1 extends MapSection{
 
     public PlainSection1(){
@@ -41,7 +38,7 @@ public class PlainSection1 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,21,23,34,34},
                 {34,34,34,34,34,34,34,34,21,23,34,34,34,34,34,34},
                 {34,34,34,0,1,2,34,34,34,34,34,34,34,34,34,34},
-                {1,20,1,8,8,8,1,1,6,1,1,13,1,20,1,1},
+                {1,1,1,8,8,8,1,1,1,1,1,1,1,1,1,1},
                 {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };

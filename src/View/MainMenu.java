@@ -4,23 +4,19 @@ import Controller.GameStateHandler;
 import Utils.SoundManager;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Area;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.ArrayList;
 
-public class MainMenu extends JPanel implements KeyListener, IApplicationScreen {
+public class MainMenu extends JPanel implements KeyListener, MouseInputListener, IApplicationScreen {
 
     //TODO later when back there requestFocus()
     public static final int DX = 1;
     private final String TITLE = "Pipi Adventure";
+    private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
 
     private final SoundManager menuScroll = new SoundManager("Resources/Audio/MenuConfirm.wav");
     private final SoundManager menuConfirm = new SoundManager("Resources/Audio/MenuScroll.wav");
@@ -38,6 +34,7 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
     private int currentChoice = 0;
     private String[] options = {
             "Start",
+            "Upgrade",
             "Help",
             "Quit"
     };
@@ -58,11 +55,12 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
         titleFont = new Font("04b", Font.BOLD, 45);
         font = new Font("04b", Font.PLAIN, 30 );
 
-        MENU_TIMER.start();
 
         this.setPreferredSize(new Dimension(800,800));
         this.setFocusable(true);
         this.addKeyListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     @Override
@@ -70,7 +68,10 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         BG_DRAWER.drawBackground(g2d);
-        g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , this);
+
+
+
+        g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , null);
 
         StringDrawer.drawString(g2d, TITLE, titleFont, new Color(255, 120, 0),StringDrawer.TITLE_STROKE,titleColor,100, 0, this,StringDrawer.CENTER);
 
@@ -82,7 +83,11 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
                 g2d.setColor(new Color(255, 120, 0));
             }
             //g2d.drawString(options[i], this.getWidth()/2 - fm1.stringWidth(options[i])/2, 50+i*60+this.getHeight()/3);
+
             StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,50+i*60+this.getHeight()/3, 0, this,StringDrawer.CENTER);
+            double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
+            double strHeight = StringDrawer.getStringHeight(g2d,font);
+            buttons.get(i).setRect((this.getWidth()-strWidth)/2,50+i*60+this.getHeight()/3,strWidth,(strHeight));
         }
         /*Area shape = new Area(new Rectangle(0,0,this.getWidth(),this.getHeight()));
         shape.subtract(new Area(new RoundRectangle2D.Double(0,0,100,100,20,20)));
@@ -103,7 +108,7 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
         if(currentChoice == 1) {
             // help
         }
-        if(currentChoice == 2) {
+        if(currentChoice == 3) {
             System.exit(0);
         }
     }
@@ -151,5 +156,45 @@ public class MainMenu extends JPanel implements KeyListener, IApplicationScreen 
         this.titleTheme.stopLoop();
         this.MENU_TIMER.stop();
     }
-}
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        menuConfirm.playOnce();
+        select();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        for(int i = 0; i < buttons.size(); i++){
+            if(buttons.get(i).contains(e.getX(),e.getY())){
+                currentChoice = i;
+                menuScroll.playOnce();
+            }
+        }
+    }
+}

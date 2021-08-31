@@ -1,11 +1,9 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class MapSection {
-
+    //TODO ADD SPAWNER CLASS TO SPAWN ENTITIES
     public static final int SECTION_SIZE = 16;
     protected ArrayList<GameEntity> mapEntities;
 
@@ -26,5 +24,4 @@ public abstract class MapSection {
     }
 
     protected abstract void spawnEntities();
-
 }
