@@ -1,0 +1,2 @@
+audioVolume=50
+isAudioActive=true
