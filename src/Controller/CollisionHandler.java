@@ -65,7 +65,7 @@ public class CollisionHandler {
                     GameModel.getInstance().addCoin();
                 }
                 else
-                    System.out.println("gameOver");
+                    GameModel.getInstance().updatePlayerStatus(-1);
             playerBullets = GameModel.getInstance().getPlayerBullets();
             entities = GameModel.getInstance().getEntities();
         }

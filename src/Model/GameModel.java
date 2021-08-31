@@ -89,7 +89,10 @@ public class GameModel implements IGameModel{
 
     @Override
     public void updatePlayerStatus(int entityID) {
-
+        if(entityID == -1){
+            PLAYER.setAlive(false);
+            PLAYER.setDying(true);
+        }
     }
 
     @Override
@@ -150,5 +153,15 @@ public class GameModel implements IGameModel{
     @Override
     public int getLife() {
         return GAME_STATUS.getLife();
+    }
+
+    @Override
+    public boolean isPlayerDead() {
+        return PLAYER.isDead();
+    }
+
+    @Override
+    public boolean isPlayerDying() {
+        return PLAYER.isDying();
     }
 }

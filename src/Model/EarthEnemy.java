@@ -1,9 +1,10 @@
 package Model;
 
+import Commons.Animation;
 import Commons.EntityCoordinates;
 import Utils.Config;
 
-public class EarthEnemy extends GameEntity{
+public abstract class EarthEnemy extends GameEntity{
 
     private static final int MOVING_STEP = 80;
     private static final int VEL_X = 2;
@@ -40,4 +41,6 @@ public class EarthEnemy extends GameEntity{
             currentStep = 0;
         }
     }
+
+
 }

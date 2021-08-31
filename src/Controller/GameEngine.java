@@ -21,8 +21,11 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public void updateGameStatus() {
+        if (GameModel.getInstance().isPlayerDead())
+            GameStateHandler.getInstance().gameOver();
         //increment map traslation and if necessary update generatedMap
-        updateMap();
+        if(!GameModel.getInstance().isPlayerDying())
+            updateMap();
         //check if player(+ bullets) has to jump or fall or collide with entity or map
         updatePlayer();
         //move entity and check if they collide with bullets or player

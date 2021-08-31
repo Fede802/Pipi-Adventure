@@ -32,6 +32,8 @@ public interface IGameModel {
     int getCoin();
     void looseLife();
     int getLife();
+    boolean isPlayerDead();
+    boolean isPlayerDying();
 
 
 }

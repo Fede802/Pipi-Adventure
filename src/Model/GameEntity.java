@@ -19,18 +19,18 @@ public abstract class GameEntity implements IGameEntity{
     public static final int COIN_ID = 2;
     public static final int BULLET_ID = 3;
 
+    public static final int DEATH_STEP = 60;
+
+    protected int currentDeathStep = 0;
     protected EntityCoordinates entityCoordinates;
     protected boolean isAlive = true;
     protected boolean isDying = false;
     protected int ID;
-    protected ArrayList<Animation> animationList = new ArrayList<>();
+
     protected int currentAnimation = WALK_ANIMATION_RIGHT;
 
     public GameEntity(EntityCoordinates entityCoordinates){
         this.entityCoordinates = entityCoordinates;
-        animationList.add(WALK_ANIMATION_RIGHT,null);
-        animationList.add(WALK_ANIMATION_LEFT, null);
-        animationList.add(DEATH_ANIMATION, null);
     }
     //TODO implement there part of move for death animation maybe
     @Override
@@ -50,10 +50,7 @@ public abstract class GameEntity implements IGameEntity{
         return collide;
     }
 
-    @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
-    }
+
 
     @Override
     public boolean isAlive() {

@@ -14,6 +14,7 @@ public class MainFrame extends JFrame{
     private final GamePanel GAME_PANEL = new GamePanel();
     private final Pause PAUSE = new Pause();
     private final GameOver GAME_OVER = new GameOver();
+    private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
     private final ComponentContainer APPLICATION_SCREEN = new ComponentContainer();
 
     public MainFrame(){

@@ -3,15 +3,18 @@ package Model;
 import Commons.Animation;
 import Commons.EntityCoordinates;
 
+import java.util.ArrayList;
+
 public class Coin extends GameEntity{
 
-    private static final int DEATH_STEP = 20;
-    private int currentDeathStep = 0;
+    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
+        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation("Resources/Entities/Coin/Monetina.gif"));
+        add(GameEntity.WALK_ANIMATION_LEFT,null);
+        add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Coin/Monetona.png"));
+    }};
 
     public Coin(EntityCoordinates entityCoordinates) {
         super(entityCoordinates);
-        animationList.add(GameEntity.WALK_ANIMATION_RIGHT,new Animation("Resources/Entities/Coin/Monetina.gif"));
-        animationList.add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Coin/Monetona.png"));
     }
 
     @Override
@@ -24,5 +27,9 @@ public class Coin extends GameEntity{
             if(currentDeathStep == DEATH_STEP)
                 isDying = false;
         }
+    }
+    @Override
+    public Animation getAnimation() {
+        return animationList.get(currentAnimation);
     }
 }

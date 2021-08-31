@@ -13,33 +13,47 @@ public class Player extends GameEntity implements IPlayer{
     private static final int PLAYER_VEL_Y = 5;
     private boolean isJumping = false;
     private ArrayList<Bullet> bullets = new ArrayList<>();
-
-    public Player(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
-        animationList.add(GameEntity.WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
+    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
+        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
                 Arrays.asList(new File("Resources/Entities/Player/PInguino_Definitivo1.png"),
                         new File("Resources/Entities/Player/PInguino_Definitivo2.png"),
                         new File("Resources/Entities/Player/PInguino_Definitivo3.png"),
                         new File("Resources/Entities/Player/PInguino_Definitivo4.png"))
         )));
+        add(GameEntity.WALK_ANIMATION_LEFT,null);
+        add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Player/Pinguino_Death.gif"));
+    }};
+
+    public Player(EntityCoordinates entityCoordinates) {
+        super(entityCoordinates);
     }
 
     @Override
     public void move() {
         //TODO maybe use for start movement
-        entityCoordinates.updateTraslX(MapGenerator.MAP_VEL_X);
-        if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-            if(entityCoordinates.getMapX() == MapSection.SECTION_SIZE-1){
-                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
-                entityCoordinates.setMapX(0);
-            }else{
-                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-            }
+        if(isAlive){
+            entityCoordinates.updateTraslX(MapGenerator.MAP_VEL_X);
+            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
+                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
+                if(entityCoordinates.getMapX() == MapSection.SECTION_SIZE-1){
+                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
+                    entityCoordinates.setMapX(0);
+                }else{
+                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+                }
             //TODO this maybe serve only for player
-            if(entityCoordinates.getMapX() == entityCoordinates.getSTART_MAP_X() && entityCoordinates.getTraslX() == 0){
-                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
+                if(entityCoordinates.getMapX() == entityCoordinates.getSTART_MAP_X() && entityCoordinates.getTraslX() == 0){
+                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
+                }
             }
+        }
+        if (!isAlive && isDying){
+            currentAnimation = GameEntity.DEATH_ANIMATION;
+            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
+            currentDeathStep++;
+            System.out.println(currentDeathStep);
+            if(currentDeathStep == DEATH_STEP)
+                isDying = false;
         }
     }
 
@@ -94,4 +108,13 @@ public class Player extends GameEntity implements IPlayer{
         return bullets.get(bulletIndex).getAnimation();
     }
 
+    @Override
+    public Animation getAnimation() {
+        return animationList.get(currentAnimation);
+    }
+
+
+    public boolean isDead(){
+        return !isAlive && !isDying;
+    }
 }

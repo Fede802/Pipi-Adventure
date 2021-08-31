@@ -74,6 +74,18 @@ public class Config {
     public void setRenderedTileSize(int renderedTileSize){
         gameVariables.setProperty("renderedTileSize",String.valueOf(renderedTileSize));
     }
+    public int getCurrentLife(){
+        return Integer.valueOf(gameProperties.getProperty("currentLife"));
+    }
+    public void setCurrentLife(int currentLife){
+        gameProperties.setProperty("currentLife",String.valueOf(currentLife));
+    }
+    public int getCurrentMaxBullet(){
+        return Integer.valueOf(gameProperties.getProperty("currentMaxBullet"));
+    }
+    public void setCurrentMaxBullet(int currentMaxBullet){
+        gameProperties.setProperty("currentMaxBullet",String.valueOf(currentMaxBullet));
+    }
 
     public void saveData(){
         try {
