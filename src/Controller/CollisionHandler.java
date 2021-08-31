@@ -56,10 +56,10 @@ public class CollisionHandler {
         playerBullets = GameModel.getInstance().getPlayerBullets();
         entities = GameModel.getInstance().getEntities();
         for(int i = 0; i < entities.size(); i++){
-            if(playerCoordinates.getMapIndex() == entities.get(i).getValue().getMapIndex()
+            if(/*playerCoordinates.getMapIndex() == entities.get(i).getValue().getMapIndex()
                     && playerCoordinates.getMapX()+playerCoordinates.getTraslX() == entities.get(i).getValue().getMapX()
                     +entities.get(i).getValue().getTraslX()
-                    && playerCoordinates.getMapY() == entities.get(i).getValue().getMapY())
+                    && playerCoordinates.getMapY() == entities.get(i).getValue().getMapY()*/playerCoordinates.getMapIndex() == entities.get(i).getValue().getMapIndex()&&playerCoordinates.intersects(entities.get(i).getValue()))
                 if(entities.get(i).getValue().getID() == 2){
                     GameModel.getInstance().updateEntitiesStatus(entities.get(i).getKey());
                     GameModel.getInstance().addCoin();

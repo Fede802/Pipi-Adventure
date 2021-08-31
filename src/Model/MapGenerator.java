@@ -33,8 +33,8 @@ public class MapGenerator {
     }
     private void generateMap(){
         generatedMap.add(new Pair<>(sectionList.get(4),sectionList.get(4).getMapEntities()));
-        generatedMap.add(new Pair<>(sectionList.get(3),sectionList.get(3).getMapEntities()));
-        for (int i = 2; i< MAP_LENGHT; i++){
+//        generatedMap.add(new Pair<>(sectionList.get(3),sectionList.get(3).getMapEntities()));
+        for (int i = 1; i< MAP_LENGHT; i++){
             generatedMap.add(new Pair<>(sectionList.get(0),sectionList.get(0).getMapEntities()));
         }
         updateEntityMapIndex();
