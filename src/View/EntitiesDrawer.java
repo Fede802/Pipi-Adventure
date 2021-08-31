@@ -28,7 +28,7 @@ public class EntitiesDrawer {
             }else if(entitiesCoordinates.get(i).getKey().getID() == 3){
                 //drawBullets
             }else{
-                g2d.drawImage(animation.getFrame(), (entityPos.getMapX() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE - entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
+                g2d.drawImage(animation.getFrame(), (entityPos.getMapX() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
             }
             if(tick == TICK_TO_UPDATE_ANIMATION){
                 animation.update();

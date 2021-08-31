@@ -32,7 +32,7 @@ public class Snail extends EarthEnemy{
         super.move();
         if (!isAlive && isDying){
 //            currentAnimation = GameEntity.DEATH_ANIMATION;
-            entityCoordinates.setTraslY(entityCoordinates.getTraslY()+5);
+            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
             currentDeathStep++;
             if(currentDeathStep == DEATH_STEP)
                 isDying = false;
