@@ -24,6 +24,7 @@ public class Pause extends JPanel implements KeyListener, IApplicationScreen {
 
     private SoundManager menuScroll;
     private SoundManager menuConfirm;
+    private SoundManager pauseTheme = new SoundManager("Resources/Audio/Pause_Theme.wav");
 
     private final Timer PAUSE_TIMER = new Timer(16, new ActionListener() {
         @Override
@@ -152,12 +153,13 @@ public class Pause extends JPanel implements KeyListener, IApplicationScreen {
 
     @Override
     public void start() {
-        //TODO musichina
+        pauseTheme.startLoop();
         this.PAUSE_TIMER.start();
     }
 
     @Override
     public void stop() {
+        pauseTheme.stopLoop();
         this.PAUSE_TIMER.stop();
     }
 }
