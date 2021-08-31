@@ -39,6 +39,7 @@ public class GamePanel extends JPanel implements KeyListener, IApplicationScreen
     private final GameBar gameBar = new GameBar(this);
 
 
+
     private SoundManager level1Theme = new SoundManager("Resources/Audio/Level1.wav");
 
     private Image gun;

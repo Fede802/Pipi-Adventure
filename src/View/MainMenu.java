@@ -20,6 +20,7 @@ public class MainMenu extends JPanel implements KeyListener, MouseInputListener,
 
     private final SoundManager menuScroll = new SoundManager("Resources/Audio/MenuConfirm.wav");
     private final SoundManager menuConfirm = new SoundManager("Resources/Audio/MenuScroll.wav");
+    private final SoundManager titleTheme = new SoundManager("Resources/Audio/Title_Theme.wav");
 
     private final BackgroundDrawer BG_DRAWER;
     private final Timer MENU_TIMER = new Timer(16, new ActionListener() {
@@ -146,13 +147,13 @@ public class MainMenu extends JPanel implements KeyListener, MouseInputListener,
 
     @Override
     public void start() {
-        //TODO musichina
-        // this.
+        this.titleTheme.startLoop();
         this.MENU_TIMER.start();
     }
 
     @Override
     public void stop() {
+        this.titleTheme.stopLoop();
         this.MENU_TIMER.stop();
     }
 
