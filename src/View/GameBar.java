@@ -68,4 +68,7 @@ public class GameBar {
         g2d.drawImage(coin,(int)(paddingLeft-fontHeight/5-fontHeight),paddingTop,(int)(fontHeight),(int)(fontHeight),null);
     }
 
+    public Rectangle2D.Double getPauseButton() {
+        return button;
+    }
 }
