@@ -2,6 +2,8 @@ package View;
 
 import Commons.Pair;
 import Controller.GameStateHandler;
+import Utils.Config;
+import Utils.GameConfig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,16 +11,19 @@ import java.awt.*;
 public class MainFrame extends JFrame{
     public static final Dimension MINIMUM_SIZE = new Dimension(600,600);
     public static final String FRAME_TITLE = "Pipi Adventure";
-
-    private final MainMenu MAIN_MENU = new MainMenu();
-    private final GamePanel GAME_PANEL = new GamePanel();
-    private final Pause PAUSE = new Pause();
-    private final GameOver GAME_OVER = new GameOver();
-    private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
     private final ComponentContainer APPLICATION_SCREEN = new ComponentContainer();
+    private final MainMenu MAIN_MENU = new MainMenu();
+    private final GamePanel GAME_PANEL;
+    private final PausePanel PAUSE = new PausePanel();
+    private final GameOver GAME_OVER = new GameOver();
+
+    private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
+    private final ControlsView CONTROLS_VIEW = new ControlsView();
 
     public MainFrame(){
         super(FRAME_TITLE);
+        GameConfig.getInstance().setRenderedTileSize((int)(APPLICATION_SCREEN.getSize().getWidth())/ GameConfig.getInstance().getMinTileToRender());
+        GAME_PANEL =  new GamePanel();
         GAME_PANEL.setVisible(false);
         GAME_OVER.setVisible(false);
         PAUSE.setVisible(false);
@@ -39,5 +44,9 @@ public class MainFrame extends JFrame{
 
     public ComponentContainer getComponentContainer(){
         return APPLICATION_SCREEN;
+    }
+
+    public void updateGameBar(int score, int coin, int life, int bullet){
+        GAME_PANEL.updateGameBar(score,coin,life,bullet);
     }
 }

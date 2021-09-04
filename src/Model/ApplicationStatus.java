@@ -1,30 +1,34 @@
 package Model;
 
-import Utils.Config;
+import Controller.GameEngine;
 
-public class ApplicationStatus {
-
-    private int totalCoin = Config.getInstance().getTotalCoin();
-
-    private static ApplicationStatus instance = null;
+public class ApplicationStatus implements IApplicationStatus{
+    private final GameStatus gameStatus= new GameStatus();
+    private static IApplicationStatus instance = null;
     private ApplicationStatus(){}
-    public static ApplicationStatus getInstance() {
-        if (instance == null){
+    public static IApplicationStatus getInstance() {
+        if (instance == null)
             instance = new ApplicationStatus();
-        }
         return instance;
     }
 
-    public int getTotalCoin() {
-        return totalCoin;
+    @Override
+    public int getScore() {
+        return gameStatus.getScore();
     }
 
-    public void setTotalCoin(int totalCoin) {
-        this.totalCoin = totalCoin;
+    @Override
+    public void setScore() {
+        gameStatus.setScore(gameStatus.getScore()+1);
     }
 
-    public void updateTotalCoin(final int coinVariation){
-        //TODO this kind of method to update entity traslations
-        this.totalCoin+=coinVariation;
+    @Override
+    public int getCoin() {
+        return gameStatus.getCoin();
+    }
+
+    @Override
+    public void setCoin(int coin) {
+        gameStatus.setCoin(gameStatus.getCoin()+1);
     }
 }

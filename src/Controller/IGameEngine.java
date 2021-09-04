@@ -10,9 +10,6 @@ public interface IGameEngine {
     void updateGameStatus();
     ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates();
     int getTileData(int mapIndex,int mapX,int mapY);
-    int getSectionSize();
-    int getMapLength();
-    int getMapTraslX();
+    double getMapTraslX();
     void setJumping(boolean isJumping);
-
 }

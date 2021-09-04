@@ -1,14 +1,20 @@
 package Controller;
 
-import Model.GameModel;
+import Utils.Config;
 import Utils.FontLoader;
 import View.GameView;
+
+import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
         FontLoader.loadFonts();
-//        GameModel.getInstance();
-//        GameEngine.getInstance();
-        GameView.getInstance().openMenuWindow();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                GameView.getInstance().openWindow();
+            }
+        });
+
     }
 }

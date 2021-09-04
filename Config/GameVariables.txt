@@ -1,1 +1,5 @@
-renderedTileSize = 50
+minTileToRender=20
+currentMaxLife=0
+maxLife=3
+currentMaxBullet=4
+maxBullet=10

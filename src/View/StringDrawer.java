@@ -9,8 +9,7 @@ import java.awt.geom.AffineTransform;
 public class StringDrawer {
 
     public static final int CENTER = 0;
-    //TODO change name
-    public static final int PADDALO = 1;
+    public static final int PADDING = 1;
 
     public static final int TITLE_STROKE=10;
     public static final int DEFAULT_STROKE=4;

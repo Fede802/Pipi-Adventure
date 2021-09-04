@@ -1,7 +1,9 @@
 package View;
 
 import Controller.GameEngine;
+import Controller.GameSetup;
 import Utils.Config;
+import Utils.GameConfig;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,9 +15,11 @@ public class MapDrawer {
 
     public static final int NUM_ROWS_OF_TILESET = 5;
     public static final int NUM_COLUMNS_OF_TILESET = 7;
-    public static final int RENDERED_TILE_SIZE = Config.getInstance().getRenderedTileSize();
+    public static int RENDERED_TILE_SIZE = GameConfig.getInstance().getRenderedTileSize();
     public static final int TILE_SIZE = 160;
     public static final int NUM_TILES = NUM_COLUMNS_OF_TILESET*NUM_ROWS_OF_TILESET;
+    public static final int SECTION_SIZE = GameSetup.getInstance().getSectionSize();
+    public static final int MAP_LENGTH = GameSetup.getInstance().getMapLength();
 
     private final JPanel parentPanel;
     //TODO later maybe has not to be final when we have more tileset, and maybe we could have an arraylist of tileset
@@ -25,6 +29,8 @@ public class MapDrawer {
         this.parentPanel = parentPanel;
         importTiles(tileSet);
     }
+
+
 
     private void importTiles(final File tileSet) {
         try {
@@ -49,10 +55,11 @@ public class MapDrawer {
     }
 
     public void drawMap(final Graphics2D g2d){
-        for(int mapIndex = 0; mapIndex < GameEngine.getInstance().getMapLength(); mapIndex++)
-            for (int mapY = GameEngine.getInstance().getSectionSize()-1; mapY > 0; mapY--)
-                for (int mapX = 0; mapX < GameEngine.getInstance().getSectionSize(); mapX++)
-                    g2d.drawImage(tileArray[GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)], RENDERED_TILE_SIZE * (mapX + GameEngine.getInstance().getSectionSize() * mapIndex) - GameEngine.getInstance().getMapTraslX(), parentPanel.getHeight()-((GameEngine.getInstance().getSectionSize()-mapY) * RENDERED_TILE_SIZE), RENDERED_TILE_SIZE, RENDERED_TILE_SIZE, null);
+        RENDERED_TILE_SIZE = GameConfig.getInstance().getRenderedTileSize();
+        for(int mapIndex = 0; mapIndex < MAP_LENGTH; mapIndex++)
+            for (int mapY = SECTION_SIZE-1; mapY > 0; mapY--)
+                for (int mapX = 0; mapX < SECTION_SIZE; mapX++)
+                    g2d.drawImage(tileArray[GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)], Math.toIntExact(Math.round(RENDERED_TILE_SIZE * (mapX + SECTION_SIZE * mapIndex) - GameEngine.getInstance().getMapTraslX())), parentPanel.getHeight()-((SECTION_SIZE-mapY) * RENDERED_TILE_SIZE), RENDERED_TILE_SIZE, RENDERED_TILE_SIZE, null);
 
     }
 

@@ -3,16 +3,19 @@ package Model;
 import Commons.Animation;
 import Commons.EntityCoordinates;
 import Utils.Config;
+import Utils.GameConfig;
 
 import java.util.ArrayList;
 
 public abstract class GameEntity implements IGameEntity{
     //TODO this size could change maybe not could be final
 
-    public static final int RENDERED_TILE_SIZE = Config.getInstance().getRenderedTileSize();
+    public static int RENDERED_TILE_SIZE = GameConfig.getInstance().getRenderedTileSize();
     public static final int WALK_ANIMATION_RIGHT = 0;
     public static final int WALK_ANIMATION_LEFT = 1;
     public static final int DEATH_ANIMATION = 2;
+
+    protected final ArrayList<Animation> animationList = new ArrayList<>(){{add(WALK_ANIMATION_RIGHT,null);add(WALK_ANIMATION_LEFT,null);add(DEATH_ANIMATION,null);}};
 
     public static final int PLAYER_ID = 0;
     public static final int ENEMY_ID = 1;
@@ -25,13 +28,18 @@ public abstract class GameEntity implements IGameEntity{
     protected EntityCoordinates entityCoordinates;
     protected boolean isAlive = true;
     protected boolean isDying = false;
-    protected int ID;
 
     protected int currentAnimation = WALK_ANIMATION_RIGHT;
 
     public GameEntity(EntityCoordinates entityCoordinates){
         this.entityCoordinates = entityCoordinates;
     }
+
+    @Override
+    public void move() {
+        RENDERED_TILE_SIZE = GameConfig.getInstance().getRenderedTileSize();
+    }
+
     //TODO implement there part of move for death animation maybe
     @Override
     public EntityCoordinates getEntityCoordinates() {
@@ -39,18 +47,9 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public boolean collide(IGameEntity entity) {
-        boolean collide = false;
-        if(this.entityCoordinates.getMapIndex() == entity.getEntityCoordinates().getMapIndex()
-                && this.entityCoordinates.getMapX()+entityCoordinates.getTraslX() == entity.getEntityCoordinates().getMapX()
-                    +entity.getEntityCoordinates().getTraslX()
-                && this.entityCoordinates.getMapY()+entityCoordinates.getTraslY() == entity.getEntityCoordinates().getMapY()
-                    +entity.getEntityCoordinates().getTraslY())
-            collide = true;
-        return collide;
+    public Animation getAnimation() {
+        return animationList.get(currentAnimation);
     }
-
-
 
     @Override
     public boolean isAlive() {
@@ -63,16 +62,6 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public int getID() {
-        return ID;
-    }
-
-    @Override
-    public void setID(int id) {
-        this.ID = id;
-    }
-
-    @Override
     public boolean isDying() {
         return isDying;
     }
@@ -82,3 +71,4 @@ public abstract class GameEntity implements IGameEntity{
         isDying = dying;
     }
 }
+

@@ -4,14 +4,17 @@ import Commons.Animation;
 import Commons.EntityCoordinates;
 import Commons.Pair;
 import Utils.Config;
+import Utils.GameConfig;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Player extends GameEntity implements IPlayer{
-    private static final int PLAYER_VEL_Y = 5;
+    private double PLAYER_VEL_Y = RENDERED_TILE_SIZE/5.0;
     private boolean isJumping = false;
+
+
     private ArrayList<Bullet> bullets = new ArrayList<>();
     private static final ArrayList<Animation> animationList = new ArrayList<>(){{
         add(GameEntity.WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
@@ -30,51 +33,86 @@ public class Player extends GameEntity implements IPlayer{
 
     @Override
     public void move() {
+        super.move();
+
         //TODO maybe use for start movement
-        if(isAlive){
+        if(isAlive) {
+//            System.out.println("Change size from player = "+ (prevTileSize != RENDERED_TILE_SIZE));
+//            if(prevTileSize != RENDERED_TILE_SIZE){
+//                if(entityCoordinates.getTraslX()!=0){
+////                System.out.println("MAP_VELX_prev_PLAYER= " +(prevTileSize/10));
+////                System.out.println("STEP = "+entityCoordinates.getTraslX()/(prevTileSize/10));
+//                entityCoordinates.setTraslX(RENDERED_TILE_SIZE/entityCoordinates.getTraslX()/(prevTileSize/10.0));
+//                }
+//                prevTileSize = RENDERED_TILE_SIZE;
+//                System.out.print("Entered");
+//            }
+//            System.out.println("MAPL_VEL_X updated from player= "+MapGenerator.MAP_VEL_X);
             entityCoordinates.updateTraslX(MapGenerator.MAP_VEL_X);
-            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-                if(entityCoordinates.getMapX() == MapSection.SECTION_SIZE-1){
-                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
-                    entityCoordinates.setMapX(0);
-                }else{
-                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+//            System.out.println("traslX " + entityCoordinates.getTraslX());
+            if(entityCoordinates.getTraslX()/RENDERED_TILE_SIZE == MapSection.SECTION_SIZE){
+                entityCoordinates.setTraslX(0);
+            }
+
+//            if(Math.round(entityCoordinates.getTraslX()) == RENDERED_TILE_SIZE){
+////                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
+//
+//                entityCoordinates.setTraslX(0);
+//                if(entityCoordinates.getMapX() == MapSection.SECTION_SIZE-1){
+//                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
+//                    entityCoordinates.setMapX(0);
+//                }else{
+//                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+//                }
+//                //TODO this maybe serve only for player
+//                if(entityCoordinates.getMapX() == entityCoordinates.getSTART_MAP_X() && Math.round(entityCoordinates.getTraslX()) < MapGenerator.MAP_VEL_X){
+//                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
+//                }
+//            }
+//        }
+            if (!isAlive && isDying) {
+                currentAnimation = GameEntity.DEATH_ANIMATION;
+                entityCoordinates.setTraslY(entityCoordinates.getTraslY() - 5);
+                currentDeathStep++;
+//            System.out.println("entering");
+//            System.out.println(!isAlive && isDying);
+                if (currentDeathStep == DEATH_STEP) {
+                    isDying = false;
+//                System.out.println("false");
                 }
-            //TODO this maybe serve only for player
-                if(entityCoordinates.getMapX() == entityCoordinates.getSTART_MAP_X() && entityCoordinates.getTraslX() == 0){
-                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
-                }
+
             }
         }
-        if (!isAlive && isDying){
-            currentAnimation = GameEntity.DEATH_ANIMATION;
-            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
-            currentDeathStep++;
-            System.out.println(currentDeathStep);
-            if(currentDeathStep == DEATH_STEP)
-                isDying = false;
-        }
+//        System.out.print(entityCoordinates.getMapIndex()+" ");
+//        System.out.print(entityCoordinates.getMapX()+" ");
+//        System.out.println(entityCoordinates.getTraslX());
     }
 
     @Override
     public void jump() {
         //TODO parametrize traslation
-        entityCoordinates.setTraslY(entityCoordinates.getTraslY()-PLAYER_VEL_Y);
-        if(entityCoordinates.getTraslY() == -40){
-            entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
-            entityCoordinates.setTraslY(0);
-        }
+        entityCoordinates.updateTraslY(-PLAYER_VEL_Y);
+        System.out.println(entityCoordinates.getTraslY());
+//        System.out.println("jump "+PLAYER_VEL_Y);
+//        if(entityCoordinates.getTraslY() == -40){
+//            entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
+//            entityCoordinates.setTraslY(0);
+//        }
     }
 
     @Override
     public void fall() {
-        entityCoordinates.setTraslY(entityCoordinates.getTraslY()+PLAYER_VEL_Y);
+        entityCoordinates.updateTraslY(PLAYER_VEL_Y);
+        System.out.println(entityCoordinates.getTraslY());
+//        System.out.println();
+//        System.out.println(entityCoordinates.getTraslY());
+//        System.out.println("fall "+PLAYER_VEL_Y);
+//        System.out.println(entityCoordinates.getTraslY());
         //TODO maybe = 0 and traslY = renderedTilesize? btw has to be refactor
-        if(entityCoordinates.getTraslY() == PLAYER_VEL_Y){
-            entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
-            entityCoordinates.setTraslY(-35);
-        }
+//        if(entityCoordinates.getTraslY() == PLAYER_VEL_Y){
+//            entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
+//            entityCoordinates.setTraslY(-35);
+//        }
     }
 
     @Override
@@ -89,16 +127,16 @@ public class Player extends GameEntity implements IPlayer{
 
     @Override
     public void shoot() {
-        bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getSTART_MAP_X(),entityCoordinates.getMapY(),GameEntity.BULLET_ID)
-                .setMapIndex(entityCoordinates.getMapIndex())
-                .setMapX(entityCoordinates.getMapX()).build()));
+//        bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getSTART_MAP_X(),entityCoordinates.getMapY(),GameEntity.BULLET_ID)
+//                .setMapIndex(entityCoordinates.getMapIndex())
+//                .setMapX(entityCoordinates.getMapX()).build()));
     }
 
     @Override
     public ArrayList<Pair<Integer, EntityCoordinates>> getBullets() {
         ArrayList<Pair<Integer, EntityCoordinates>> bullets = new ArrayList<>();
         for(int i = 0; i < this.bullets.size(); i++){
-            this.bullets.get(i).setID(i);
+//            this.bullets.get(i).setID(i);
             bullets.add(new Pair<>(i,this.bullets.get(i).getEntityCoordinates()));
         }
         return bullets;
@@ -117,4 +155,14 @@ public class Player extends GameEntity implements IPlayer{
     public boolean isDead(){
         return !isAlive && !isDying;
     }
+    @Override
+    public void changeCoordinate(){
+        entityCoordinates.setHeight(GameConfig.getInstance().getRenderedTileSize());
+        entityCoordinates.setWidth(GameConfig.getInstance().getRenderedTileSize());
+        entityCoordinates.setTraslX(entityCoordinates.getTraslX()/MapGenerator.MAP_VEL_X*(GameConfig.getInstance().getRenderedTileSize()/5.0));
+        entityCoordinates.setTraslY(entityCoordinates.getTraslY()/PLAYER_VEL_Y*(GameConfig.getInstance().getRenderedTileSize()/5.0));
+        PLAYER_VEL_Y = GameConfig.getInstance().getRenderedTileSize()/5.0;
+
+    }
+
 }

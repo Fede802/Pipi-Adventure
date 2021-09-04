@@ -1,36 +1,22 @@
 package Model;
 
 public class GameStatus {
-    private int gameCoin;
-    private int gameScore;
-    private int life = 3;
-    //TODO modify bullets and life
-    private int bullets = 0;
-    public GameStatus(){
+    private int score;
+    private int coin;
 
-    }
-    public void reset(){
-        gameCoin = 0;
-        gameScore = 0;
-        life = 3;
+    public int getScore() {
+        return score;
     }
 
-    public void addCoin(){
-        gameCoin++;
+    public void setScore(int score) {
+        this.score = score;
     }
-    public void updateScore(){
-        gameScore++;
+
+    public int getCoin() {
+        return coin;
     }
-    public int getScore(){
-        return gameScore;
-    }
-    public int getCoin(){
-        return gameCoin;
-    }
-    public void looseLife(){
-        life--;
-    }
-    public int getLife(){
-        return life;
+
+    public void setCoin(int coin) {
+        this.coin = coin;
     }
 }

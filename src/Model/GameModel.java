@@ -7,12 +7,9 @@ import Commons.Pair;
 import java.util.ArrayList;
 
 public class GameModel implements IGameModel{
-
     private static final MapGenerator MAP_GENERATOR = new MapGenerator();
     private static final GameStatus GAME_STATUS = new GameStatus();
-    private static final Player PLAYER = new Player(new EntityCoordinates.Builder(2,12,GameEntity.PLAYER_ID)
-                                                    .setMapIndex(0)
-                                                    .build());
+    private static final Player PLAYER = new Player(new EntityCoordinates.Builder(2,12,GameEntity.PLAYER_ID).build());
 
     private static GameModel instance = null;
     private GameModel(){}
@@ -29,12 +26,12 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public int getMapTraslX() {
+    public double getMapTraslX() {
         return MAP_GENERATOR.getMapTraslX();
     }
 
     @Override
-    public void setMapTraslX(final int mapTraslX) {
+    public void setMapTraslX(final double mapTraslX) {
         MAP_GENERATOR.setMapTraslX(mapTraslX);
     }
 
@@ -76,6 +73,7 @@ public class GameModel implements IGameModel{
     @Override
     public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
         ArrayList<Pair<EntityCoordinates, Animation>> entitiesCoordinates = MAP_GENERATOR.getMapEntitiesCoordinates();
+//        System.out.println(PLAYER.getTraslY());
         entitiesCoordinates.add(new Pair<>(PLAYER.getEntityCoordinates(), PLAYER.getAnimation()));
         for(int i = 0; i < PLAYER.getBullets().size();i++)
             entitiesCoordinates.add(new Pair<>(PLAYER.getBullets().get(i).getValue(), PLAYER.getBulletAnimation(i)));
@@ -89,7 +87,7 @@ public class GameModel implements IGameModel{
 
     @Override
     public void updatePlayerStatus(int entityID) {
-        if(entityID == -1){
+        if(entityID == -1 && !PLAYER.isAlive()){
             PLAYER.setAlive(false);
             PLAYER.setDying(true);
         }
@@ -126,36 +124,6 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public void addCoin() {
-        GAME_STATUS.addCoin();
-    }
-
-    @Override
-    public void updateScore() {
-        GAME_STATUS.updateScore();
-    }
-
-    @Override
-    public int getScore() {
-        return GAME_STATUS.getScore();
-    }
-
-    @Override
-    public int getCoin() {
-        return GAME_STATUS.getCoin();
-    }
-
-    @Override
-    public void looseLife() {
-        GAME_STATUS.looseLife();
-    }
-
-    @Override
-    public int getLife() {
-        return GAME_STATUS.getLife();
-    }
-
-    @Override
     public boolean isPlayerDead() {
         return PLAYER.isDead();
     }
@@ -163,5 +131,12 @@ public class GameModel implements IGameModel{
     @Override
     public boolean isPlayerDying() {
         return PLAYER.isDying();
+    }
+
+    @Override
+    public void changeCoordinate() {
+        PLAYER.changeCoordinate();
+        MAP_GENERATOR.changeCoordinate();
+//        PLAYER.changeCoordinate();
     }
 }

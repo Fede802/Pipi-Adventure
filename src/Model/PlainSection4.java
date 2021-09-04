@@ -1,7 +1,5 @@
 package Model;
 
-import Commons.EntityCoordinates;
-
 public class PlainSection4 extends MapSection{
 
     public PlainSection4(){
@@ -28,6 +26,6 @@ public class PlainSection4 extends MapSection{
 
     @Override
     protected void spawnEntities() {
-        mapEntities.add(new Snail(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
+//        mapEntities.add(new Snail(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
     }
 }

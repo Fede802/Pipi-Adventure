@@ -8,23 +8,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Snail extends EarthEnemy{
-
-    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
-        add(WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
+    public Snail(EntityCoordinates entityCoordinates) {
+        super(entityCoordinates);
+        animationList.clear();
+        animationList.add(WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
                 Arrays.asList(new File("Resources/Entities/Enemy/Luma/Luma_1d.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_2d.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_3d.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_4d.png"))
         )));
-        add(WALK_ANIMATION_LEFT,new Animation(new ArrayList<>(
+        animationList.add(WALK_ANIMATION_LEFT,new Animation(new ArrayList<>(
                 Arrays.asList(new File("Resources/Entities/Enemy/Luma/Luma_1.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_2.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_3.png"),
                         new File("Resources/Entities/Enemy/Luma/Luma_4.png"))
         )));
-    }};
-    public Snail(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
     }
 
     @Override
@@ -37,10 +35,5 @@ public class Snail extends EarthEnemy{
             if(currentDeathStep == DEATH_STEP)
                 isDying = false;
         }
-    }
-
-    @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
     }
 }

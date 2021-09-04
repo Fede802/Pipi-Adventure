@@ -1,13 +1,13 @@
 package Controller;
 
-
 import Model.GameModel;
+import Utils.SoundManager;
 
 public class JumpAndFallHandler {
-
     public static final int JUMP_STEP = 13;
     private int currentJumpStep;
     private boolean isJumping = false;
+    //TODO add jump effect
     public JumpAndFallHandler(){}
 
     public void jumpAndFall(){
@@ -23,5 +23,4 @@ public class JumpAndFallHandler {
             GameModel.getInstance().playerFall();
         }
     }
-
 }

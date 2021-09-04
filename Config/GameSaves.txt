@@ -1,4 +1,2 @@
 bestScore=0
 totalCoin=0
-currentLife=0
-currentMaxBullet=4

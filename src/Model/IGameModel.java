@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public interface IGameModel {
     void updateMap();
-    int getMapTraslX();
-    void setMapTraslX(int mapTraslX);
+    double getMapTraslX();
+    void setMapTraslX(double mapTraslX);
     void updateMapTraslX();
     int getTileData(int mapIndex,int mapX,int mapY);
     int getSectionSize();
@@ -26,14 +26,7 @@ public interface IGameModel {
     void playerJump();
     void playerFall();
     void updateEntitiesMapPosition();
-    void addCoin();
-    void updateScore();
-    int getScore();
-    int getCoin();
-    void looseLife();
-    int getLife();
     boolean isPlayerDead();
     boolean isPlayerDying();
-
-
+    void changeCoordinate();
 }
