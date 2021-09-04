@@ -30,14 +30,16 @@ public class MapGenerator {
         sectionList.add(new PlainSection2());
         sectionList.add(new PlainSection3());
         sectionList.add(new PlainSection4());
+        sectionList.add(new PlainSection5());
+        sectionList.add(new PlainSection6());
         sectionList.add(new PlainStartSection());
         generateMap();
     }
 
     public void generateMap(){
-        generatedMap.add(new Pair<>(sectionList.get(4),sectionList.get(4).getMapEntities()));
+        generatedMap.add(new Pair<>(sectionList.get(6),sectionList.get(6).getMapEntities()));
         for (int i = 1; i< MAP_LENGHT; i++){
-            generatedMap.add(new Pair<>(sectionList.get(1),sectionList.get(1).getMapEntities()));
+            generatedMap.add(new Pair<>(sectionList.get(i),sectionList.get(i).getMapEntities()));
         }
         setupMapEntity();
     }
@@ -61,7 +63,7 @@ public class MapGenerator {
         generatedMap.remove(0);
         //-1 because last section is the start section
         int nextSection = random.nextInt(sectionList.size()-1);
-//        generatedMap.add(new Pair<>(sectionList.get(nextSection),sectionList.get(nextSection).getMapEntities()));
+        generatedMap.add(new Pair<>(sectionList.get(nextSection),sectionList.get(nextSection).getMapEntities()));
         generatedMap.add(new Pair<>(sectionList.get(0),sectionList.get(0).getMapEntities()));
         setupMapEntity();
     }

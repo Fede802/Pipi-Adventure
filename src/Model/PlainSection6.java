@@ -2,9 +2,9 @@ package Model;
 
 import Commons.EntityCoordinates;
 
-public class PlainSection3 extends MapSection{
+public class PlainSection6 extends MapSection{
 
-    public PlainSection3(){
+    public PlainSection6(){
         //super();
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -14,24 +14,20 @@ public class PlainSection3 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,34,34,21,22,23,34,34,34,34,34,34},
+                {34,34,34,21,22,23,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,34,34,0,1,2,34,34,34,34,34,34},
-                {34,34,34,34,34,34,0,8,8,8,2,34,34,34,34,34},
-                {1,20,1,20,1,1,8,8,8,8,8,1,13,1,6,1},
-                {8,8,32,8,8,8,8,8,28,8,8,8,30,8,8,8},
+                {34,34,34,0,1,2,34,34,34,34,34,34,34,34,34,34},
+                {34,34,0,8,8,8,2,34,34,34,34,34,34,34,34,34},
+                {1,6,8,8,8,8,8,1,6,1,1,13,1,20,1,1},
+                {8,8,8,28,8,8,8,8,29,8,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
     @Override
     protected void spawnEntities() {
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(3,12,GameEntity.COIN_ID).build()));
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(8,9,GameEntity.COIN_ID).build()));
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(13,12,GameEntity.COIN_ID).build()));
-
+        mapEntities.add(new Snail(new EntityCoordinates.Builder(11,12,GameEntity.ENEMY_ID).build()));
     }
 }
-

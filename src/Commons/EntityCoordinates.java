@@ -91,8 +91,8 @@ public class EntityCoordinates {
         return e.START_MAP_X*tileSize+e.traslX+e.mapIndex*size < START_MAP_X*tileSize+traslX+mapIndex*size+width &&
                 e.START_MAP_X*tileSize+e.traslX+e.mapIndex*size+e.width > START_MAP_X*tileSize+traslX+mapIndex*size
         &&
-                e.START_MAP_Y*tileSize+e.traslY <= START_MAP_Y*tileSize+traslY+height &&
-                e.START_MAP_Y*tileSize+e.traslY + e.height>= START_MAP_Y*tileSize+traslY;
+                e.START_MAP_Y*tileSize+e.traslY < START_MAP_Y*tileSize+traslY+height &&
+                e.START_MAP_Y*tileSize+e.traslY + e.height>  START_MAP_Y*tileSize+traslY;
 
     }
 

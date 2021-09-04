@@ -10,17 +10,15 @@ import Utils.SoundManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GamePanel extends JPanel implements KeyListener, ApplicationPanel {
+public class GamePanel extends JPanel implements KeyListener, ApplicationPanel, MouseInputListener {
     private final int GAME_TICK = 16;
     private int renderedTileSize;// = Config.getInstance().getRenderedTileSize();
     private final File tileSet = new File("Resources/TileSet/Tileset_Day.png");
@@ -60,6 +58,7 @@ public class GamePanel extends JPanel implements KeyListener, ApplicationPanel {
         pauseButton = gameBar.getPauseButton();
         this.setFocusable(true);
         this.addKeyListener(this);
+        this.addMouseListener(this);
     }
 
     @Override
@@ -114,6 +113,43 @@ public class GamePanel extends JPanel implements KeyListener, ApplicationPanel {
     }
     public void updateGameBar(int score, int coin, int life, int bullet) {
         gameBar.updateBar(score,coin,life,bullet);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (this.pauseButton.getBounds().contains(e.getX(),e.getY())){
+            GameStateHandler.getInstance().pause();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
     }
 }
 

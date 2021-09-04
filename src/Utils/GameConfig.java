@@ -13,7 +13,7 @@ public class GameConfig extends Config{
     private static GameConfig instance = null;
     private final Properties gameProperties = new Properties(),gameVariables = new Properties();
 
-    private int renderedTileSize;
+    private int renderedTileSize = 28;
 
     private GameConfig(){
         try {

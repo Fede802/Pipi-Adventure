@@ -24,7 +24,7 @@ public class GameBar {
             lifeHeart = ImageIO.read(new File("Resources/GameImages/Cuoret.png"));
             lostLifeHeart = ImageIO.read(new File("Resources/GameImages/Bordo_Cuore.png"));
             missingLifeHeart = ImageIO.read(new File("Resources/GameImages/Cuore_Vuoto.png"));
-            pauseButton = ImageIO.read(new File("Resources/GameImages/Pause.png"));
+            pauseButton = ImageIO.read(new File("Resources/GameImages/Pause_Button2.png"));
             bullet = ImageIO.read(new File("Resources/GameImages/PIstola_Logo.png"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class GameBar {
             g2d.drawImage(heart,(int)(padding+(fontHeight+fontHeight/5)*i),padding,(int)(fontHeight),(int)(fontHeight),null);
         }
         button.setRect((panel.getWidth()-fontHeight)/2,padding,fontHeight,fontHeight);
-        g2d.drawImage(pauseButton,(int)((panel.getWidth()-fontHeight)/2),padding,(int)(fontHeight),(int)(fontHeight),null);
+        g2d.drawImage(pauseButton,(int)((panel.getWidth()-fontHeight*2)/2),padding,(int)(fontHeight)*2,(int)(fontHeight)*2,null);
         StringDrawer.drawString(g2d,"Score: "+score,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,padding,panel.getWidth()-StringDrawer.getStringWidth(g2d,"Score: "+score,font)-padding,panel,StringDrawer.PADDING);
         int paddingLeft = (int)(panel.getWidth()-StringDrawer.getStringWidth(g2d,"x"+coinCollected,font)-padding);
         int paddingTop = (int)(2*padding+fontHeight);
