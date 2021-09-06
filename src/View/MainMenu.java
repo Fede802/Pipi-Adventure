@@ -101,7 +101,7 @@ public class MainMenu extends JPanel implements KeyListener, MouseInputListener,
             // upgrade
         }
         if(currentChoice == 2){
-            //help
+           //
         }
         if(currentChoice == 3) {
             System.exit(0);

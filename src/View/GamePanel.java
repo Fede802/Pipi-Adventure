@@ -117,9 +117,15 @@ public class GamePanel extends JPanel implements KeyListener, ApplicationPanel, 
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (this.pauseButton.getBounds().contains(e.getX(),e.getY())){
-            GameStateHandler.getInstance().pause();
-        }
+       if (e.getButton() == MouseEvent.BUTTON1){
+            if (this.pauseButton.contains(e.getX(),e.getY())){
+                GameStateHandler.getInstance().pause();
+            }else{
+                GameEngine.getInstance().setJumping(true);
+            }
+       }else if (e.getButton() == MouseEvent.BUTTON2){
+
+       }
     }
 
     @Override

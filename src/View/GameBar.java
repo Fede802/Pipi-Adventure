@@ -57,7 +57,7 @@ public class GameBar {
             }
             g2d.drawImage(heart,(int)(padding+(fontHeight+fontHeight/5)*i),padding,(int)(fontHeight),(int)(fontHeight),null);
         }
-        button.setRect((panel.getWidth()-fontHeight)/2,padding,fontHeight,fontHeight);
+        button.setRect((panel.getWidth()-fontHeight)/2,padding,fontHeight*2,fontHeight*2);
         g2d.drawImage(pauseButton,(int)((panel.getWidth()-fontHeight*2)/2),padding,(int)(fontHeight)*2,(int)(fontHeight)*2,null);
         StringDrawer.drawString(g2d,"Score: "+score,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,padding,panel.getWidth()-StringDrawer.getStringWidth(g2d,"Score: "+score,font)-padding,panel,StringDrawer.PADDING);
         int paddingLeft = (int)(panel.getWidth()-StringDrawer.getStringWidth(g2d,"x"+coinCollected,font)-padding);
