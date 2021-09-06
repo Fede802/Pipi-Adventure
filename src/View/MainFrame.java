@@ -19,21 +19,21 @@ public class MainFrame extends JFrame{
     private final HelpPanel HELP = new HelpPanel();
 
     private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
-    private final ControlsView CONTROLS_VIEW = new ControlsView();
+    
 
     public MainFrame(){
         super(FRAME_TITLE);
-        GameConfig.getInstance().setRenderedTileSize((int)(APPLICATION_SCREEN.getSize().getWidth())/ GameConfig.getInstance().getMinTileToRender());
+        GameConfig.getInstance().setRenderedTileSize(28);
         GAME_PANEL =  new GamePanel();
         GAME_PANEL.setVisible(false);
         GAME_OVER.setVisible(false);
         PAUSE.setVisible(false);
 
-       // APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.MENU_STATE,MAIN_MENU));
+        APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.MENU_STATE,MAIN_MENU));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.GAME_STATE,GAME_PANEL));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.PAUSE_STATE,PAUSE));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.GAME_OVER_STATE,GAME_OVER));
-        APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.HELP_STATE,HELP));
+//        APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.HELP_STATE,HELP));
 
         this.add(APPLICATION_SCREEN);
         this.setPreferredSize(MINIMUM_SIZE);

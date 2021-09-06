@@ -231,6 +231,10 @@ public class PausePanel extends JPanel implements KeyListener, MouseInputListene
     @Override
     public void stop() {
         PAUSE_TIMER.stop();
+        setBounds((getWidth() - DEFAULT_WIDTH) / 2, (int) ComponentContainer.size.getHeight(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        currentSlidingStep = 0;
         pauseTheme.stopLoop();
+        isSliding = false;
+        isOnScreen = false;
     }
 }
