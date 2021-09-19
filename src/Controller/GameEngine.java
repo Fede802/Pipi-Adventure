@@ -1,16 +1,22 @@
-package Controller;
+package controller;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Model.GameModel;
-import Utils.Config;
-import View.GameView;
+import commons.Animation;
+import commons.EntityCoordinates;
+import commons.Pair;
+import model.GameModel;
+import model.GameStatus;
+import utils.GameConfig;
+import utils.GameDataConfig;
+import view.GameView;
+
 
 import java.util.ArrayList;
 
-public class GameEngine implements IGameEngine{
+public class GameEngine implements IGameEngine {
     private static final JumpAndFallHandler JUMP_AND_FALL_HANDLER = new JumpAndFallHandler();
+    private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+    private static final int IMMORTALITY_STEP = 15;
+    private int currentImmortalityStep = 0;
     private static GameEngine instance = null;
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -18,28 +24,29 @@ public class GameEngine implements IGameEngine{
             instance = new GameEngine();
         return instance;
     }
+    @Override
+    public void notifySizeChanged() {
+        currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+        GameView.getInstance().notifySizeChanged();
+        GameModel.getInstance().changeCoordinate();
+    }
 
     @Override
     public void updateGameStatus() {
-        if (GameModel.getInstance().isPlayerDead())
-            GameStateHandler.getInstance().gameOver();
-        //increment map traslation and if necessary update generatedMap
-        if(!GameModel.getInstance().isPlayerDying())
-            updateMap();
+
+        updateMap();
         //check if player(+ bullets) has to jump or fall or collide with entity or map
         updatePlayer();
         //move entity and check if they collide with bullets or player
         updateEntity();
+        System.out.println(GameModel.getInstance().getMapTraslX());
         CollisionHandler.entityCollision();
-        GameModel.getInstance().updateScore();
-        GameView.getInstance().updateGameBar(GameModel.getInstance().getScore(),GameModel.getInstance().getCoin(),GameModel.getInstance().getLife(),0);
-        //TODO deadly collision detection -> gameOver or add coin or !isAlive entity
-        //TODO update score
+
     }
 
     @Override
-    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
-        return GameModel.getInstance().getEntitiesCoordinates();
+    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesForRendering() {
+        return GameModel.getInstance().getEntitiesForRendering();
     }
 
     @Override
@@ -48,17 +55,7 @@ public class GameEngine implements IGameEngine{
     }
 
     @Override
-    public int getSectionSize() {
-        return GameModel.getInstance().getSectionSize();
-    }
-
-    @Override
-    public int getMapLength() {
-        return GameModel.getInstance().getMapLength();
-    }
-
-    @Override
-    public int getMapTraslX() {
+    public double getMapTraslX() {
         return GameModel.getInstance().getMapTraslX();
     }
 
@@ -69,12 +66,28 @@ public class GameEngine implements IGameEngine{
         GameModel.getInstance().setPlayerJumping(isJumping);
     }
 
+    @Override
+    public void shoot() {
+        System.out.println("shoot");
+        GameModel.getInstance().shoot();
+    }
+
+    @Override
+    public void setupGame() {
+        GameStatus.getInstance().updateScore();
+        GameModel.getInstance().setup();
+        System.out.println(GameModel.getInstance().getMapTraslX());
+    }
+
     private void updateMap(){
+        int mapLength = currentTileSize*GameModel.getInstance().getSectionSize();
         GameModel.getInstance().updateMapTraslX();
-        if(GameModel.getInstance().getMapTraslX() >= Config.getInstance().getRenderedTileSize()*GameModel.getInstance().getSectionSize()){
-            GameModel.getInstance().setMapTraslX(0);
-            GameModel.getInstance().updateMap();
+            if(GameModel.getInstance().getMapTraslX() >= mapLength){
+                GameModel.getInstance().setMapTraslX(GameModel.getInstance().getMapTraslX()-mapLength);
+                GameModel.getInstance().updateMap();
         }
+
+
     }
 
     private void updatePlayer(){

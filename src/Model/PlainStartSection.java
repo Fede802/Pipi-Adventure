@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 public class PlainStartSection extends MapSection{
     public PlainStartSection(){
@@ -18,7 +18,7 @@ public class PlainStartSection extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
+                {8,8,32,8,8,8,8,8,8,29,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
@@ -28,5 +28,3 @@ public class PlainStartSection extends MapSection{
 
     }
 }
-
-

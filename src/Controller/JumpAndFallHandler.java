@@ -1,13 +1,12 @@
-package Controller;
+package controller;
 
-
-import Model.GameModel;
+import model.GameModel;
 
 public class JumpAndFallHandler {
-
     public static final int JUMP_STEP = 13;
     private int currentJumpStep;
     private boolean isJumping = false;
+    //TODO add jump effect
     public JumpAndFallHandler(){}
 
     public void jumpAndFall(){
@@ -18,10 +17,13 @@ public class JumpAndFallHandler {
             if(currentJumpStep == JUMP_STEP) {
                 currentJumpStep = 0;
                 GameModel.getInstance().setPlayerJumping(false);
+
             }
+            GameModel.getInstance().printPlayerInfo();
         }else if(!CollisionHandler.playerBottomCollision()){
             GameModel.getInstance().playerFall();
+            GameModel.getInstance().printPlayerInfo();
         }
-    }
 
+    }
 }

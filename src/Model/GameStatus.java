@@ -1,36 +1,49 @@
-package Model;
+package model;
 
-public class GameStatus {
-    private int gameCoin;
-    private int gameScore;
-    private int life = 3;
-    //TODO modify bullets and life
-    private int bullets = 0;
-    public GameStatus(){
+import utils.GameConfig;
 
-    }
-    public void reset(){
-        gameCoin = 0;
-        gameScore = 0;
-        life = 3;
+public class GameStatus implements IGameStatus{
+
+    private static final int SCORE_INCREMENT = 1;
+
+    private int coin;
+    private int score;
+
+    private static IGameStatus instance = null;
+    private GameStatus(){}
+    public static IGameStatus getInstance() {
+        if (instance == null){
+            instance = new GameStatus();
+        }
+        return instance;
     }
 
-    public void addCoin(){
-        gameCoin++;
+    @Override
+    public int getScore() {
+        return score;
     }
-    public void updateScore(){
-        gameScore++;
+
+    @Override
+    public void updateScore() {
+        score+=SCORE_INCREMENT;
     }
-    public int getScore(){
-        return gameScore;
+
+    @Override
+    public int getCoin() {
+        return coin;
     }
-    public int getCoin(){
-        return gameCoin;
+
+    @Override
+    public void updateCoin() {
+        coin++;
     }
-    public void looseLife(){
-        life--;
-    }
-    public int getLife(){
-        return life;
+
+    @Override
+    public void updateData() {
+//        GameConfig.getInstance().setTotalCoin(GameConfig.getInstance().getTotalCoin()+coin);
+//        coin = 0;
+//        if(score > GameConfig.getInstance().getBestScore())
+//            GameConfig.getInstance().setBestScore(score);
+//        score = 0;
     }
 }

@@ -1,35 +1,28 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-
-import java.util.ArrayList;
+import commons.Animation;
+import commons.EntityCoordinates;
 
 public class Coin extends GameEntity{
 
-    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
-        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation("Resources/Entities/Coin/Monetina.gif"));
-        add(GameEntity.WALK_ANIMATION_LEFT,null);
-        add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Coin/Monetona.png"));
-    }};
+    private static final Animation WALK_ANIMATION_RIGHT = new Animation("Resources/Entities/Coin/Monetina.gif");
+    private static final Animation DEATH_ANIMATION_RIGHT = new Animation("Resources/Entities/Coin/Monetona.png");
 
     public Coin(EntityCoordinates entityCoordinates) {
         super(entityCoordinates);
+        animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
+        animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
     }
 
     @Override
     public void move() {
-        //TODO check maybe isDying is not necessary
-        if (!isAlive && isDying){
-            currentAnimation = GameEntity.DEATH_ANIMATION;
-            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
+        if (!isAlive){
+            currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
+            entityCoordinates.updateTraslY(-VEL_Y);
             currentDeathStep++;
-            if(currentDeathStep == DEATH_STEP)
+            if(currentDeathStep == deathStep)
                 isDying = false;
         }
     }
-    @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
-    }
+
 }

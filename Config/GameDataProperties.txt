@@ -1,0 +1,11 @@
+mapSectionSize=16
+mapLength=5
+defaultImageTileSize=120
+defaultTilesetTileSize=160
+defaultNumRowsOfTileset=5
+defaultNumColumnsOfTileset=7
+maxLife=3
+minTileToRender=20
+
+
+

@@ -1,10 +1,13 @@
-package Model;
+package model;
+
+import utils.GameConfig;
+import utils.GameDataConfig;
 
 import java.util.ArrayList;
 
 public abstract class MapSection {
     //TODO ADD SPAWNER CLASS TO SPAWN ENTITIES
-    public static final int SECTION_SIZE = 16;
+    public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
     protected ArrayList<GameEntity> mapEntities;
 
     protected int[][] map;
@@ -25,3 +28,4 @@ public abstract class MapSection {
 
     protected abstract void spawnEntities();
 }
+

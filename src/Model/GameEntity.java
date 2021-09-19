@@ -1,56 +1,60 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Utils.Config;
+import commons.Animation;
+import commons.EntityCoordinates;
+import utils.GameConfig;
+import utils.GameDataConfig;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class GameEntity implements IGameEntity{
-    //TODO this size could change maybe not could be final
 
-    public static final int RENDERED_TILE_SIZE = Config.getInstance().getRenderedTileSize();
+    //    --------------------------------------------------------
+//                       STATIC FIELD
+//    --------------------------------------------------------
+    public static int RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
+
     public static final int WALK_ANIMATION_RIGHT = 0;
     public static final int WALK_ANIMATION_LEFT = 1;
-    public static final int DEATH_ANIMATION = 2;
+    public static final int DEATH_ANIMATION_RIGHT = 2;
+    public static final int DEATH_ANIMATION_LEFT = 3;
 
-    public static final int PLAYER_ID = 0;
-    public static final int ENEMY_ID = 1;
-    public static final int COIN_ID = 2;
-    public static final int BULLET_ID = 3;
+    public static final int DEFAULT_DEATH_STEP = 10;
 
-    public static final int DEATH_STEP = 60;
-
-    protected int currentDeathStep = 0;
+//    --------------------------------------------------------
+//                      INSTANCE FIELD
+//    --------------------------------------------------------
+    protected final HashMap<Integer, Animation> animationList = new HashMap<>();
+    protected int deathStep = DEFAULT_DEATH_STEP;
+    protected int currentDeathStep;
     protected EntityCoordinates entityCoordinates;
     protected boolean isAlive = true;
     protected boolean isDying = false;
-    protected int ID;
-
     protected int currentAnimation = WALK_ANIMATION_RIGHT;
+    //change to 4 8 5 10
+    protected double TILE_STEP = 5.0;
+    protected double VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
+    protected double VEL_Y = RENDERED_TILE_SIZE/TILE_STEP;
 
+//    --------------------------------------------------------
+//                       CONSTRUCTOR
+//    --------------------------------------------------------
     public GameEntity(EntityCoordinates entityCoordinates){
         this.entityCoordinates = entityCoordinates;
     }
-    //TODO implement there part of move for death animation maybe
+
+//    --------------------------------------------------------
+//                      INSTANCE METHOD
+//    --------------------------------------------------------
     @Override
     public EntityCoordinates getEntityCoordinates() {
         return entityCoordinates;
     }
 
     @Override
-    public boolean collide(IGameEntity entity) {
-        boolean collide = false;
-        if(this.entityCoordinates.getMapIndex() == entity.getEntityCoordinates().getMapIndex()
-                && this.entityCoordinates.getMapX()+entityCoordinates.getTraslX() == entity.getEntityCoordinates().getMapX()
-                    +entity.getEntityCoordinates().getTraslX()
-                && this.entityCoordinates.getMapY()+entityCoordinates.getTraslY() == entity.getEntityCoordinates().getMapY()
-                    +entity.getEntityCoordinates().getTraslY())
-            collide = true;
-        return collide;
+    public Animation getAnimation() {
+        return animationList.get(currentAnimation);
     }
-
-
 
     @Override
     public boolean isAlive() {
@@ -63,16 +67,6 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public int getID() {
-        return ID;
-    }
-
-    @Override
-    public void setID(int id) {
-        this.ID = id;
-    }
-
-    @Override
     public boolean isDying() {
         return isDying;
     }
@@ -80,5 +74,14 @@ public abstract class GameEntity implements IGameEntity{
     @Override
     public void setDying(boolean dying) {
         isDying = dying;
+    }
+    @Override
+    public void changeCoordinate(){
+        RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
+        entityCoordinates.setHeight(RENDERED_TILE_SIZE);
+        entityCoordinates.setWidth(RENDERED_TILE_SIZE);
+        entityCoordinates.setTranslX(entityCoordinates.getTranslX()/VEL_X*(RENDERED_TILE_SIZE/TILE_STEP));
+        entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(RENDERED_TILE_SIZE/TILE_STEP));
+        VEL_Y = VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
     }
 }

@@ -1,4 +1,6 @@
-package Commons;
+package commons;
+
+import utils.GameDataConfig;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,15 +10,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Animation {
-    private static final int TILE_SIZE = 120;
-    private ArrayList<Image> animationTile = new ArrayList<>();
-    private int animationStep;
+
+    private static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultImageTileSize();
+    private final ArrayList<Image> animationTile = new ArrayList<>();
+    private final int animationStep;
     private int currentAnimationStep;
+    private float opacity = 1f;
 
     public Animation(String imagePath){
         animationTile.add(new ImageIcon(imagePath).getImage());
         animationStep = 1;
     }
+
     public Animation(File image, int numColumns){
         for(int i = 0;i < numColumns;i++){
             try {
@@ -39,12 +44,19 @@ public class Animation {
     }
 
     public Image getFrame(){
-        Image frame = animationTile.get(currentAnimationStep);
-        return frame;
+        return animationTile.get(currentAnimationStep);
     }
     public void update(){
         currentAnimationStep++;
         if(currentAnimationStep == animationStep)
             currentAnimationStep = 0;
+    }
+
+    public float getOpacity() {
+        return opacity;
+    }
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
     }
 }

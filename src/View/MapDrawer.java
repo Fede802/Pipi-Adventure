@@ -1,30 +1,34 @@
-package View;
+package view;
 
-import Controller.GameEngine;
-import Utils.Config;
-
+import controller.GameEngine;
+import utils.GameDataConfig;
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 
 public class MapDrawer {
 
-    public static final int NUM_ROWS_OF_TILESET = 5;
-    public static final int NUM_COLUMNS_OF_TILESET = 7;
-    public static final int RENDERED_TILE_SIZE = Config.getInstance().getRenderedTileSize();
-    public static final int TILE_SIZE = 160;
+    public static final int NUM_ROWS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumRowsOfTileset();
+    public static final int NUM_COLUMNS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumColumnsOfTileset();
+    public static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultTilesetTileSize();
     public static final int NUM_TILES = NUM_COLUMNS_OF_TILESET*NUM_ROWS_OF_TILESET;
+    public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
+    public static final int MAP_LENGTH = GameDataConfig.getInstance().getMapLength();
 
+    private int renderedTileSize; //= GameConfig.getInstance().getRenderedTileSize();
     private final JPanel parentPanel;
     //TODO later maybe has not to be final when we have more tileset, and maybe we could have an arraylist of tileset
     private final Image[] tileArray = new Image[NUM_TILES];
 
-    public MapDrawer(final JPanel parentPanel,final File tileSet){
+    public MapDrawer(final JPanel parentPanel, final File tileSet){
         this.parentPanel = parentPanel;
         importTiles(tileSet);
     }
+
+
 
     private void importTiles(final File tileSet) {
         try {
@@ -49,11 +53,17 @@ public class MapDrawer {
     }
 
     public void drawMap(final Graphics2D g2d){
-        for(int mapIndex = 0; mapIndex < GameEngine.getInstance().getMapLength(); mapIndex++)
-            for (int mapY = GameEngine.getInstance().getSectionSize()-1; mapY > 0; mapY--)
-                for (int mapX = 0; mapX < GameEngine.getInstance().getSectionSize(); mapX++)
-                    g2d.drawImage(tileArray[GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)], RENDERED_TILE_SIZE * (mapX + GameEngine.getInstance().getSectionSize() * mapIndex) - GameEngine.getInstance().getMapTraslX(), parentPanel.getHeight()-((GameEngine.getInstance().getSectionSize()-mapY) * RENDERED_TILE_SIZE), RENDERED_TILE_SIZE, RENDERED_TILE_SIZE, null);
+        for(int mapIndex = 0; mapIndex < MAP_LENGTH; mapIndex++){
+//            g2d.drawLine(Math.toIntExact(Math.round(RENDERED_TILE_SIZE * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTraslX())),0,Math.toIntExact(Math.round(RENDERED_TILE_SIZE * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTraslX())),parentPanel.getHeight());
+            for (int mapY = SECTION_SIZE-1; mapY > 0; mapY--)
+                for (int mapX = 0; mapX < SECTION_SIZE; mapX++)
+                g2d.drawImage(tileArray[GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)], Math.toIntExact(Math.round(renderedTileSize * (mapX + SECTION_SIZE * mapIndex) - GameEngine.getInstance().getMapTraslX())), parentPanel.getHeight()-((SECTION_SIZE-mapY) * renderedTileSize), renderedTileSize, renderedTileSize, null);
+        }
 
+    }
+
+    public void updateRenderedTileSize(final int renderedTileSize){
+        this.renderedTileSize = renderedTileSize;
     }
 
 }

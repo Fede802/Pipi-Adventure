@@ -1,12 +1,40 @@
-package View;
+package view;
 
-public class GameView implements IGameView {
-
+public class GameView implements IGameView{
     private static GameView instance = null;
     private final MainFrame MAIN_FRAME = new MainFrame();
     private final ComponentContainer CONTAINER = MAIN_FRAME.getComponentContainer();
 
-    private GameView() {
+    private GameView() {}
+
+    @Override
+    public void openWindow() {
+        CONTAINER.switchState();
+    }
+
+    @Override
+    public void resumeWindow() {
+        CONTAINER.resumePreviousState();
+    }
+
+    @Override
+    public void updateGameBar(int score, int coin, int life, int bullet) {
+        MAIN_FRAME.updateGameBar(score,coin,life,bullet);
+    }
+
+    @Override
+    public void notifySizeChanged() {
+        MAIN_FRAME.notifySizeChanged();
+    }
+
+    @Override
+    public void hasToNotifyChangingScreen(boolean notify) {
+        CONTAINER.hasToNotifyChangingScreen(notify);
+    }
+
+    @Override
+    public void startApplication() {
+        CONTAINER.startApplication();
     }
 
     public static IGameView getInstance() {
@@ -14,32 +42,5 @@ public class GameView implements IGameView {
             instance = new GameView();
         return instance;
     }
-
-    @Override
-    public void openMenuWindow() {
-        CONTAINER.switchState();
-    }
-
-    @Override
-    public void openGameWindow() {
-        //TODO later, when created starts gamePanel loading, check this for loading screen
-        CONTAINER.switchState();
-    }
-
-    @Override
-    public void openPauseWindow() {
-        CONTAINER.switchState();
-        CONTAINER.pause();
-    }
-
-    @Override
-    public void openGameOverWindow() {
-        CONTAINER.switchState();
-        CONTAINER.gameOver();
-    }
-
-    @Override
-    public void updateGameBar(int score, int coin, int life, int bullet) {
-        CONTAINER.updateGameBar(score,coin,life,bullet);
-    }
 }
+
