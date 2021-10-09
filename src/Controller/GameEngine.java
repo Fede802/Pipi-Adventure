@@ -1,16 +1,24 @@
-package Controller;
+package controller;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Model.GameModel;
-import Utils.Config;
-import View.GameView;
+import commons.Animation;
+import commons.EntityCoordinates;
+import commons.EntityType;
+import commons.Pair;
+import model.GameModel;
+import utils.GameDataConfig;
+import view.GameView;
 
 import java.util.ArrayList;
 
 public class GameEngine implements IGameEngine{
-    private static final JumpAndFallHandler JUMP_AND_FALL_HANDLER = new JumpAndFallHandler();
+
+    private PlayerHandler playerHandler = new PlayerHandler();
+    private EnemyHandler enemyHandler = new EnemyHandler();
+    private BulletsHandler bulletsHandler = new BulletsHandler();
+    private CoinHandler coinHandler = new CoinHandler();
+    private Pair<EntityCoordinates,Animation> renderingPair = new Pair<>(null,null);
+    private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+
     private static GameEngine instance = null;
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -18,73 +26,95 @@ public class GameEngine implements IGameEngine{
             instance = new GameEngine();
         return instance;
     }
-
     @Override
     public void updateGameStatus() {
-        if (GameModel.getInstance().isPlayerDead())
-            GameStateHandler.getInstance().gameOver();
-        //increment map traslation and if necessary update generatedMap
-        if(!GameModel.getInstance().isPlayerDying())
-            updateMap();
-        //check if player(+ bullets) has to jump or fall or collide with entity or map
-        updatePlayer();
-        //move entity and check if they collide with bullets or player
-        updateEntity();
-        CollisionHandler.entityCollision();
-        GameModel.getInstance().updateScore();
-        GameView.getInstance().updateGameBar(GameModel.getInstance().getScore(),GameModel.getInstance().getCoin(),GameModel.getInstance().getLife(),0);
-        //TODO deadly collision detection -> gameOver or add coin or !isAlive entity
-        //TODO update score
+        GameModel.getInstance().moveEntity();
+        playerHandler.jumpAndFall();
+        if(playerHandler.mapUpdate())
+            GameModel.getInstance().updateMap();
+//    debug();
+        checkMapCollision();
+        checkEntityCollision();
     }
 
-    @Override
-    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
-        return GameModel.getInstance().getEntitiesCoordinates();
+    private void checkEntityCollision() {
+        playerHandler.checkEntityCollision(coinHandler);
+        bulletsHandler.checkEntityCollision(enemyHandler);
     }
 
+    private void checkMapCollision() {
+        //bullet and player with map
+    }
+
+
+
     @Override
-    public int getTileData(final int mapIndex, final int mapX, final int mapY) {
+    public Pair<EntityCoordinates, Animation> getEntityForRendering(int entityID) {
+        renderingPair.updateKey(GameModel.getInstance().getEntityCoordinates(EntityType.ALL,entityID));
+        renderingPair.updateValue(GameModel.getInstance().getEntityAnimation(entityID));
+        return renderingPair;
+    }
+
+
+
+    @Override
+    public int getTileData(int mapIndex, int mapX, int mapY) {
         return GameModel.getInstance().getTileData(mapIndex,mapX,mapY);
     }
 
-    @Override
-    public int getSectionSize() {
-        return GameModel.getInstance().getSectionSize();
-    }
 
-    @Override
-    public int getMapLength() {
-        return GameModel.getInstance().getMapLength();
-    }
-
-    @Override
-    public int getMapTraslX() {
-        return GameModel.getInstance().getMapTraslX();
-    }
 
     @Override
     public void setJumping(boolean isJumping) {
-        if(!CollisionHandler.playerBottomCollision()&&!GameModel.getInstance().isPlayerJumping())
+        if(!playerHandler.bottomCollision()&&!GameModel.getInstance().isPlayerJumping())
             isJumping = false;
         GameModel.getInstance().setPlayerJumping(isJumping);
     }
 
-    private void updateMap(){
-        GameModel.getInstance().updateMapTraslX();
-        if(GameModel.getInstance().getMapTraslX() >= Config.getInstance().getRenderedTileSize()*GameModel.getInstance().getSectionSize()){
-            GameModel.getInstance().setMapTraslX(0);
-            GameModel.getInstance().updateMap();
+    @Override
+    public double getMapTranslX() {
+        return playerHandler.playerTotalTranslation();
+    }
+
+    @Override
+    public void shoot() {
+        GameModel.getInstance().shoot();
+    }
+
+    @Override
+    public void setupGame() {
+        GameModel.getInstance().setup();
+    }
+
+    @Override
+    public void notifySizeChanged() {
+        currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+        GameView.getInstance().notifySizeChanged();
+        GameModel.getInstance().changeCoordinate();
+    }
+
+    @Override
+    public void debug() {
+        int count = 0;
+        System.out.println("debug");
+        while(playerHandler.hasNext(EntityType.ALL) && count < 1000000){
+
+            System.out.println(count);
+            count++;
+            while(coinHandler.hasNext(EntityType.ALL) && count < 1000000){
+                playerHandler.getNext();
+                coinHandler.getNext();
+                System.out.println(count);
+                count++;
+
+            }
+
         }
+
     }
 
-    private void updatePlayer(){
-        GameModel.getInstance().updatePlayerMapPosition();
-        JUMP_AND_FALL_HANDLER.jumpAndFall();
-        //CollisionHandler.playerRigthCollision -> dead
-        //
-    }
-
-    private void updateEntity(){
-        GameModel.getInstance().updateEntitiesMapPosition();
+    @Override
+    public int getTotalEntity() {
+        return playerHandler.getEntityNum(EntityType.ALL)+bulletsHandler.getEntityNum(EntityType.ALL)+coinHandler.getEntityNum(EntityType.ALL)+enemyHandler.getEntityNum(EntityType.ALL);
     }
 }

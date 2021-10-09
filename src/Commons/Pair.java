@@ -1,4 +1,4 @@
-package Commons;
+package commons;
 
 public class Pair<k,v> {
     private k key;
@@ -15,4 +15,6 @@ public class Pair<k,v> {
     public v getValue() {
         return value;
     }
+    public void updateKey(k key){this.key = key;}
+    public void updateValue(v value){this.value = value;}
 }

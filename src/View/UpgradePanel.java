@@ -1,6 +1,4 @@
-package View;
-
-import Utils.Config;
+package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,11 +11,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class UpgradePanel extends JPanel implements MouseInputListener {
+
+    //TODO extends ApplicationPanel
+
     private final int MAX_LIFE = 3;
     private final int MAX_BULLET = 10;
     private Image player;
-    private int currentLife = Config.getInstance().getCurrentLife();
-    private int currentMaxBullet = Config.getInstance().getCurrentMaxBullet();
+    private int currentLife = 0;
+    private int currentMaxBullet =4;
     private ArrayList<Rectangle2D.Double> buttons = new ArrayList<>();
 
     public UpgradePanel(){
@@ -127,3 +128,4 @@ public class UpgradePanel extends JPanel implements MouseInputListener {
 
     }
 }
+

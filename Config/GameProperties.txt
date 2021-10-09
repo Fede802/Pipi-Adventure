@@ -1,0 +1,2 @@
+currentMaxLife=0
+currentMaxBullet=4

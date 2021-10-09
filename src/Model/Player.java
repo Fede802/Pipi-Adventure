@@ -1,80 +1,91 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Utils.Config;
+import commons.Animation;
+import commons.EntityCoordinates;
+import commons.EntityType;
+import commons.Pair;
+import utils.GameDataConfig;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Player extends GameEntity implements IPlayer{
-    private static final int PLAYER_VEL_Y = 5;
+    //change to 4 8 5 10
+    //TODO find a better way to use PLAYER vel x in map generator update coords
+    public static double TILE_STEP = 5.0;
+    public static double PLAYER_VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
+
+
+    private static final Animation WALK_ANIMATION_RIGHT = new Animation(new ArrayList<>(
+            Arrays.asList(new File("Resources/Entities/Player/PInguino_Definitivo1.png"),
+                    new File("Resources/Entities/Player/PInguino_Definitivo2.png"),
+                    new File("Resources/Entities/Player/PInguino_Definitivo3.png"),
+                    new File("Resources/Entities/Player/PInguino_Definitivo4.png"))
+    ));
+    private static final Animation DEATH_ANIMATION_RIGHT = new Animation("Resources/Entities/Player/Pinguino_Death.gif");
+
+    private final ArrayList<Bullet> bullets = new ArrayList<>();
     private boolean isJumping = false;
-    private ArrayList<Bullet> bullets = new ArrayList<>();
-    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
-        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation(new ArrayList<>(
-                Arrays.asList(new File("Resources/Entities/Player/PInguino_Definitivo1.png"),
-                        new File("Resources/Entities/Player/PInguino_Definitivo2.png"),
-                        new File("Resources/Entities/Player/PInguino_Definitivo3.png"),
-                        new File("Resources/Entities/Player/PInguino_Definitivo4.png"))
-        )));
-        add(GameEntity.WALK_ANIMATION_LEFT,null);
-        add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Player/Pinguino_Death.gif"));
-    }};
 
     public Player(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
+        super(EntityType.PLAYER,entityCoordinates);
+        animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
+        animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
     }
 
     @Override
     public void move() {
         //TODO maybe use for start movement
-        if(isAlive){
-            entityCoordinates.updateTraslX(MapGenerator.MAP_VEL_X);
-            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-                if(entityCoordinates.getMapX() == MapSection.SECTION_SIZE-1){
-                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
-                    entityCoordinates.setMapX(0);
-                }else{
-                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-                }
-            //TODO this maybe serve only for player
-                if(entityCoordinates.getMapX() == entityCoordinates.getSTART_MAP_X() && entityCoordinates.getTraslX() == 0){
-                    entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
-                }
+        if(isAlive) {
+            entityCoordinates.updateTraslX(PLAYER_VEL_X);
+            if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
+                entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
+                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+            }
+            if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
+                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
+                entityCoordinates.setMapX(0);
             }
         }
-        if (!isAlive && isDying){
-            currentAnimation = GameEntity.DEATH_ANIMATION;
-            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
-            currentDeathStep++;
-            System.out.println(currentDeathStep);
-            if(currentDeathStep == DEATH_STEP)
-                isDying = false;
+    }
+
+    public void moveBullet(){
+        for(int i = 0 ; i < bullets.size(); i++) {
+            if (!bullets.get(i).isAlive() && !bullets.get(i).isDying())
+                bullets.remove(i);
+            else {
+                bullets.get(i).move();
+            }
         }
     }
 
     @Override
     public void jump() {
-        //TODO parametrize traslation
-        entityCoordinates.setTraslY(entityCoordinates.getTraslY()-PLAYER_VEL_Y);
-        if(entityCoordinates.getTraslY() == -40){
+        entityCoordinates.updateTraslY(-VEL_Y);
+        if(Math.abs(entityCoordinates.getTranslY()) ==  RENDERED_TILE_SIZE) {
+            entityCoordinates.setTranslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
-            entityCoordinates.setTraslY(0);
         }
     }
-
+    void updateBulletsIndex(){
+        for(int i = 0 ; i < bullets.size(); i++){
+            bullets.get(i).getEntityCoordinates().setMapIndex(
+                    bullets.get(i).getEntityCoordinates().getMapIndex()-1
+            );
+        }
+    }
     @Override
     public void fall() {
-        entityCoordinates.setTraslY(entityCoordinates.getTraslY()+PLAYER_VEL_Y);
-        //TODO maybe = 0 and traslY = renderedTilesize? btw has to be refactor
-        if(entityCoordinates.getTraslY() == PLAYER_VEL_Y){
+
+        entityCoordinates.updateTraslY(VEL_Y);
+
+
+        if(entityCoordinates.getTranslY() == RENDERED_TILE_SIZE){
+            entityCoordinates.setTranslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
-            entityCoordinates.setTraslY(-35);
         }
+
     }
 
     @Override
@@ -89,32 +100,46 @@ public class Player extends GameEntity implements IPlayer{
 
     @Override
     public void shoot() {
-        bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getSTART_MAP_X(),entityCoordinates.getMapY(),GameEntity.BULLET_ID)
-                .setMapIndex(entityCoordinates.getMapIndex())
-                .setMapX(entityCoordinates.getMapX()).build()));
+        bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getMapX()+1,entityCoordinates.getMapY())
+                .setTranslX(entityCoordinates.getTranslX())
+                .setTranslY(entityCoordinates.getTranslY())
+                .build()));
     }
-
     @Override
-    public ArrayList<Pair<Integer, EntityCoordinates>> getBullets() {
-        ArrayList<Pair<Integer, EntityCoordinates>> bullets = new ArrayList<>();
-        for(int i = 0; i < this.bullets.size(); i++){
-            this.bullets.get(i).setID(i);
-            bullets.add(new Pair<>(i,this.bullets.get(i).getEntityCoordinates()));
-        }
-        return bullets;
+    public void updateBulletStatus(int bulletID){
+        bullets.get(bulletID).setAlive(false);
+        bullets.remove(bulletID);
+    }
+    @Override
+    public EntityCoordinates getBulletCoordinate(int bulletID){
+       return bullets.get(bulletID).getEntityCoordinates();
     }
 
-    public Animation getBulletAnimation(final int bulletIndex){
-        return bullets.get(bulletIndex).getAnimation();
-    }
 
     @Override
     public Animation getAnimation() {
         return animationList.get(currentAnimation);
     }
 
+    public Animation getBulletAnimation(int entityID){
+        return bullets.get(entityID).getAnimation();
+    }
 
-    public boolean isDead(){
-        return !isAlive && !isDying;
+    @Override
+    public void changeCoordinate(){
+        super.changeCoordinate();
+        PLAYER_VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
+        for(int i = 0; i < bullets.size();i++){
+            bullets.get(i).changeCoordinate();
+        }
+    }
+
+    public int bulletCount(EntityType entityStatus) {
+        int count = 0;
+        for (int i = 0; i < bullets.size(); i++){
+            if(!(entityStatus == EntityType.ALIVE && !bullets.get(i).isAlive()))
+                count++;
+        }
+        return count;
     }
 }

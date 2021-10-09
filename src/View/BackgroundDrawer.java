@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,6 +42,9 @@ public class BackgroundDrawer {
     public void drawBackground(Graphics2D g2d) {
         g2d.drawImage(image, - (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom, null);
         g2d.drawImage(image, panel.getWidth()- (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom, null);
+    }
+    public void setPaddingBottom(int paddingBottom){
+        this.paddingBottom = paddingBottom;
     }
 }
 

@@ -1,46 +1,45 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Utils.Config;
+import commons.EntityCoordinates;
+import commons.EntityType;
+import utils.GameDataConfig;
 
-public abstract class EarthEnemy extends GameEntity{
-
-    private static final int MOVING_STEP = 80;
-    private static final int VEL_X = 2;
+public class EarthEnemy extends GameEntity{
+    private static final int MOVING_STEP = 96;
     private int currentStep = 0;
 
-    public EarthEnemy(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
+    public EarthEnemy(EntityType id, EntityCoordinates entityCoordinates) {
+        super(id,entityCoordinates);
+        TILE_STEP = 10.0;
+        VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
     }
 
     @Override
     public void move() {
-
         //TODO debug movement coords update
-
-        if (currentStep < MOVING_STEP/2){
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()+VEL_X);
-        }else{
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()-VEL_X);
-        }
-        if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-            entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-        }
-        if(entityCoordinates.getTraslX() == -VEL_X){
-            entityCoordinates.setTraslX(RENDERED_TILE_SIZE-VEL_X);
-            entityCoordinates.setMapX(entityCoordinates.getMapX()-1);
-        }
-        currentStep++;
-        if (currentStep == MOVING_STEP/2){
-            currentAnimation = WALK_ANIMATION_LEFT;
-        }
-        if (currentStep == MOVING_STEP){
-            currentAnimation = WALK_ANIMATION_RIGHT;
-            currentStep = 0;
+        if(isAlive) {
+            if (currentStep < MOVING_STEP / 2) {
+                entityCoordinates.updateTraslX(VEL_X);
+                if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
+                    entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
+                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+                }
+            } else {
+                entityCoordinates.updateTraslX(-VEL_X);
+                if(Math.abs(entityCoordinates.getTranslX()) >= RENDERED_TILE_SIZE){
+                    entityCoordinates.setTranslX(entityCoordinates.getTranslX()+RENDERED_TILE_SIZE);
+                    entityCoordinates.setMapX(entityCoordinates.getMapX()-1);
+                }
+            }
+            currentStep++;
+            if (currentStep == MOVING_STEP / 2) {
+                currentAnimation = WALK_ANIMATION_LEFT;
+            }
+            if (currentStep == MOVING_STEP) {
+                currentAnimation = WALK_ANIMATION_RIGHT;
+                currentStep = 0;
+            }
+        }else{//TODO death animation
         }
     }
-
-
 }
