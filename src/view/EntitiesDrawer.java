@@ -29,9 +29,10 @@ public class EntitiesDrawer {
         double mapTranslX = GameEngine.getInstance().getMapTranslX();
 //        g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
         for(int i = 0; i < entityNum; i++){
-            g2d.drawImage(GameEngine.getInstance().getEntityForRendering(i).getValue().getFrame(),
-                    Math.toIntExact(Math.round((GameEngine.getInstance().getEntityForRendering(i).getKey().getMapX() + SECTION_SIZE * GameEngine.getInstance().getEntityForRendering(i).getKey().getMapIndex()) * renderedTileSize - mapTranslX + GameEngine.getInstance().getEntityForRendering(i).getKey().getTranslX())),
-                    Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - GameEngine.getInstance().getEntityForRendering(i).getKey().getMapY()) * renderedTileSize + GameEngine.getInstance().getEntityForRendering(i).getKey().getTranslY())),
+            Pair<EntityCoordinates,Animation> temp = GameEngine.getInstance().getEntityForRendering(i);
+            g2d.drawImage(temp.getValue().getFrame(),
+                    Math.toIntExact(Math.round((temp.getKey().getMapX() + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX + temp.getKey().getTranslX())),
+                    Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
                     renderedTileSize,
                     renderedTileSize,
                     null

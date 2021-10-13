@@ -1,8 +1,6 @@
 package model;
 
-import commons.Animation;
-import commons.EntityCoordinates;
-import commons.Pair;
+import commons.*;
 
 import java.util.ArrayList;
 
@@ -13,5 +11,5 @@ public interface IPlayer {
     void setJumping(boolean isJumping);
     void shoot();
     void updateBulletStatus(int bulletID);
-    EntityCoordinates getBulletCoordinate(int bulletID);
+    EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus);
 }

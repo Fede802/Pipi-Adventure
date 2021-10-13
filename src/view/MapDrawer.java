@@ -54,7 +54,7 @@ public class MapDrawer {
 
     public void drawMap(final Graphics2D g2d){
         for(int mapIndex = 0; mapIndex < MAP_LENGTH; mapIndex++){
-//            g2d.drawLine(Math.toIntExact(Math.round(RENDERED_TILE_SIZE * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTraslX())),0,Math.toIntExact(Math.round(RENDERED_TILE_SIZE * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTraslX())),parentPanel.getHeight());
+            g2d.drawLine(Math.toIntExact(Math.round(renderedTileSize * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTranslX())),0,Math.toIntExact(Math.round(renderedTileSize * SECTION_SIZE * mapIndex - GameEngine.getInstance().getMapTranslX())),parentPanel.getHeight());
             for (int mapY = SECTION_SIZE-1; mapY > 0; mapY--)
                 for (int mapX = 0; mapX < SECTION_SIZE; mapX++)
                 g2d.drawImage(tileArray[GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)], Math.toIntExact(Math.round(renderedTileSize * (mapX + SECTION_SIZE * mapIndex) - GameEngine.getInstance().getMapTranslX())), parentPanel.getHeight()-((SECTION_SIZE-mapY) * renderedTileSize), renderedTileSize, renderedTileSize, null);

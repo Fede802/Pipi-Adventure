@@ -71,11 +71,11 @@ public class PausePanel extends SlidableApplicationPanel{
                 g2d.setColor(Color.BLACK);
             }
             switch(i){
-                case 0:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + i*50, this.getWidth()/2 - StringDrawer.getStringWidth(g2d, options[i],font)/2,this,StringDrawer.PADDING);
+                case 0:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, 50,this,StringDrawer.PADDING);
                     break;
-                case 2:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + i*50, this.getWidth()/2 - StringDrawer.getStringWidth(g2d, options[i],font)/2,this,StringDrawer.PADDING);
+                case 2:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()-100-StringDrawer.getStringWidth(g2d, options[i],font),this,StringDrawer.PADDING);
                     break;
-                default:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + i*50, this.getWidth()/2 - StringDrawer.getStringWidth(g2d, options[i],font)/2,this,StringDrawer.CENTER);
+                default:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()/7+i*100,this,StringDrawer.CENTER);
                     break;
             }
         }
@@ -100,14 +100,14 @@ public class PausePanel extends SlidableApplicationPanel{
             audio.get(CONFIRM_THEME).playOnce();
             select();
         }
-        if(e.getKeyCode() == KeyEvent.VK_UP) {
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice++;
             if(currentChoice == options.length) {

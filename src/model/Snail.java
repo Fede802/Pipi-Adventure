@@ -29,15 +29,14 @@ public class Snail extends EarthEnemy{
         animationList.put(GameEntity.DEATH_ANIMATION_LEFT,DEATH_ANIMATION_LEFT);
     }
 
+
+
     @Override
-    public void move() {
-        super.move();
-        if (!isAlive){
-            //TODO why animation isn't shown
-            currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
-            currentDeathStep++;
-            if(currentDeathStep == DEFAULT_DEATH_STEP)
-                isDying = false;
-        }
+    protected void dye() {
+//        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
+//        currentDeathStep++;
+//        System.out.println(currentDeathStep);
+//        if(currentDeathStep == DEFAULT_DEATH_STEP)
+//            isDying = false;
     }
 }

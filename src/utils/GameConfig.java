@@ -15,7 +15,21 @@ public class GameConfig extends Config{
     public int getCurrentMaxBullet(){
         return Integer.valueOf(properties.getProperty("currentMaxBullet"));
     }
+    public int getMaxLife(){
+        return Integer.valueOf(properties.getProperty("maxLife"));
+    }
 
+    public int getMaxBullet(){
+        return Integer.valueOf(properties.getProperty("maxBullets"));
+    }
+    public int getTotalCoin(){
+        return Integer.valueOf(properties.getProperty("totalCoin"));
+    }
+    public int getRecordScore(){
+        return Integer.valueOf(properties.getProperty("recordScore"));
+    }
+
+    //todo set total coin and record score and save with a swingworker(?)
     public static GameConfig getInstance() {
         if (instance == null)
             instance = new GameConfig();

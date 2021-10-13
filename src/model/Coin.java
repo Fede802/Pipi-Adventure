@@ -20,9 +20,9 @@ public class Coin extends GameEntity{
         if (!isAlive){
             currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
             entityCoordinates.updateTraslY(-VEL_Y);
-            currentDeathStep++;
-            if(currentDeathStep == deathStep)
-                isDying = false;
+//            currentDeathStep++;
+//            if(currentDeathStep == deathStep)
+//                isDying = false;
         }
     }
 

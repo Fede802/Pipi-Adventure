@@ -33,9 +33,7 @@ public class GameDataConfig extends Config{
         return Integer.valueOf(properties.getProperty("defaultNumColumnsOfTileset"));
     }
 
-    public int getMaxLife(){
-        return Integer.valueOf(properties.getProperty("maxLife"));
-    }
+
 
     public int getMinTileToRender(){
         return Integer.parseInt(properties.getProperty("minTileToRender"));

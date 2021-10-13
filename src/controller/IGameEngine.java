@@ -15,6 +15,5 @@ public interface IGameEngine {
     void shoot();
     void setupGame();
     void notifySizeChanged();
-void debug();
     int getTotalEntity();
 }

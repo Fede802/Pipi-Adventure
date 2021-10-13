@@ -1,9 +1,6 @@
 package model;
 
-import commons.Animation;
-import commons.EntityCoordinates;
-import commons.EntityType;
-import commons.Pair;
+import commons.*;
 import utils.GameDataConfig;
 
 import java.io.File;
@@ -51,12 +48,11 @@ public class Player extends GameEntity implements IPlayer{
     }
 
     public void moveBullet(){
-        for(int i = 0 ; i < bullets.size(); i++) {
+        for(int i = bullets.size()-1 ; i >=0; i--) {
             if (!bullets.get(i).isAlive() && !bullets.get(i).isDying())
                 bullets.remove(i);
-            else {
+            else
                 bullets.get(i).move();
-            }
         }
     }
 
@@ -77,10 +73,7 @@ public class Player extends GameEntity implements IPlayer{
     }
     @Override
     public void fall() {
-
         entityCoordinates.updateTraslY(VEL_Y);
-
-
         if(entityCoordinates.getTranslY() == RENDERED_TILE_SIZE){
             entityCoordinates.setTranslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
@@ -101,6 +94,7 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void shoot() {
         bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getMapX()+1,entityCoordinates.getMapY())
+                .setStartMapIndex(entityCoordinates.getMapIndex())
                 .setTranslX(entityCoordinates.getTranslX())
                 .setTranslY(entityCoordinates.getTranslY())
                 .build()));
@@ -108,11 +102,27 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void updateBulletStatus(int bulletID){
         bullets.get(bulletID).setAlive(false);
-        bullets.remove(bulletID);
+        //todo
+//        bullets.remove(bulletID);
     }
     @Override
-    public EntityCoordinates getBulletCoordinate(int bulletID){
-       return bullets.get(bulletID).getEntityCoordinates();
+    public EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus){
+        int count = 0;
+        if(entityStatus == EntityStatus.ALIVE)
+        for(int i = 0; i < bullets.size();i++){
+            if(bullets.get(i).isAlive){
+                if(count == bulletID){
+                    count = i;
+                    i = bullets.size();
+                }else{
+                    count++;
+                }
+            }
+        }
+        else{
+            count = bulletID;
+        }
+       return bullets.get(count).getEntityCoordinates();
     }
 
 
@@ -134,12 +144,11 @@ public class Player extends GameEntity implements IPlayer{
         }
     }
 
-    public int bulletCount(EntityType entityStatus) {
-        int count = 0;
-        for (int i = 0; i < bullets.size(); i++){
-            if(!(entityStatus == EntityType.ALIVE && !bullets.get(i).isAlive()))
-                count++;
-        }
-        return count;
+    public int bulletCount() {
+        return bullets.size();
+    }
+
+    public boolean isBulletAlive(int entityID) {
+        return bullets.get(entityID).isAlive();
     }
 }

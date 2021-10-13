@@ -19,7 +19,7 @@ public abstract class GameEntity implements IGameEntity{
     public static final int DEATH_ANIMATION_RIGHT = 2;
     public static final int DEATH_ANIMATION_LEFT = 3;
 
-    public static final int DEFAULT_DEATH_STEP = 10;
+    public static final int DEFAULT_DEATH_STEP = 100;
 
     //    --------------------------------------------------------
 //                      INSTANCE FIELD

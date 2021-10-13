@@ -1,9 +1,6 @@
 package model;
 
-import commons.Animation;
-import commons.EntityCoordinates;
-import commons.EntityType;
-import commons.Pair;
+import commons.*;
 import utils.GameDataConfig;
 
 import java.util.ArrayList;
@@ -14,10 +11,12 @@ public class MapGenerator {
 
     public static final int MAP_LENGTH = GameDataConfig.getInstance().getMapLength();
     private final ArrayList<MapSection> sectionList = new ArrayList<>();
+    private final ArrayList<GameEntity> coins = new ArrayList<>();
+    private final ArrayList<GameEntity> enemy = new ArrayList<>();
     private final ArrayList<GameEntity> gameEntities = new ArrayList<>();
     private final Random random = new Random();
 
-    private ArrayList<Pair<MapSection,ArrayList<GameEntity>>> generatedMap = new ArrayList<>();
+    private ArrayList<MapSection> generatedMap = new ArrayList<>();
 
     public MapGenerator(){
         sectionList.add(new PlainSection1());
@@ -32,114 +31,132 @@ public class MapGenerator {
 
     public void generateMap(){
         generatedMap.clear();
-        generatedMap.add(new Pair<>(sectionList.get(sectionList.size()-1),sectionList.get(sectionList.size()-1).getMapEntities()));
+        coins.clear();
+        enemy.clear();
+        generatedMap.add(sectionList.get(sectionList.size()-1));
         for (int i = 1; i< MAP_LENGTH; i++){
-            generatedMap.add(new Pair<>(sectionList.get(0),sectionList.get(0).getMapEntities()));
+            generatedMap.add(sectionList.get(0));
+            addEntities(0,i);
         }
-        setupMapEntity();
     }
 
-    private void setupMapEntity(){
-        gameEntities.clear();
-        for (int i = 0; i< MAP_LENGTH; i++){
-            for(int j = 0; j < generatedMap.get(i).getValue().size(); j++) {
-                GameEntity temp = generatedMap.get(i).getValue().get(j);
-                if(!temp.isAlive() && !temp.isDying()){
-                    generatedMap.get(i).getValue().remove(j);
-                }else{
-                    temp.getEntityCoordinates().setMapIndex(i);
-                    gameEntities.add(temp);
-                }
+    private void updateEntitiesMapIndex(){
+        for(int i = coins.size()-1; i>=0; i--){
+            EntityCoordinates temp = coins.get(i).getEntityCoordinates();
+            temp.setMapIndex(temp.getMapIndex()-1);
+            if(temp.getMapIndex()<0)
+                coins.remove(i);
+        }
+        for(int i = enemy.size()-1; i>=0; i--){
+            EntityCoordinates temp = enemy.get(i).getEntityCoordinates();
+            temp.setMapIndex(temp.getMapIndex()-1);
+            if(temp.getMapIndex()<0)
+                enemy.remove(i);
+        }
+
+    }
+
+    private void addEntities(int sectionIndex, int mapIndex){
+        ArrayList<GameEntity> temp = sectionList.get(sectionIndex).getMapEntities();
+        for(int j = 0; j< temp.size(); j++){
+            GameEntity tempE= temp.get(j);
+            tempE.getEntityCoordinates().setMapIndex(mapIndex);
+            if(tempE.getType() == EntityType.COIN){
+                coins.add(tempE);
+            }else if(tempE.getType() == EntityType.ENEMY){
+                enemy.add(tempE);
             }
-
         }
     }
-
     public void updateMap() {
+        updateEntitiesMapIndex();
         generatedMap.remove(0);
         //-1 because last section is the start section
         int nextSection = random.nextInt(sectionList.size()-1);
-        generatedMap.add(new Pair<>(sectionList.get(nextSection),sectionList.get(nextSection).getMapEntities()));
+        generatedMap.add(sectionList.get(nextSection));
+        addEntities(nextSection,MAP_LENGTH-1);
 //        generatedMap.add(new Pair<>(sectionList.get(1),sectionList.get(1).getMapEntities()));
-        setupMapEntity();
+
     }
 
-
-    public Animation getEntityAnimation(int entityID){
-        return gameEntities.get(entityID).getAnimation();
+//todo
+    public Animation getEntityAnimation(EntityType entityType, int entityID){
+        return getEntity(entityType,entityID,EntityStatus.ALL).getAnimation();
     }
 
-    public EntityCoordinates getEntityCoordinates(int entityID){
-        return gameEntities.get(entityID).getEntityCoordinates();
+    public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus){
+        GameEntity e = getEntity(entityType,entityID,entityStatus);
+        EntityCoordinates ec = null;
+        if(e != null)
+            ec = e.getEntityCoordinates();
+        return ec;
     }
-    public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID){
-        int count = 0;
 
-        for(int i = 0; i < gameEntities.size();i++){
-            if(gameEntities.get(i).getType() == entityType){
+    private GameEntity getEntity(EntityType entityType, int entityID, EntityStatus entityStatus){
+        ArrayList<GameEntity> temp = enemy;
+        if(entityType == EntityType.COIN)
+            temp = coins;
+        GameEntity tempE = temp.get(entityID);
+        if(entityStatus == EntityStatus.ALIVE && !temp.get(entityID).isAlive())
+            tempE = null;
+        return tempE;
+    }
 
-                if(count == entityID){
-                    count = i;
-                    i = gameEntities.size();
-                }else{
-                    count++;
-                }
-            }
-//            if(count == entityID){
-//                count = i;
-//                i = gameEntities.size();
-//            }
+    public void updateEntitiesStatus(EntityType entityType,final int entityID,EntityStatus entityStatus){
+        GameEntity temp = getEntity(entityType,entityID, EntityStatus.ALL);
+        //todo temp could be null in theory but not in practice
+        if(entityStatus == EntityStatus.DYING){
+            temp.setAlive(false);
+            temp.setDying(true);
         }
-        return gameEntities.get(count).getEntityCoordinates();
-    }
-
-    public void updateEntitiesStatus(EntityType entityType,final int entityID){
-        int count = 0;
-
-        for(int i = 0; i < gameEntities.size();i++){
-            if(gameEntities.get(i).getType() == entityType){
-
-                if(count == entityID){
-                    count = i;
-                    i = gameEntities.size();
-                }else{count++;}
-            }
-//            if(count == entityID){
-//                count = i;
-//                i = gameEntities.size();
-//            }
+        else{
+            temp.setAlive(false);
+            temp.setDying(false);
         }
-        gameEntities.get(count).setAlive(false);
-        gameEntities.get(count).setDying(true);
+
     }
 
     public int getTileData(final int mapIndex,final int mapX,final int mapY){
-        return generatedMap.get(mapIndex).getKey().getCell(mapX,mapY);
+        return generatedMap.get(mapIndex).getCell(mapX,mapY);
     }
     public void changeCoordinate() {
-        for(int i = 0; i < gameEntities.size();i++){
-            gameEntities.get(i).changeCoordinate();
+        for(int i = 0; i < coins.size();i++){
+            coins.get(i).changeCoordinate();
+        }
+        for(int i = 0; i < enemy.size();i++){
+            enemy.get(i).changeCoordinate();
         }
     }
 
-    public int entityCount(EntityType entityType, EntityType entityStatus) {
-        int count = 0;
-        for(int i = 0; i < gameEntities.size(); i++){
-            if(gameEntities.get(i).getType() == entityType)
-                if(!(entityStatus == EntityType.ALIVE && !gameEntities.get(i).isAlive()))
-                    count++;
-        }
+    public int entityCount(EntityType entityType) {
+        int count = enemy.size();
+        if(entityType == EntityType.COIN)
+            count = coins.size();
         return count;
     }
 
     public void moveEntities() {
-        for (int i = 0; i< gameEntities.size(); i++){
-            if(!gameEntities.get(i).isAlive() && !gameEntities.get(i).isDying())
-                gameEntities.remove(i);
+        for (int i = coins.size()-1; i>=0; i--){
+            if(!coins.get(i).isAlive() && !coins.get(i).isDying())
+                coins.remove(i);
             else{
-                gameEntities.get(i).move();
+                coins.get(i).move();
             }
         }
-            //todo if change order non va capisci il motivo, forse al di fuori di questo fatto visto che il proiettile può uccidere lontano non è buono splittare mappa e entità così ci potrebbe stare sovrascrizione di valori
+        for (int i = enemy.size()-1; i>=0; i--){
+            if(!enemy.get(i).isAlive() && !enemy.get(i).isDying())
+                enemy.remove(i);
+            else{
+                enemy.get(i).move();
+            }
+        }
+
+    }
+
+    public boolean isAlive(EntityType entityType, int entityID) {
+        ArrayList<GameEntity> temp = enemy;
+        if(entityType == EntityType.COIN)
+            temp = coins;
+        return temp.get(entityID).isAlive();
     }
 }

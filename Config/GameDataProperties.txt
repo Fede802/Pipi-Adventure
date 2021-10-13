@@ -4,10 +4,11 @@ defaultImageTileSize=120
 defaultTilesetTileSize=160
 defaultNumRowsOfTileset=5
 defaultNumColumnsOfTileset=7
-maxLife=3
 minTileToRender=20
 playerStartMapX=2
 playerStartMapY=12
+
+
 
 
 

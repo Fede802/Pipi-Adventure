@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class GameBar {
-    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLife();
+    private final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
     private Image coin,lifeHeart,lostLifeHeart,missingLifeHeart,pauseButton,bullet;
     private final JPanel panel;
     private int score,coinCollected,life,bullets;
@@ -31,15 +31,8 @@ public class GameBar {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setupBar();
     }
 
-    public void setupBar(){
-        score = 0;
-        coinCollected = 0;
-        life = GameConfig.getInstance().getCurrentMaxLife();
-        bullets = GameConfig.getInstance().getCurrentMaxBullet();
-    }
     public void updateBar(int score,int coinCollected,int life,int bullets){
         this.coinCollected = coinCollected;
         this.score = score;

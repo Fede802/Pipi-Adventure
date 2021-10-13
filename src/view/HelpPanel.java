@@ -106,25 +106,25 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
     }
     @Override
     public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                audio.get(CONFIRM_THEME).playOnce();
-                select();
-            }
-            if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                audio.get(SCROLL_THEME).playOnce();
-                currentChoice--;
-                if(currentChoice == -1) {
-                    currentChoice = button.length - 1;
-                }
-            }
-            if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                audio.get(SCROLL_THEME).playOnce();
-                currentChoice++;
-                if(currentChoice == button.length) {
-                    currentChoice = 0;
-                }
+        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+            audio.get(CONFIRM_THEME).playOnce();
+            select();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            audio.get(SCROLL_THEME).playOnce();
+            currentChoice--;
+            if(currentChoice == -1) {
+                currentChoice = button.length - 1;
             }
         }
+        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            audio.get(SCROLL_THEME).playOnce();
+            currentChoice++;
+            if(currentChoice == button.length) {
+                currentChoice = 0;
+            }
+        }
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

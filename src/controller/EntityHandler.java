@@ -1,65 +1,43 @@
 package controller;
 
 import commons.EntityCoordinates;
+import commons.EntityStatus;
 import commons.EntityType;
 import model.GameModel;
 
 public abstract class EntityHandler {
     protected EntityType entityType;
-    protected int entityNum = -1;
-    protected int currentEntity;
     public EntityHandler(EntityType entityType){
         this.entityType = entityType;
     }
 
-    public int getEntityNum(EntityType entityStatus){
-        return GameModel.getInstance().getEntityCount(entityType,entityStatus);
-
+    public int getEntityNum(){
+        return GameModel.getInstance().getEntityCount(entityType);
     }
 
-    public boolean hasNext(EntityType entityStatus){
-        boolean hasNext = true;
-        if(entityNum == -1){
-            entityNum = getEntityNum(entityStatus);
-            currentEntity = entityNum;
-        }
 
-        if(currentEntity == 0){
-            hasNext = false;
-            entityNum = -1;
-        }
-        return hasNext;
-    }
-    public EntityCoordinates getNext(){
-        this.currentEntity--;
-        return GameModel.getInstance().getEntityCoordinates(entityType,this.currentEntity);
-    }
-    public EntityCoordinates getEntity(int entityNum){
-        return GameModel.getInstance().getEntityCoordinates(entityType,entityNum);
+    public EntityCoordinates getEntity(int entityNum, EntityStatus entityStatus){
+        return GameModel.getInstance().getEntityCoordinates(entityType,entityNum,entityStatus);
     }
     public void checkEntityCollision(EntityHandler entityHandler){
-        int count = 0;
-        while(hasNext(EntityType.ALIVE)){
-            EntityCoordinates curr = getNext();
-            while(entityHandler.hasNext(EntityType.ALIVE)){
-                if(CollisionHandler.collide(curr,entityHandler.getNext())){
+        for(int i = getEntityNum()-1; i >= 0 ; i--){
+            EntityCoordinates curr = getEntity(i,EntityStatus.ALIVE);
+            EntityCoordinates currEnemy;
+            if(curr == null)
+                continue;
+            for(int j =entityHandler.getEntityNum()-1; j >= 0 ; j-- ){
+                currEnemy = entityHandler.getEntity(j,EntityStatus.ALIVE);
+                if(currEnemy == null)
+                    continue;
+                if(CollisionHandler.collide(curr,currEnemy)){
                     switch (entityHandler.entityType){
-                        case COIN -> collideWithCoin(getCurrentEntity(),entityHandler.getCurrentEntity());
-                        case PLAYER -> collideWithPlayer(getCurrentEntity(),entityHandler.getCurrentEntity());
-                        case ENEMY -> collideWithEnemy(getCurrentEntity(),entityHandler.getCurrentEntity());
-                        case BULLET -> collideWithBullet(getCurrentEntity(),entityHandler.getCurrentEntity());
+                        case COIN -> collideWithCoin(i,j);
+                        case PLAYER -> collideWithPlayer(i,j);
+                        case ENEMY -> collideWithEnemy(i,j);
+                        case BULLET -> collideWithBullet(i,j);
                     }
                 }
-                System.out.println(count);
-                count++;
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
             }
-            count = 0;
-
         }
     }
 
@@ -75,8 +53,4 @@ public abstract class EntityHandler {
 
     protected abstract void collideWithCoin(int currentEntity, int outerCurrentEntity);
 
-
-    protected int getCurrentEntity(){
-        return currentEntity;
-    }
 }

@@ -47,16 +47,26 @@ public class Animation {
         return animationTile.get(currentAnimationStep);
     }
     public void update(){
+
         currentAnimationStep++;
         if(currentAnimationStep == animationStep)
             currentAnimationStep = 0;
+
     }
 
     public float getOpacity() {
         return opacity;
     }
 
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
+    public void switchOpacity() {
+        if(opacity == 1f)
+            opacity = 0.5f;
+        else
+            opacity = 1f;
+    }
+
+
+    public boolean finish() {
+        return currentAnimationStep == 0;
     }
 }

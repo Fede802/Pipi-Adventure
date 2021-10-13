@@ -4,7 +4,7 @@ import commons.EntityCoordinates;
 import commons.EntityType;
 import utils.GameDataConfig;
 
-public class EarthEnemy extends GameEntity{
+public abstract class EarthEnemy extends GameEntity{
     private static final int MOVING_STEP = 96;
     private int currentStep = 0;
 
@@ -12,6 +12,7 @@ public class EarthEnemy extends GameEntity{
         super(id,entityCoordinates);
         TILE_STEP = 10.0;
         VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
+
     }
 
     @Override
@@ -33,13 +34,15 @@ public class EarthEnemy extends GameEntity{
             }
             currentStep++;
             if (currentStep == MOVING_STEP / 2) {
-                currentAnimation = WALK_ANIMATION_LEFT;
+                currentAnimation = GameEntity.WALK_ANIMATION_LEFT;
             }
             if (currentStep == MOVING_STEP) {
-                currentAnimation = WALK_ANIMATION_RIGHT;
+                currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
                 currentStep = 0;
             }
         }else{//TODO death animation
+            dye();
         }
     }
+    protected abstract void dye();
 }
