@@ -21,7 +21,22 @@ public class Snail extends EarthEnemy{
                     new File("Resources/Entities/Enemy/Luma/Luma_3.png"),
                     new File("Resources/Entities/Enemy/Luma/Luma_4.png"))
     ));
-    private static final Animation DEATH_ANIMATION_LEFT = new Animation("Resources/Entities/Enemy/Luma/Lumachina_Morte.gif");
+    private static final Animation DEATH_ANIMATION_LEFT = new Animation(new ArrayList<>(
+            Arrays.asList(new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte1.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte2.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte3.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte4.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte5.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte6.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte7.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte8.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte9.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte10.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte11.png"),
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte12.png"),
+
+                    new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte13.png"))
+    ));
     public Snail(EntityCoordinates entityCoordinates) {
         super(EntityType.ENEMY,entityCoordinates);
         animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
@@ -33,10 +48,10 @@ public class Snail extends EarthEnemy{
 
     @Override
     protected void dye() {
-//        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
-//        currentDeathStep++;
-//        System.out.println(currentDeathStep);
-//        if(currentDeathStep == DEFAULT_DEATH_STEP)
-//            isDying = false;
+        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
+        currentDeathStep++;
+        System.out.println(currentDeathStep);
+        if(currentDeathStep == DEFAULT_DEATH_STEP)
+            isDying = false;
     }
 }

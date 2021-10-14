@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
 
-public class HelpPanel extends ApplicationPanel {
+public class HelpPanel extends ApplicationPanel{
     private final int DX = 1;
     private final String TITLE = "Controls";
     private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());}};

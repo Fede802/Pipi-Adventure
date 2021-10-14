@@ -37,8 +37,10 @@ public class PlayerHandler extends EntityHandler{
 
     @Override
     protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
+        System.out.println("COOOOOOLLIIIII");
         GameModel.getInstance().updateEntitiesStatus(EntityType.COIN,outerCurrentEntity,EntityStatus.DYING);
         GameData.getInstance().updateCurrentCoin();
+
     }
 
     public boolean bottomCollision(){

@@ -16,6 +16,7 @@ public class Animation {
     private final int animationStep;
     private int currentAnimationStep;
     private float opacity = 1f;
+    private boolean finish = false;
 
     public Animation(String imagePath){
         animationTile.add(new ImageIcon(imagePath).getImage());
@@ -49,8 +50,10 @@ public class Animation {
     public void update(){
 
         currentAnimationStep++;
-        if(currentAnimationStep == animationStep)
+        if(currentAnimationStep == animationStep){
             currentAnimationStep = 0;
+//            finish = true;
+        }
 
     }
 
@@ -67,6 +70,7 @@ public class Animation {
 
 
     public boolean finish() {
-        return currentAnimationStep == 0;
+        System.out.println(finish);
+        return finish;
     }
 }

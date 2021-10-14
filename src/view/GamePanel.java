@@ -52,7 +52,7 @@ public class GamePanel extends ApplicationPanel{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        System.out.println("repaint");
+//        System.out.println("repaint");
         Graphics2D g2d = (Graphics2D) g;
         backgroundLayer_5.drawBackground(g2d);
         backgroundLayer_4.drawBackground(g2d);

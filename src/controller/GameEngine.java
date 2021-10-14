@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class GameEngine implements IGameEngine{
 
     private final int BULLET_INCREMENT_SCORE = 100;
-    private final int TICK_TO_UPDATE_ANIMATION = 10;
+    private final int TICK_TO_UPDATE_ANIMATION = 5;
     private PlayerHandler playerHandler = new PlayerHandler();
     private EnemyHandler enemyHandler = new EnemyHandler();
     private BulletsHandler bulletsHandler = new BulletsHandler();
@@ -85,14 +85,14 @@ public class GameEngine implements IGameEngine{
         animation = GameModel.getInstance().getEntityAnimation(type,entityID);
         entity = GameModel.getInstance().getEntityCoordinates(type,entityID, EntityStatus.ALL);
         renderingPair.updateKey(entity);
-        if(!isAlive)
-        System.out.println(false);
-        if(animation.finish())
-            System.out.println(true);
-        if(animation.finish() && !isAlive){
-            GameModel.getInstance().updateEntitiesStatus(type,entityID,EntityStatus.DEAD);
-            System.out.println("dead");
-        }
+//        if(!isAlive)
+//        System.out.println(false);
+//        if(animation.finish())
+//            System.out.println(true);
+//        if(animation.finish() && !isAlive){
+//            GameModel.getInstance().updateEntitiesStatus(type,entityID,EntityStatus.DEAD);
+//            System.out.println("dead");
+//        }
         if(updateAnimation){
             animation.update();
 //            System.out.println("update");

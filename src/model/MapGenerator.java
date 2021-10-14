@@ -105,13 +105,16 @@ public class MapGenerator {
     public void updateEntitiesStatus(EntityType entityType,final int entityID,EntityStatus entityStatus){
         GameEntity temp = getEntity(entityType,entityID, EntityStatus.ALL);
         //todo temp could be null in theory but not in practice
+        System.out.println("update entity AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         if(entityStatus == EntityStatus.DYING){
             temp.setAlive(false);
             temp.setDying(true);
+            System.out.println("dying");
         }
         else{
             temp.setAlive(false);
             temp.setDying(false);
+            System.out.println("dead");
         }
 
     }
