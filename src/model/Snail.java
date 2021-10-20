@@ -21,7 +21,7 @@ public class Snail extends EarthEnemy{
                     new File("Resources/Entities/Enemy/Luma/Luma_3.png"),
                     new File("Resources/Entities/Enemy/Luma/Luma_4.png"))
     ));
-    private static final Animation DEATH_ANIMATION_LEFT = new Animation(new ArrayList<>(
+    private static final Animation DEATH_ANIMATION_RIGTH = new Animation(new ArrayList<>(
             Arrays.asList(new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte1.png"),
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte2.png"),
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte3.png"),
@@ -41,17 +41,17 @@ public class Snail extends EarthEnemy{
         super(EntityType.ENEMY,entityCoordinates);
         animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
         animationList.put(GameEntity.WALK_ANIMATION_LEFT,WALK_ANIMATION_LEFT);
-        animationList.put(GameEntity.DEATH_ANIMATION_LEFT,DEATH_ANIMATION_LEFT);
+        animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGTH);
     }
 
 
 
     @Override
     protected void dye() {
-        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
+//        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
         currentDeathStep++;
         System.out.println(currentDeathStep);
-        if(currentDeathStep == DEFAULT_DEATH_STEP)
-            isDying = false;
+//        if(currentDeathStep == DEFAULT_DEATH_STEP)
+//            isDying = false;
     }
 }

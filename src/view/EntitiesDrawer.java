@@ -30,6 +30,7 @@ public class EntitiesDrawer {
 //        g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
         for(int i = 0; i < entityNum; i++){
             Pair<EntityCoordinates,Animation> temp = GameEngine.getInstance().getEntityForRendering(i);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, temp.getValue().getOpacity()));
             g2d.drawImage(temp.getValue().getFrame(),
                     Math.toIntExact(Math.round((temp.getKey().getMapX() + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX + temp.getKey().getTranslX())),
                     Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
@@ -37,7 +38,9 @@ public class EntitiesDrawer {
                     renderedTileSize,
                     null
             );
+
         }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         //TODO move to controller
 
 //            if(tick == TICK_TO_UPDATE_ANIMATION){

@@ -7,7 +7,7 @@ import utils.GameDataConfig;
 import view.GameOverPanel;
 
 public class Bullet extends GameEntity{
-    private final int MOVING_STEP =(int)(GameDataConfig.getInstance().getMapSectionSize()*TILE_STEP);
+    private final int MOVING_STEP =2*(int)(GameDataConfig.getInstance().getMapSectionSize()*TILE_STEP);
     private int currentStep = 0;
 
     private static final Animation WALK_ANIMATION_RIGHT = new Animation("Resources/Entities/Player/Guns/Nuovo_Proiettile.gif");

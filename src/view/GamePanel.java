@@ -14,7 +14,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 
 public class GamePanel extends ApplicationPanel{
-
+    int count = 0;
     private int renderedTileSize;
     private boolean isRunning = false;
 
@@ -28,6 +28,7 @@ public class GamePanel extends ApplicationPanel{
     private final GameBar gameBar = new GameBar(this);
     private final EntitiesDrawer entitiesDrawer = new EntitiesDrawer();
     private final Rectangle2D.Double pauseButton;
+    private boolean running = true;
 
 
 
@@ -41,17 +42,27 @@ public class GamePanel extends ApplicationPanel{
     @Override
     protected void timerActionEvent(ActionEvent e) {
         GameEngine.getInstance().updateGameStatus();
-        backgroundLayer_1.update();
-        backgroundLayer_2.update();
-        backgroundLayer_3.update();
-        backgroundLayer_4.update();
-        backgroundLayer_5.update();
+        if (running) {
+            backgroundLayer_1.update();
+            backgroundLayer_2.update();
+            backgroundLayer_3.update();
+            backgroundLayer_4.update();
+            backgroundLayer_5.update();
+        }
+
         repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+//        long startTime = System.nanoTime();
+//        if(count == 0 | count == 160)
+//            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//        if(count == 160)
+//            count = 0;
+//        count++;
+//        System.out.println(TIMER_TICK);
 //        System.out.println("repaint");
         Graphics2D g2d = (Graphics2D) g;
         backgroundLayer_5.drawBackground(g2d);
@@ -62,6 +73,13 @@ public class GamePanel extends ApplicationPanel{
         mapDrawer.drawMap(g2d);
         gameBar.drawBar(g2d);
         entitiesDrawer.drawEntities(g2d,this);
+//        long endTime = System.nanoTime();
+//
+//        // get the difference between the two nano time valuess
+//        long timeElapsed = endTime - startTime;
+//
+//        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+//        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 
     public void updateGameBar(int score, int coin, int life, int bullet) {
@@ -112,5 +130,9 @@ public class GamePanel extends ApplicationPanel{
         mapDrawer.updateRenderedTileSize(renderedTileSize);
         entitiesDrawer.updateRenderedTileSize(renderedTileSize);
         System.out.println(renderedTileSize+"updategamepanel");
+    }
+
+    void setGameRunning(boolean running){
+        this.running = running;
     }
 }

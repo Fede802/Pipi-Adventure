@@ -12,6 +12,7 @@ public interface IGameEntity {
     void setAlive(boolean isAlive);
     boolean isDying();
     void setDying(boolean isDying);
+    boolean isDead();
     void changeCoordinate();
 
 }

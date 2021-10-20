@@ -37,6 +37,11 @@ public class GameView implements IGameView{
         CONTAINER.startApplication();
     }
 
+    @Override
+    public void isGameRunning(boolean running) {
+        MAIN_FRAME.setGameRunning(running);
+    }
+
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();

@@ -34,9 +34,10 @@ public class MapGenerator {
         coins.clear();
         enemy.clear();
         generatedMap.add(sectionList.get(sectionList.size()-1));
+        addEntities(6,0);
         for (int i = 1; i< MAP_LENGTH; i++){
-            generatedMap.add(sectionList.get(0));
-            addEntities(0,i);
+            generatedMap.add(sectionList.get(3));
+            addEntities(3,i);
         }
     }
 
@@ -112,8 +113,9 @@ public class MapGenerator {
             System.out.println("dying");
         }
         else{
-            temp.setAlive(false);
+
             temp.setDying(false);
+            temp.getAnimation().resetAnimation();
             System.out.println("dead");
         }
 
@@ -156,10 +158,10 @@ public class MapGenerator {
 
     }
 
-    public boolean isAlive(EntityType entityType, int entityID) {
+    public boolean isDead(EntityType entityType, int entityID) {
         ArrayList<GameEntity> temp = enemy;
         if(entityType == EntityType.COIN)
             temp = coins;
-        return temp.get(entityID).isAlive();
+        return temp.get(entityID).isDead();
     }
 }

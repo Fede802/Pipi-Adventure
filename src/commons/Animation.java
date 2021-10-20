@@ -15,6 +15,13 @@ public class Animation {
     private final ArrayList<Image> animationTile = new ArrayList<>();
     private final int animationStep;
     private int currentAnimationStep;
+
+    public void setNumLoop(int numLoop) {
+        this.numLoop = numLoop;
+    }
+
+    private int numLoop = 1;
+    private int currentNumLoop = 0;
     private float opacity = 1f;
     private boolean finish = false;
 
@@ -50,10 +57,12 @@ public class Animation {
     public void update(){
 
         currentAnimationStep++;
-        if(currentAnimationStep == animationStep){
-            currentAnimationStep = 0;
+        if(currentAnimationStep == animationStep-1){
+//            currentAnimationStep = 0;
+            currentNumLoop++;
 //            finish = true;
-        }
+        }else if(currentAnimationStep == animationStep)
+            currentAnimationStep = 0;
 
     }
 
@@ -70,7 +79,14 @@ public class Animation {
 
 
     public boolean finish() {
-        System.out.println(finish);
+        if(currentNumLoop >= numLoop)
+            finish = true;
         return finish;
+    }
+
+    public void resetAnimation(){
+        finish = false;
+        currentNumLoop = 0;
+        opacity = 1f;
     }
 }

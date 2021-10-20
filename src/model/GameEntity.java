@@ -33,7 +33,7 @@ public abstract class GameEntity implements IGameEntity{
     protected boolean isDying = false;
     protected int currentAnimation = WALK_ANIMATION_RIGHT;
     //change to 4 8 5 10
-    protected double TILE_STEP = 5.0;
+    protected double TILE_STEP = 5;
     protected double VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
     protected double VEL_Y = RENDERED_TILE_SIZE/TILE_STEP;
 
@@ -76,7 +76,16 @@ public abstract class GameEntity implements IGameEntity{
     @Override
     public void setDying(boolean dying) {
         isDying = dying;
+        if(dying){
+            currentAnimation = DEATH_ANIMATION_RIGHT;
+        }
     }
+
+    @Override
+    public boolean isDead() {
+        return (isDying && animationList.get(currentAnimation).finish());
+    }
+
     @Override
     public void changeCoordinate(){
         RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();

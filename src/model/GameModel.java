@@ -92,15 +92,15 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public boolean isAlive(EntityType entityType, int entityID) {
-        boolean alive = false;
+    public boolean isDead(EntityType entityType, int entityID) {
+        boolean dead = false;
         switch(entityType){
-            case PLAYER -> alive = PLAYER.isAlive();
-            case COIN, ENEMY -> alive = MAP_GENERATOR.isAlive(entityType,entityID);
-            case BULLET -> alive = PLAYER.isBulletAlive(entityID);
+            case PLAYER -> dead = PLAYER.isDead();
+            case COIN, ENEMY -> dead = MAP_GENERATOR.isDead(entityType,entityID);
+            case BULLET -> dead = PLAYER.isBulletDead(entityID);
 
         }
-        return alive;
+        return dead;
     }
 
 
@@ -122,6 +122,7 @@ public class GameModel implements IGameModel{
     public void updateEntitiesStatus(EntityType entityType, int entityID, EntityStatus entityStatus) {
         switch(entityType){
             //todo case player
+            case PLAYER -> PLAYER.setAlive(false);
             case COIN, ENEMY -> MAP_GENERATOR.updateEntitiesStatus(entityType,entityID,entityStatus);
             case BULLET -> PLAYER.updateBulletStatus(entityID);
         }
@@ -142,6 +143,7 @@ public class GameModel implements IGameModel{
         PLAYER.getEntityCoordinates().setMapIndex(0);
         PLAYER.getEntityCoordinates().setTranslX(0);
         PLAYER.getEntityCoordinates().setTranslY(0);
+        PLAYER.setup();
     }
 
     @Override

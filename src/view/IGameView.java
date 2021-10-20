@@ -8,4 +8,6 @@ public interface IGameView {
     void hasToNotifyChangingScreen(boolean notify);
 
     void startApplication();
+
+    void isGameRunning(boolean running);
 }

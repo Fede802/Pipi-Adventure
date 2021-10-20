@@ -17,10 +17,12 @@ public class GameEngine implements IGameEngine{
     private BulletsHandler bulletsHandler = new BulletsHandler();
     private CoinHandler coinHandler = new CoinHandler();
     private Pair<EntityCoordinates,Animation> renderingPair = new Pair<>(null,null);
+    private Pair<EntityType,Integer> entity = new Pair<>(null,null);
     private int currentTick;
     private boolean updateAnimation = false;
     private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
-
+    long startTime;
+    boolean a = true;
     private static GameEngine instance = null;
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -31,19 +33,22 @@ public class GameEngine implements IGameEngine{
     @Override
     public void updateGameStatus() {
         updateAnimation = false;
-        GameModel.getInstance().moveEntity();
-        playerHandler.jumpAndFall();
-        if(playerHandler.mapUpdate())
-            GameModel.getInstance().updateMap();
-        GameData.getInstance().updateCurrentScore();
-        if(GameData.getInstance().getCurrentScore() % BULLET_INCREMENT_SCORE == 0)
-            GameData.getInstance().updateCurrentBullets();
-        checkMapCollision();
-        checkEntityCollision();
-        GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
-                GameData.getInstance().getCurrentCoin(),
-                GameData.getInstance().getCurrentLife(),
-                GameData.getInstance().getCurrentBullets());
+        updateEntity();
+        if(!playerHandler.isDying()) {
+            GameModel.getInstance().moveEntity();
+            playerHandler.jumpAndFall();
+            if (playerHandler.mapUpdate())
+                GameModel.getInstance().updateMap();
+            GameData.getInstance().updateCurrentScore();
+            if (GameData.getInstance().getCurrentScore() % BULLET_INCREMENT_SCORE == 0)
+                GameData.getInstance().updateCurrentBullets();
+            checkMapCollision();
+            checkEntityCollision();
+            GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
+                    GameData.getInstance().getCurrentCoin(),
+                    GameData.getInstance().getCurrentLife(),
+                    GameData.getInstance().getCurrentBullets());
+        }
         if(currentTick == TICK_TO_UPDATE_ANIMATION){
             currentTick = 0;
             updateAnimation = true;
@@ -51,8 +56,47 @@ public class GameEngine implements IGameEngine{
             currentTick++;
         }
     }
+    private Pair<EntityType,Integer> findEntityType(int entityID){
+        int coinCount = GameModel.getInstance().getEntityCount(EntityType.COIN);
+        int enemyCount = GameModel.getInstance().getEntityCount(EntityType.ENEMY);
+        EntityType type;
+        if(entityID < coinCount){
+            type = EntityType.COIN;
+        }else if(entityID < coinCount+enemyCount){
+            entityID-=coinCount;
+            type = EntityType.ENEMY;
+        }else if(entityID == coinCount+enemyCount){
+            type = EntityType.PLAYER;
+        }else{
+            entityID-=(coinCount+enemyCount+1);
+            type = EntityType.BULLET;
+        }
+        entity.updateKey(type);
+        entity.updateValue(entityID);
+        return entity;
+    }
+    private void updateEntity() {
+        boolean isDead;
+        Pair<EntityType,Integer> type;
+        int totalEntity =getTotalEntity();
+        for(int entityID = 0; entityID < totalEntity; entityID++){
+            type=findEntityType(entityID);
+            isDead = GameModel.getInstance().isDead(type.getKey(),type.getValue());
+            if(isDead)
+                if (type.getKey() == EntityType.PLAYER) {
+                    GameStateHandler.getInstance().gameOver();
+                } else {
+                    GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue(), EntityStatus.DEAD);
+                }
+
+
+        }
+    }
 
     private void checkEntityCollision() {
+        //todo problem when dying
+        if(!playerHandler.isImmortal())
+            playerHandler.checkEntityCollision(enemyHandler);
         playerHandler.checkEntityCollision(coinHandler);
         bulletsHandler.checkEntityCollision(enemyHandler);
     }
@@ -65,39 +109,20 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public Pair<EntityCoordinates, Animation> getEntityForRendering(int entityID) {
-        Animation animation;
-        EntityCoordinates entity;
-        boolean isAlive = false;
-        EntityType type = EntityType.COIN;
-        int coinCount = GameModel.getInstance().getEntityCount(EntityType.COIN);
-        int enemyCount = GameModel.getInstance().getEntityCount(EntityType.ENEMY);
-        if(entityID < coinCount){
-        }else if(entityID < coinCount+enemyCount){
-            entityID-=coinCount;
-            type = EntityType.ENEMY;
-        }else if(entityID == coinCount+enemyCount){
-            type = EntityType.PLAYER;
-        }else{
-            entityID-=(coinCount+enemyCount+1);
-            type = EntityType.BULLET;
-        }
-        isAlive = GameModel.getInstance().isAlive(type,entityID);
-        animation = GameModel.getInstance().getEntityAnimation(type,entityID);
-        entity = GameModel.getInstance().getEntityCoordinates(type,entityID, EntityStatus.ALL);
+
+        Pair<EntityType,Integer> type = findEntityType(entityID);
+        Animation animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
+        EntityCoordinates entity = GameModel.getInstance().getEntityCoordinates(type.getKey(),type.getValue(), EntityStatus.ALL);
         renderingPair.updateKey(entity);
-//        if(!isAlive)
-//        System.out.println(false);
-//        if(animation.finish())
-//            System.out.println(true);
-//        if(animation.finish() && !isAlive){
-//            GameModel.getInstance().updateEntitiesStatus(type,entityID,EntityStatus.DEAD);
-//            System.out.println("dead");
-//        }
         if(updateAnimation){
+            if(!playerHandler.isDying() || type.getKey() == EntityType.PLAYER)
             animation.update();
+            if(type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
+                animation.switchOpacity();
+                playerHandler.updateImmortalityStep();
+            }
 //            System.out.println("update");
         }
-
         renderingPair.updateValue(animation);
         return renderingPair;
     }
@@ -138,7 +163,10 @@ public class GameEngine implements IGameEngine{
                 GameData.getInstance().getCurrentCoin(),
                 GameData.getInstance().getCurrentLife(),
                 GameData.getInstance().getCurrentBullets());
+        GameView.getInstance().isGameRunning(true);
         GameModel.getInstance().setup();
+        playerHandler.setDying(false);
+        playerHandler.setImmortal(false);
     }
 
     @Override

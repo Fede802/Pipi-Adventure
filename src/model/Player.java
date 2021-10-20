@@ -10,17 +10,28 @@ import java.util.Arrays;
 public class Player extends GameEntity implements IPlayer{
     //change to 4 8 5 10
     //TODO find a better way to use PLAYER vel x in map generator update coords
-    public static double TILE_STEP = 5.0;
+    public static double TILE_STEP =5 ;
     public static double PLAYER_VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
 
 
+    private static final Animation DEATH_ANIMATION_RIGHT = new Animation(new ArrayList<>(
+            Arrays.asList(new File("resources/entities/Player/Death/Pinguino_Death1.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death2.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death3.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death4.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death5.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death6.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death7.png"),
+                    new File("resources/entities/Player/Death/Pinguino_Death8.png")
+            )
+    ));
     private static final Animation WALK_ANIMATION_RIGHT = new Animation(new ArrayList<>(
             Arrays.asList(new File("Resources/Entities/Player/PInguino_Definitivo1.png"),
                     new File("Resources/Entities/Player/PInguino_Definitivo2.png"),
                     new File("Resources/Entities/Player/PInguino_Definitivo3.png"),
                     new File("Resources/Entities/Player/PInguino_Definitivo4.png"))
     ));
-    private static final Animation DEATH_ANIMATION_RIGHT = new Animation("Resources/Entities/Player/Pinguino_Death.gif");
+
 
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private boolean isJumping = false;
@@ -29,6 +40,14 @@ public class Player extends GameEntity implements IPlayer{
         super(EntityType.PLAYER,entityCoordinates);
         animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
         animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
+    }
+
+    @Override
+    public void setAlive(boolean isAlive) {
+        super.setAlive(isAlive);
+        isDying = !isAlive;
+        if(isDying)
+            currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
     }
 
     @Override
@@ -148,7 +167,13 @@ public class Player extends GameEntity implements IPlayer{
         return bullets.size();
     }
 
-    public boolean isBulletAlive(int entityID) {
-        return bullets.get(entityID).isAlive();
+    public boolean isBulletDead(int entityID) {
+        return bullets.get(entityID).isDead();
+    }
+
+    public void setup() {
+        getAnimation().resetAnimation();
+        currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
+        setAlive(true);
     }
 }

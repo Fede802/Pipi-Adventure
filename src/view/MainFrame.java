@@ -56,4 +56,8 @@ public class MainFrame extends JFrame {
     public void notifySizeChanged() {
         GAME_PANEL.updateTileSize();
     }
+
+    public void setGameRunning(boolean running) {
+        GAME_PANEL.setGameRunning(running);
+    }
 }

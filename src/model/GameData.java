@@ -4,7 +4,7 @@ import utils.GameConfig;
 
 public class GameData implements IGameData{
     private static IGameData instance = null;
-    private static final int SCORE_INCREMENT = 1;
+    private static final int SCORE_INCREMENT = 2;
     private static final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
     private static final int MAX_BULLETS = GameConfig.getInstance().getMaxBullet();
     private int currentMaxLife = GameConfig.getInstance().getCurrentMaxLife();

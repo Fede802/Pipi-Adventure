@@ -6,12 +6,40 @@ import commons.EntityType;
 import model.GameData;
 import model.GameModel;
 import utils.GameDataConfig;
+import view.GameView;
 
 public class PlayerHandler extends EntityHandler{
     public static final int JUMP_STEP = 13;
     private int currentJumpStep;
     private int playerStartMapX = GameDataConfig.getInstance().getPlayerStartMapX();
     private boolean isJumping = false;
+    private boolean immortal = false;
+
+    public boolean isDying() {
+        return dying;
+    }
+
+
+    public void setDying(boolean dying) {
+        this.dying = dying;
+    }
+
+    private boolean dying = false;
+    private final int IMMORTALITY_STEP=12;
+    private int currentImmortalityStep;
+
+    public void updateImmortalityStep(){
+        currentImmortalityStep++;
+        if(currentImmortalityStep == IMMORTALITY_STEP){
+            immortal = false;
+            currentImmortalityStep = 0;
+        }
+
+    }
+    public boolean isImmortal() {
+        return immortal;
+    }
+
     public PlayerHandler() {
         super(EntityType.PLAYER);
     }
@@ -32,7 +60,16 @@ public class PlayerHandler extends EntityHandler{
 
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
+        System.out.println("enemy collision");
+        if(GameData.getInstance().getCurrentLife() == 0) {
+            GameModel.getInstance().updateEntitiesStatus(EntityType.PLAYER, currentEntity, EntityStatus.DYING);
+            GameView.getInstance().isGameRunning(false);
+            dying = true;
+        }else{
+            GameData.getInstance().updateCurrentLife();
 
+            immortal = true;
+        }
     }
 
     @Override
@@ -69,5 +106,9 @@ public class PlayerHandler extends EntityHandler{
     public double playerTotalTranslation(){
         EntityCoordinates player = getEntity();
         return (player.getMapX()+player.getMapIndex()*GameDataConfig.getInstance().getMapSectionSize()-playerStartMapX) * GameDataConfig.getInstance().getRenderedTileSize() + player.getTranslX();
+    }
+
+    public void setImmortal(boolean b) {
+        immortal = b;
     }
 }
