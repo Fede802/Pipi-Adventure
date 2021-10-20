@@ -8,7 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.ArrayList;
 
 public class GameOverPanel extends SlidableApplicationPanel {
     private final int DX = 1;
@@ -19,23 +21,26 @@ public class GameOverPanel extends SlidableApplicationPanel {
 
     private final BackgroundDrawer BG_DRAWER;
 
-    private final Color titleColor = Color.WHITE;
+    private final Color titleColor = Color.RED;
     private final Font titleFont = new Font("04b", Font.BOLD, 50);
     private final Font font = new Font("04b", Font.PLAIN, 21);
 
     private int currentChoice = 0;
     private String[] options = {
-            "Restart",
+            "Reset",
             "Help",
             "Menu"
     };
 
 
     private String[] score = {
-            "Score : prova",
-            "Best Score : provaaa",
-            "Coin : 9999"
+            "Score : ",
+            "Record : ",
+            "Coin : "
     };
+
+    private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
+
 
     public GameOverPanel(ComponentContainer componentContainer){
         super(componentContainer);
@@ -70,6 +75,10 @@ public class GameOverPanel extends SlidableApplicationPanel {
                 g2d.setColor(Color.BLACK);
             }
             StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/2+this.getWidth()/4, this,StringDrawer.PADDING);;
+            double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
+            double strHeight = StringDrawer.getStringHeight(g2d,font);
+            buttons.get(i).setRect((this.getWidth()/2+this.getWidth()/4),180+i*(this.getWidth()/12)+this.getHeight()/3,strWidth,(strHeight));
+
         }
 
         g2d.setColor(Color.BLACK);
@@ -104,14 +113,14 @@ public class GameOverPanel extends SlidableApplicationPanel {
             audio.get(CONFIRM_THEME).playOnce();
             select();
         }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice++;
             if(currentChoice == options.length) {
@@ -121,17 +130,40 @@ public class GameOverPanel extends SlidableApplicationPanel {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
     public void mousePressed(MouseEvent e) {
 
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
+        audio.get(CONFIRM_THEME).playOnce();
+        select();
+    }
 
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        for(int i = 0; i < buttons.size(); i++){
+            if(buttons.get(i).contains(e.getX(),e.getY())){
+                if(currentChoice != i){
+                    currentChoice = i;
+                    audio.get(SCROLL_THEME).playOnce();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        score[0]="Score : ";
+        score[1]= "Record : ";
+        score[2]= "Coin : ";
+    }
+
+    public void setData(int currentScore, int recordScore, int currentCoin) {
+        score[0]+=String.valueOf(currentScore);
+        score[1]+=String.valueOf(recordScore);
+        score[2]+=String.valueOf(currentCoin);
     }
 }

@@ -10,4 +10,6 @@ public interface IGameView {
     void startApplication();
 
     void isGameRunning(boolean running);
+
+    void setGameOverData(int currentScore, int recordScore, int currentCoin);
 }

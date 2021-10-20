@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.ArrayList;
 
-public class HelpPanel extends ApplicationPanel{
+public class HelpPanel extends ApplicationPanel implements KeyListener, MouseListener {
     private final int DX = 1;
     private final String TITLE = "Controls";
     private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());}};
@@ -37,6 +37,9 @@ public class HelpPanel extends ApplicationPanel{
     private final Image qButton = new ImageIcon("Resources/GameImages/Q_button.png").getImage();
     private final Image pButton = new ImageIcon("Resources/GameImages/P_button.png").getImage();
     private final Image spaceButton = new ImageIcon("Resources/GameImages/Space_button.png").getImage();
+
+
+
 
     public HelpPanel(){
         super();
@@ -85,14 +88,15 @@ public class HelpPanel extends ApplicationPanel{
                     break;
 
             }
+
         }
 
         g2d.drawImage(leftClick , this.getWidth()/13, this.getHeight()/4,this.getHeight()/6,this.getHeight()/6,this);
-        g2d.drawImage(rightClick , this.getWidth()/2 - (rightClick.getWidth(this)/6), this.getHeight()/4,this.getHeight()/6,this.getHeight()/6,this);
+        g2d.drawImage(rightClick , this.getWidth()/2 - (rightClick.getWidth(this)/5), this.getHeight()/4,this.getHeight()/6,this.getHeight()/6,this);
         g2d.drawImage(pauseClick , this.getWidth()-(this.getWidth()/10)-leftClick.getWidth(null)/3, this.getHeight()/4,this.getHeight()/6,this.getHeight()/6,this);
 
         g2d.drawImage(spaceButton , this.getWidth()/13, this.getHeight()/2 + this.getHeight()/10,this.getHeight()/6,this.getHeight()/6,this);
-        g2d.drawImage(qButton , this.getWidth()/2 - (rightClick.getWidth(this)/6), this.getHeight()/2 + this.getHeight()/10,this.getHeight()/6,this.getHeight()/6,this);
+        g2d.drawImage(qButton , this.getWidth()/2 - (rightClick.getWidth(this)/5), this.getHeight()/2 + this.getHeight()/10,this.getHeight()/6,this.getHeight()/6,this);
         g2d.drawImage(pButton , this.getWidth()-(this.getWidth()/10)-leftClick.getWidth(null)/3, this.getHeight()/2 + this.getHeight()/10,this.getHeight()/6,this.getHeight()/6,this);
     }
 

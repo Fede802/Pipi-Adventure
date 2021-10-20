@@ -60,4 +60,8 @@ public class MainFrame extends JFrame {
     public void setGameRunning(boolean running) {
         GAME_PANEL.setGameRunning(running);
     }
+
+    public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
+        GAME_OVER.setData(currentScore,recordScore,currentCoin);
+    }
 }

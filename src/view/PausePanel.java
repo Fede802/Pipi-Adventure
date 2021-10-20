@@ -12,7 +12,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.ArrayList;
 
 public class PausePanel extends SlidableApplicationPanel{
     private final int DX = 1;
@@ -31,6 +33,8 @@ public class PausePanel extends SlidableApplicationPanel{
             "Resume",
             "Menu"
     };
+    private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
+
     public PausePanel(ComponentContainer componentContainer){
         super(componentContainer);
         pipiRun = new ImageIcon("Resources/Backgrounds/Pause/Pause_BackGround_GIF.gif").getImage();
@@ -71,13 +75,16 @@ public class PausePanel extends SlidableApplicationPanel{
                 g2d.setColor(Color.BLACK);
             }
             switch(i){
-                case 0:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, 50,this,StringDrawer.PADDING);
+                case 0:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()/2 ,this,StringDrawer.CENTER);
                     break;
-                case 2:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()-100-StringDrawer.getStringWidth(g2d, options[i],font),this,StringDrawer.PADDING);
+                case 2:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + 50*i, this.getWidth()/2 ,this,StringDrawer.CENTER);
                     break;
-                default:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()/7+i*100,this,StringDrawer.CENTER);
+                default:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2+ 50*i, this.getWidth()/2 ,this,StringDrawer.CENTER);
                     break;
             }
+            double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
+            double strHeight = StringDrawer.getStringHeight(g2d,font);
+            buttons.get(i).setRect((this.getWidth()-strWidth)/2,this.getHeight()/2 + 50*i,strWidth,(strHeight));
         }
 
     }
@@ -100,14 +107,14 @@ public class PausePanel extends SlidableApplicationPanel{
             audio.get(CONFIRM_THEME).playOnce();
             select();
         }
-        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = options.length - 1;
             }
         }
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice++;
             if(currentChoice == options.length) {
@@ -118,16 +125,24 @@ public class PausePanel extends SlidableApplicationPanel{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        audio.get(CONFIRM_THEME).playOnce();
+        select();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        //nothing to do
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        for(int i = 0; i < buttons.size(); i++){
+            if(buttons.get(i).contains(e.getX(),e.getY())){
+                if(currentChoice != i){
+                    currentChoice = i;
+                    audio.get(SCROLL_THEME).playOnce();
+                }
+            }
+        }
     }
 }

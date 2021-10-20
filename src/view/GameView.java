@@ -42,6 +42,11 @@ public class GameView implements IGameView{
         MAIN_FRAME.setGameRunning(running);
     }
 
+    @Override
+    public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
+        MAIN_FRAME.setGameOverData(currentScore,recordScore,currentCoin);
+    }
+
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();

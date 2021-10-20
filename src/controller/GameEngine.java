@@ -84,6 +84,8 @@ public class GameEngine implements IGameEngine{
             isDead = GameModel.getInstance().isDead(type.getKey(),type.getValue());
             if(isDead)
                 if (type.getKey() == EntityType.PLAYER) {
+                    //TODO save best score
+                    GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoin());
                     GameStateHandler.getInstance().gameOver();
                 } else {
                     GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue(), EntityStatus.DEAD);
