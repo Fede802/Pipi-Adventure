@@ -19,11 +19,11 @@ public class GamePanel extends ApplicationPanel{
     private boolean isRunning = false;
 
     private final File tileSet = new File("Resources/TileSet/Tileset_Day.png");
-    private final BackgroundDrawer backgroundLayer_1 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Day/Nuovo_Sfondo_1.png"), this, 5,3*renderedTileSize);
-    private final BackgroundDrawer backgroundLayer_2 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Day/Nuovo_Sfondo_2.png"), this, 4,3*renderedTileSize);
-    private final BackgroundDrawer backgroundLayer_3 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Day/Nuovo_Sfondo_3.png"), this, 3,3*renderedTileSize);
-    private final BackgroundDrawer backgroundLayer_4 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Day/Nuovo_Sfondo_4.png"), this, 1,3*renderedTileSize);
-    private final BackgroundDrawer backgroundLayer_5 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Day/menubg.gif"), this, 2,3*renderedTileSize);
+    private final BackgroundDrawer backgroundLayer_1 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Layer1"), this, 5,3*renderedTileSize);
+    private final BackgroundDrawer backgroundLayer_2 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Layer2"), this, 4,3*renderedTileSize);
+    private final BackgroundDrawer backgroundLayer_3 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Layer3"), this, 3,3*renderedTileSize);
+    private final BackgroundDrawer backgroundLayer_4 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Layer4"), this, 1,3*renderedTileSize);
+    private final BackgroundDrawer backgroundLayer_5 = new BackgroundDrawer(new File("Resources/Backgrounds/Game/Sky"), this, 2,3*renderedTileSize);
     private final MapDrawer mapDrawer = new MapDrawer(this,tileSet);
     private final GameBar gameBar = new GameBar(this);
     private final EntitiesDrawer entitiesDrawer = new EntitiesDrawer();
@@ -132,7 +132,17 @@ public class GamePanel extends ApplicationPanel{
         System.out.println(renderedTileSize+"updategamepanel");
     }
 
+
     void setGameRunning(boolean running){
         this.running = running;
+    }
+
+
+    public void updateDayTime() {
+        backgroundLayer_1.updateFrames();
+        backgroundLayer_2.updateFrames();
+        backgroundLayer_3.updateFrames();
+        backgroundLayer_4.updateFrames();
+        backgroundLayer_5.updateFrames();
     }
 }

@@ -64,4 +64,8 @@ public class MainFrame extends JFrame {
     public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
         GAME_OVER.setData(currentScore,recordScore,currentCoin);
     }
+
+    public void updateDayTime() {
+        GAME_PANEL.updateDayTime();
+    }
 }

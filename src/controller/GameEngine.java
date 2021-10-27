@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class GameEngine implements IGameEngine{
 
+    private static final int CHANGE_DAYTIME_SCORE = 2000;
     private final int BULLET_INCREMENT_SCORE = 100;
     private final int TICK_TO_UPDATE_ANIMATION = 5;
     private PlayerHandler playerHandler = new PlayerHandler();
@@ -42,6 +43,8 @@ public class GameEngine implements IGameEngine{
             GameData.getInstance().updateCurrentScore();
             if (GameData.getInstance().getCurrentScore() % BULLET_INCREMENT_SCORE == 0)
                 GameData.getInstance().updateCurrentBullets();
+            if (GameData.getInstance().getCurrentScore() % CHANGE_DAYTIME_SCORE == 0)
+                GameView.getInstance().updateDayTime();
             checkMapCollision();
             checkEntityCollision();
             GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
@@ -55,6 +58,7 @@ public class GameEngine implements IGameEngine{
         }else{
             currentTick++;
         }
+
     }
     private Pair<EntityType,Integer> findEntityType(int entityID){
         int coinCount = GameModel.getInstance().getEntityCount(EntityType.COIN);

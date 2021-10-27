@@ -47,6 +47,11 @@ public class GameView implements IGameView{
         MAIN_FRAME.setGameOverData(currentScore,recordScore,currentCoin);
     }
 
+    @Override
+    public void updateDayTime() {
+        MAIN_FRAME.updateDayTime();
+    }
+
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();

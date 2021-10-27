@@ -37,13 +37,13 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
     private final Image qButton = new ImageIcon("Resources/GameImages/Q_button.png").getImage();
     private final Image pButton = new ImageIcon("Resources/GameImages/P_button.png").getImage();
     private final Image spaceButton = new ImageIcon("Resources/GameImages/Space_button.png").getImage();
+    private final Image BackGround = new ImageIcon("Resources/Backgrounds/Help/Help_BG1.png").getImage();
 
 
 
 
     public HelpPanel(){
         super();
-        this.setBackground(Color.ORANGE);
         audio.put(MUSIC_THEME,new SoundManager("Resources/Audio/Title_Theme.wav"));
         audio.put(SCROLL_THEME,new SoundManager("Resources/Audio/MenuScroll.wav"));
         audio.put(CONFIRM_THEME,new SoundManager("Resources/Audio/MenuConfirm.wav"));
@@ -60,7 +60,8 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        BG_DRAWER.drawBackground(g2d);
+        //BG_DRAWER.drawBackground(g2d);
+        g2d.drawImage(BackGround, 0,0,this.getWidth(),this.getHeight(),null);
 
         StringDrawer.drawString(g2d, TITLE, titleFont, null,StringDrawer.TITLE_STROKE,titleColor,this.getHeight()/25, 0, this,StringDrawer.CENTER);
 

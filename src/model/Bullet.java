@@ -31,7 +31,5 @@ public class Bullet extends GameEntity{
     @Override
     public void setDeathAnimation() {
         //nothing to do, no death animation at the moment
-        System.out.println(currentAnimation);
-        System.out.println("bullet detah animation set");
     }
 }
