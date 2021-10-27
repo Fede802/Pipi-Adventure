@@ -30,9 +30,10 @@ public class GameModel implements IGameModel{
         return MAP_GENERATOR.getTileData(mapIndex,mapX,mapY);
     }
 
-
-
-
+    @Override
+    public void changeDaytime() {
+        MAP_GENERATOR.updateDayTime();
+    }
 
 
     @Override
@@ -68,13 +69,10 @@ public class GameModel implements IGameModel{
     public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus) {
         EntityCoordinates entity = null;
         switch(entityType){
+            //todo player when is not alive has to return null as other method?
             case PLAYER -> entity = PLAYER.getEntityCoordinates();
             case COIN, ENEMY -> entity = MAP_GENERATOR.getEntityCoordinates(entityType,entityID,entityStatus);
             case BULLET -> entity = PLAYER.getBulletCoordinate(entityID,entityStatus);
-
-
-
-
         }
         return entity;
     }
@@ -86,7 +84,6 @@ public class GameModel implements IGameModel{
             case PLAYER -> animation = PLAYER.getAnimation();
             case COIN, ENEMY -> animation = MAP_GENERATOR.getEntityAnimation(entityType,entityID);
             case BULLET -> animation = PLAYER.getBulletAnimation(entityID);
-
         }
         return animation;
     }
@@ -98,7 +95,6 @@ public class GameModel implements IGameModel{
             case PLAYER -> dead = PLAYER.isDead();
             case COIN, ENEMY -> dead = MAP_GENERATOR.isDead(entityType,entityID);
             case BULLET -> dead = PLAYER.isBulletDead(entityID);
-
         }
         return dead;
     }
@@ -119,11 +115,10 @@ public class GameModel implements IGameModel{
 
 
     @Override
-    public void updateEntitiesStatus(EntityType entityType, int entityID, EntityStatus entityStatus) {
+    public void updateEntitiesStatus(EntityType entityType, int entityID) {
         switch(entityType){
-            //todo case player
-            case PLAYER -> PLAYER.setAlive(false);
-            case COIN, ENEMY -> MAP_GENERATOR.updateEntitiesStatus(entityType,entityID,entityStatus);
+            case PLAYER -> PLAYER.updateEntityStatus();
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntitiesStatus(entityType,entityID);
             case BULLET -> PLAYER.updateBulletStatus(entityID);
         }
     }
@@ -149,7 +144,7 @@ public class GameModel implements IGameModel{
     @Override
     public void moveEntity() {
         PLAYER.move();
-        PLAYER.moveBullet();
+        PLAYER.moveBullets();
         MAP_GENERATOR.moveEntities();
     }
 

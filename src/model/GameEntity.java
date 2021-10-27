@@ -2,6 +2,7 @@ package model;
 
 import commons.Animation;
 import commons.EntityCoordinates;
+import commons.EntityStatus;
 import commons.EntityType;
 import utils.GameDataConfig;
 
@@ -10,24 +11,25 @@ import java.util.HashMap;
 public abstract class GameEntity implements IGameEntity{
 
     //    --------------------------------------------------------
-//                       STATIC FIELD
-//    --------------------------------------------------------
-    public static int RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
-
-    public static final int WALK_ANIMATION_RIGHT = 0;
-    public static final int WALK_ANIMATION_LEFT = 1;
-    public static final int DEATH_ANIMATION_RIGHT = 2;
-    public static final int DEATH_ANIMATION_LEFT = 3;
-
-    public static final int DEFAULT_DEATH_STEP = 10;
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+    protected static int RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
+    protected static final int WALK_ANIMATION_RIGHT = 0;
+    protected static final int WALK_ANIMATION_LEFT = 1;
+    protected static final int DEATH_ANIMATION_RIGHT = 2;
+    protected static final int DEATH_ANIMATION_LEFT = 3;
+    protected static final int DEFAULT_DEATH_LOOP = 1;
+    protected static final int DEFAULT_WALKING_STEP = 96;
 
     //    --------------------------------------------------------
-//                      INSTANCE FIELD
-//    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
     protected final EntityType ID;
     protected final HashMap<Integer, Animation> animationList = new HashMap<>();
-    protected int deathStep = DEFAULT_DEATH_STEP;
-    protected int currentDeathStep;
+    protected int deathLoop = DEFAULT_DEATH_LOOP;
+    protected int walkingStep = DEFAULT_WALKING_STEP;
+    protected int currentWalkingStep;
+    //todo add control for animationstep
     protected EntityCoordinates entityCoordinates;
     protected boolean isAlive = true;
     protected boolean isDying = false;
@@ -38,16 +40,16 @@ public abstract class GameEntity implements IGameEntity{
     protected double VEL_Y = RENDERED_TILE_SIZE/TILE_STEP;
 
     //    --------------------------------------------------------
-//                       CONSTRUCTOR
-//    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
     public GameEntity(EntityType id, EntityCoordinates entityCoordinates){
         this.ID = id;
         this.entityCoordinates = entityCoordinates;
     }
 
     //    --------------------------------------------------------
-//                      INSTANCE METHOD
-//    --------------------------------------------------------
+    //                      INSTANCE METHOD
+    //    --------------------------------------------------------
     @Override
     public EntityCoordinates getEntityCoordinates() {
         return entityCoordinates;
@@ -76,14 +78,63 @@ public abstract class GameEntity implements IGameEntity{
     @Override
     public void setDying(boolean dying) {
         isDying = dying;
-        if(dying){
-            currentAnimation = DEATH_ANIMATION_RIGHT;
-        }
     }
 
     @Override
     public boolean isDead() {
-        return (isDying && animationList.get(currentAnimation).finish());
+        return (isDying && animationList.get(currentAnimation).getNumLoop() == deathLoop);
+    }
+
+
+    @Override
+    public EntityType getType(){
+        return ID;
+    }
+
+    protected void defaultWalkMovement(int movingDirection) {
+        if(movingDirection == WALK_ANIMATION_RIGHT){
+            entityCoordinates.updateTraslX(VEL_X);
+            if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
+                entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
+                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+            }
+            if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
+                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
+                entityCoordinates.setMapX(0);
+            }
+        }else{
+            entityCoordinates.updateTraslX(-VEL_X);
+            if(Math.abs(entityCoordinates.getTranslX()) >= RENDERED_TILE_SIZE) {
+                entityCoordinates.setTranslX(entityCoordinates.getTranslX() + RENDERED_TILE_SIZE);
+                entityCoordinates.setMapX(entityCoordinates.getMapX() - 1);
+            }
+            if(entityCoordinates.getMapX() == -1){
+                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
+                entityCoordinates.setMapX(GameDataConfig.getInstance().getMapSectionSize()-1);
+            }
+        }
+    }
+
+    @Override
+    public void updateEntityStatus(){
+        if(isAlive){
+            setAlive(false);
+            setDying(true);
+            setDeathAnimation();
+        }else{
+            setDying(false);
+            if(getAnimation() != null)
+                getAnimation().resetAnimation();
+        }
+    }
+    @Override
+    public void resetEntity(){
+        getAnimation().resetAnimation();
+        //todo maybe non serve rimetterlo a 0
+        currentWalkingStep = 0;
+        currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
+        isAlive = true;
+        isDying = false;
     }
 
     @Override
@@ -94,10 +145,6 @@ public abstract class GameEntity implements IGameEntity{
         entityCoordinates.setTranslX(entityCoordinates.getTranslX()/VEL_X*(RENDERED_TILE_SIZE/TILE_STEP));
         entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(RENDERED_TILE_SIZE/TILE_STEP));
         VEL_Y = VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
-    }
-
-    public EntityType getType(){
-        return ID;
     }
 }
 

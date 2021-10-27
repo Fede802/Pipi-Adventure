@@ -34,7 +34,6 @@ public class Snail extends EarthEnemy{
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte10.png"),
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte11.png"),
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte12.png"),
-
                     new File("resources/entities/Enemy/Luma/Luma_Death/Lumachina_Morte13.png"))
     ));
     public Snail(EntityCoordinates entityCoordinates) {
@@ -44,14 +43,4 @@ public class Snail extends EarthEnemy{
         animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGTH);
     }
 
-
-
-    @Override
-    protected void dye() {
-//        currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
-        currentDeathStep++;
-        System.out.println(currentDeathStep);
-//        if(currentDeathStep == DEFAULT_DEATH_STEP)
-//            isDying = false;
-    }
 }

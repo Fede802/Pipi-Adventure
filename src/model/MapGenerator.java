@@ -13,9 +13,9 @@ public class MapGenerator {
     private final ArrayList<MapSection> sectionList = new ArrayList<>();
     private final ArrayList<GameEntity> coins = new ArrayList<>();
     private final ArrayList<GameEntity> enemy = new ArrayList<>();
-    private final ArrayList<GameEntity> gameEntities = new ArrayList<>();
     private final Random random = new Random();
 
+    private boolean dayTime = true;
     private ArrayList<MapSection> generatedMap = new ArrayList<>();
 
     public MapGenerator(){
@@ -40,6 +40,22 @@ public class MapGenerator {
             addEntities(3,i);
         }
     }
+    private void addEntities(int sectionIndex, int mapIndex){
+        ArrayList<GameEntity> temp;
+        if(dayTime)
+            temp = sectionList.get(sectionIndex).getMapEntities(MapSection.DAY);
+        else
+            temp = sectionList.get(sectionIndex).getMapEntities(MapSection.NIGHT);
+        for(int j = 0; j< temp.size(); j++){
+            GameEntity tempE= temp.get(j);
+            tempE.getEntityCoordinates().setMapIndex(mapIndex);
+            if(tempE.getType() == EntityType.COIN){
+                coins.add(tempE);
+            }else if(tempE.getType() == EntityType.ENEMY){
+                enemy.add(tempE);
+            }
+        }
+    }
 
     private void updateEntitiesMapIndex(){
         for(int i = coins.size()-1; i>=0; i--){
@@ -57,18 +73,7 @@ public class MapGenerator {
 
     }
 
-    private void addEntities(int sectionIndex, int mapIndex){
-        ArrayList<GameEntity> temp = sectionList.get(sectionIndex).getMapEntities();
-        for(int j = 0; j< temp.size(); j++){
-            GameEntity tempE= temp.get(j);
-            tempE.getEntityCoordinates().setMapIndex(mapIndex);
-            if(tempE.getType() == EntityType.COIN){
-                coins.add(tempE);
-            }else if(tempE.getType() == EntityType.ENEMY){
-                enemy.add(tempE);
-            }
-        }
-    }
+
     public void updateMap() {
         updateEntitiesMapIndex();
         generatedMap.remove(0);
@@ -80,7 +85,7 @@ public class MapGenerator {
 
     }
 
-//todo
+
     public Animation getEntityAnimation(EntityType entityType, int entityID){
         return getEntity(entityType,entityID,EntityStatus.ALL).getAnimation();
     }
@@ -103,22 +108,8 @@ public class MapGenerator {
         return tempE;
     }
 
-    public void updateEntitiesStatus(EntityType entityType,final int entityID,EntityStatus entityStatus){
-        GameEntity temp = getEntity(entityType,entityID, EntityStatus.ALL);
-        //todo temp could be null in theory but not in practice
-        System.out.println("update entity AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        if(entityStatus == EntityStatus.DYING){
-            temp.setAlive(false);
-            temp.setDying(true);
-            System.out.println("dying");
-        }
-        else{
-
-            temp.setDying(false);
-            temp.getAnimation().resetAnimation();
-            System.out.println("dead");
-        }
-
+    public void updateEntitiesStatus(EntityType entityType,final int entityID){
+        getEntity(entityType,entityID, EntityStatus.ALL).updateEntityStatus();
     }
 
     public int getTileData(final int mapIndex,final int mapX,final int mapY){
@@ -163,5 +154,9 @@ public class MapGenerator {
         if(entityType == EntityType.COIN)
             temp = coins;
         return temp.get(entityID).isDead();
+    }
+
+    public void updateDayTime() {
+        dayTime = !dayTime;
     }
 }

@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Player extends GameEntity implements IPlayer{
-    //change to 4 8 5 10
-    //TODO find a better way to use PLAYER vel x in map generator update coords
-    public static double TILE_STEP =5 ;
-    public static double PLAYER_VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
-
 
     private static final Animation DEATH_ANIMATION_RIGHT = new Animation(new ArrayList<>(
             Arrays.asList(new File("resources/entities/Player/Death/Pinguino_Death1.png"),
@@ -42,36 +37,37 @@ public class Player extends GameEntity implements IPlayer{
         animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
     }
 
+
     @Override
-    public void setAlive(boolean isAlive) {
-        super.setAlive(isAlive);
-        isDying = !isAlive;
-        if(isDying)
-            currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
+    public void setDeathAnimation() {
+        currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
     }
 
     @Override
     public void move() {
         //TODO maybe use for start movement
         if(isAlive) {
-            entityCoordinates.updateTraslX(PLAYER_VEL_X);
-            if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
-                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-            }
-            if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
-                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
-                entityCoordinates.setMapX(0);
-            }
-        }
-    }
+            defaultWalkMovement(GameEntity.WALK_ANIMATION_RIGHT);
 
-    public void moveBullet(){
+        }
+        System.out.println(entityCoordinates.getTranslY());
+    }
+    @Override
+    public void moveBullets(){
+        //check if bullet is dead and if not move it
         for(int i = bullets.size()-1 ; i >=0; i--) {
-            if (!bullets.get(i).isAlive() && !bullets.get(i).isDying())
+            if (!bullets.get(i).isAlive())
                 bullets.remove(i);
             else
                 bullets.get(i).move();
+        }
+    }
+    @Override
+    public void updateBulletsIndex(){
+        for(int i = 0 ; i < bullets.size(); i++){
+            bullets.get(i).getEntityCoordinates().setMapIndex(
+                    bullets.get(i).getEntityCoordinates().getMapIndex()-1
+            );
         }
     }
 
@@ -83,13 +79,7 @@ public class Player extends GameEntity implements IPlayer{
             entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
         }
     }
-    void updateBulletsIndex(){
-        for(int i = 0 ; i < bullets.size(); i++){
-            bullets.get(i).getEntityCoordinates().setMapIndex(
-                    bullets.get(i).getEntityCoordinates().getMapIndex()-1
-            );
-        }
-    }
+
     @Override
     public void fall() {
         entityCoordinates.updateTraslY(VEL_Y);
@@ -120,28 +110,35 @@ public class Player extends GameEntity implements IPlayer{
     }
     @Override
     public void updateBulletStatus(int bulletID){
-        bullets.get(bulletID).setAlive(false);
-        //todo
+        bullets.get(bulletID).updateEntityStatus();
+        System.out.println("update bullet status");
+        //todo maybe bullet could be remove in the next walk movement
 //        bullets.remove(bulletID);
     }
     @Override
     public EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus){
-        int count = 0;
-        if(entityStatus == EntityStatus.ALIVE)
-        for(int i = 0; i < bullets.size();i++){
-            if(bullets.get(i).isAlive){
-                if(count == bulletID){
-                    count = i;
-                    i = bullets.size();
-                }else{
-                    count++;
-                }
-            }
-        }
-        else{
-            count = bulletID;
-        }
-       return bullets.get(count).getEntityCoordinates();
+
+//        int count = 0;
+//        if(entityStatus == EntityStatus.ALIVE)
+//        for(int i = 0; i < bullets.size();i++){
+//            if(bullets.get(i).isAlive){
+//                if(count == bulletID){
+//                    count = i;
+//                    i = bullets.size();
+//                }else{
+//                    count++;
+//                }
+//            }
+//        }
+//        else{
+//            count = bulletID;
+//        }
+        EntityCoordinates tempE;
+        if(entityStatus == EntityStatus.ALIVE && !bullets.get(bulletID).isAlive())
+            tempE = null;
+        else
+            tempE = bullets.get(bulletID).getEntityCoordinates();
+       return tempE;
     }
 
 
@@ -149,7 +146,7 @@ public class Player extends GameEntity implements IPlayer{
     public Animation getAnimation() {
         return animationList.get(currentAnimation);
     }
-
+    @Override
     public Animation getBulletAnimation(int entityID){
         return bullets.get(entityID).getAnimation();
     }
@@ -157,23 +154,23 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void changeCoordinate(){
         super.changeCoordinate();
-        PLAYER_VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
         for(int i = 0; i < bullets.size();i++){
             bullets.get(i).changeCoordinate();
         }
     }
-
+    @Override
     public int bulletCount() {
         return bullets.size();
     }
-
+    @Override
     public boolean isBulletDead(int entityID) {
         return bullets.get(entityID).isDead();
     }
-
+    @Override
     public void setup() {
         getAnimation().resetAnimation();
         currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
         setAlive(true);
+        setDying(false);
     }
 }

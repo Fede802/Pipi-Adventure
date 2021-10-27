@@ -7,9 +7,10 @@ import java.util.ArrayList;
 public interface IGameModel {
     void updateMap();
     int getTileData(int mapIndex,int mapX,int mapY);
+    void changeDaytime();
 
     void moveEntity();
-    void updateEntitiesStatus(EntityType entityType, int entityID, EntityStatus entityStatus);
+    void updateEntitiesStatus(EntityType entityType, int entityID);
 
     boolean isPlayerJumping();
     void setPlayerJumping(boolean isPlayerJumping);

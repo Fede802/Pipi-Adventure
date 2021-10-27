@@ -2,6 +2,7 @@ package model;
 
 import commons.Animation;
 import commons.EntityCoordinates;
+import commons.EntityType;
 
 public interface IGameEntity {
 
@@ -13,6 +14,11 @@ public interface IGameEntity {
     boolean isDying();
     void setDying(boolean isDying);
     boolean isDead();
+    EntityType getType();
+    void setDeathAnimation();
+    void updateEntityStatus();
+    void resetEntity();
     void changeCoordinate();
+
 
 }

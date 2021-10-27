@@ -13,6 +13,16 @@ public class PlayerHandler extends EntityHandler{
     private int currentJumpStep;
     private int playerStartMapX = GameDataConfig.getInstance().getPlayerStartMapX();
     private boolean isJumping = false;
+
+    public boolean isJumping() {
+        return isJumping;
+    }
+
+    public boolean isFalling() {
+        return isFalling;
+    }
+
+    private boolean isFalling = false;
     private boolean immortal = false;
 
     public boolean isDying() {
@@ -62,7 +72,7 @@ public class PlayerHandler extends EntityHandler{
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
         System.out.println("enemy collision");
         if(GameData.getInstance().getCurrentLife() == 0) {
-            GameModel.getInstance().updateEntitiesStatus(EntityType.PLAYER, currentEntity, EntityStatus.DYING);
+            GameModel.getInstance().updateEntitiesStatus(EntityType.PLAYER, currentEntity);
             GameView.getInstance().isGameRunning(false);
             dying = true;
         }else{
@@ -75,9 +85,21 @@ public class PlayerHandler extends EntityHandler{
     @Override
     protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
         System.out.println("COOOOOOLLIIIII");
-        GameModel.getInstance().updateEntitiesStatus(EntityType.COIN,outerCurrentEntity,EntityStatus.DYING);
+        GameModel.getInstance().updateEntitiesStatus(EntityType.COIN,outerCurrentEntity);
         GameData.getInstance().updateCurrentCoin();
 
+    }
+
+    @Override
+    protected void wallCollision(int currentEntity) {
+        if(GameData.getInstance().getCurrentLife() == 0) {
+            GameModel.getInstance().updateEntitiesStatus(EntityType.PLAYER, currentEntity);
+            GameView.getInstance().isGameRunning(false);
+            dying = true;
+        }else{
+            GameData.getInstance().updateCurrentLife();
+            immortal = true;
+        }
     }
 
     public boolean bottomCollision(){
@@ -93,12 +115,15 @@ public class PlayerHandler extends EntityHandler{
             currentJumpStep++;
             if(currentJumpStep == JUMP_STEP) {
                 currentJumpStep = 0;
+                isFalling = true;
                 GameModel.getInstance().setPlayerJumping(false);
             }
         }else if(!bottomCollision()){
 
             GameModel.getInstance().playerFall();
 //            System.out.println(getNext().getTranslY() + "fall" +getNext().getMapY());
+        }else if(isFalling && bottomCollision()){
+            isFalling = false;
         }
 
     }

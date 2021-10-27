@@ -26,7 +26,7 @@ public class PlainStartSection extends MapSection{
     }
 
     @Override
-    protected void spawnEntities() {
+    protected void spawnEntities(int daytime) {
         //nothing to spawn
 //        mapEntities.add(new Coin(new EntityCoordinates.Builder(3,12).build()));
     }

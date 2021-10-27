@@ -6,8 +6,10 @@ import java.util.ArrayList;
 
 public abstract class MapSection {
     //TODO ADD SPAWNER CLASS TO SPAWN ENTITIES
+    public static final int DAY = 0;
+    public static final int NIGHT = 1;
     public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
-    protected ArrayList<GameEntity> mapEntities;
+    protected ArrayList<GameEntity> mapEntities = new ArrayList<>();
 
     protected int[][] map;
 
@@ -19,11 +21,11 @@ public abstract class MapSection {
         return map[mapY][mapX];
     }
 
-    public ArrayList<GameEntity> getMapEntities(){
-        mapEntities = new ArrayList<>();
-        spawnEntities();
+    public ArrayList<GameEntity> getMapEntities(int daytime){
+        mapEntities.clear();
+        spawnEntities(daytime);
         return mapEntities;
     }
-
-    protected abstract void spawnEntities();
+    //todo add day/night spawn
+    protected abstract void spawnEntities(int daytime);
 }

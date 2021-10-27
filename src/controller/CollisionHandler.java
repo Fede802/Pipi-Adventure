@@ -34,4 +34,28 @@ public class CollisionHandler {
         }
         return isColliding;
     }
+
+    public static boolean rigthCollision(EntityCoordinates next){
+        boolean isColliding = false;
+        if(next.getTranslX() == 0){
+            int frontMapX = next.getMapX()+1;
+            int frontMapIndex = next.getMapIndex();
+            if(frontMapX == GameDataConfig.getInstance().getMapSectionSize()){
+                frontMapX = 0;
+                frontMapIndex++;
+            }
+            if(GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()) != 34){
+                isColliding = true;
+            }
+            double translY = next.getTranslY();
+            if(translY > 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()+1) != 34)
+                isColliding = true;
+            if(translY < 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()-1) != 34)
+                isColliding = true;
+
+        }
+        return isColliding;
+    }
+
+
 }

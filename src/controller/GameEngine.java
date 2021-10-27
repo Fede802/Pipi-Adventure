@@ -88,7 +88,7 @@ public class GameEngine implements IGameEngine{
                     GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoin());
                     GameStateHandler.getInstance().gameOver();
                 } else {
-                    GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue(), EntityStatus.DEAD);
+                    GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue());
                 }
 
 
@@ -104,6 +104,10 @@ public class GameEngine implements IGameEngine{
     }
 
     private void checkMapCollision() {
+        if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
+            playerHandler.rigthCollision();
+
+        bulletsHandler.rigthCollision();
         //bullet and player with map
     }
 

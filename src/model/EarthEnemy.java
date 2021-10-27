@@ -5,8 +5,6 @@ import commons.EntityType;
 import utils.GameDataConfig;
 
 public abstract class EarthEnemy extends GameEntity{
-    private static final int MOVING_STEP = 96;
-    private int currentStep = 0;
 
     public EarthEnemy(EntityType id, EntityCoordinates entityCoordinates) {
         super(id,entityCoordinates);
@@ -17,32 +15,25 @@ public abstract class EarthEnemy extends GameEntity{
 
     @Override
     public void move() {
-        //TODO debug movement coords update
         if(isAlive) {
-            if (currentStep < MOVING_STEP / 2) {
-                entityCoordinates.updateTraslX(VEL_X);
-                if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
-                    entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
-                    entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-                }
+            if (currentWalkingStep < walkingStep / 2) {
+                defaultWalkMovement(GameEntity.WALK_ANIMATION_RIGHT);
             } else {
-                entityCoordinates.updateTraslX(-VEL_X);
-                if(Math.abs(entityCoordinates.getTranslX()) >= RENDERED_TILE_SIZE){
-                    entityCoordinates.setTranslX(entityCoordinates.getTranslX()+RENDERED_TILE_SIZE);
-                    entityCoordinates.setMapX(entityCoordinates.getMapX()-1);
-                }
+               defaultWalkMovement(GameEntity.WALK_ANIMATION_LEFT);
             }
-            currentStep++;
-            if (currentStep == MOVING_STEP / 2) {
+            currentWalkingStep++;
+            if (currentWalkingStep == walkingStep / 2) {
                 currentAnimation = GameEntity.WALK_ANIMATION_LEFT;
             }
-            if (currentStep == MOVING_STEP) {
+            if (currentWalkingStep == walkingStep) {
                 currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
-                currentStep = 0;
+                currentWalkingStep = 0;
             }
-        }else{//TODO death animation
-            dye();
         }
     }
-    protected abstract void dye();
+    @Override
+    public void setDeathAnimation() {
+        //todo check if befaore is walking right or left
+        currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
+    }
 }

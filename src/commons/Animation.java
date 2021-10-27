@@ -14,16 +14,12 @@ public class Animation {
     private static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultImageTileSize();
     private final ArrayList<Image> animationTile = new ArrayList<>();
     private final int animationStep;
+
+
+
     private int currentAnimationStep;
-
-    public void setNumLoop(int numLoop) {
-        this.numLoop = numLoop;
-    }
-
-    private int numLoop = 1;
     private int currentNumLoop = 0;
     private float opacity = 1f;
-    private boolean finish = false;
 
     public Animation(String imagePath){
         animationTile.add(new ImageIcon(imagePath).getImage());
@@ -58,11 +54,10 @@ public class Animation {
 
         currentAnimationStep++;
         if(currentAnimationStep == animationStep-1){
-//            currentAnimationStep = 0;
             currentNumLoop++;
-//            finish = true;
         }else if(currentAnimationStep == animationStep)
             currentAnimationStep = 0;
+        //todo if death loop not checked max int problem
 
     }
 
@@ -78,14 +73,15 @@ public class Animation {
     }
 
 
-    public boolean finish() {
-        if(currentNumLoop >= numLoop)
-            finish = true;
-        return finish;
+    public int getNumLoop() {
+        return currentNumLoop;
     }
 
     public void resetAnimation(){
-        finish = false;
+        //maybe call it setupAnimation
+        //todo maybe non serve
+        currentAnimationStep = 0;
+
         currentNumLoop = 0;
         opacity = 1f;
     }
