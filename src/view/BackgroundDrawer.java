@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class BackgroundDrawer {
-    private static final int UPDATE_TICK_DELAY = 20;
+    private static final int UPDATE_TICK_DELAY = 40;
 
     private ArrayList<BufferedImage> image = new ArrayList<>();
     private JPanel panel;

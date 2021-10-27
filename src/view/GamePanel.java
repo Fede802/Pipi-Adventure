@@ -56,14 +56,7 @@ public class GamePanel extends ApplicationPanel{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-//        long startTime = System.nanoTime();
-//        if(count == 0 | count == 160)
-//            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-//        if(count == 160)
-//            count = 0;
-//        count++;
-//        System.out.println(TIMER_TICK);
-//        System.out.println("repaint");
+
         Graphics2D g2d = (Graphics2D) g;
         backgroundLayer_5.drawBackground(g2d);
         backgroundLayer_4.drawBackground(g2d);
@@ -73,13 +66,7 @@ public class GamePanel extends ApplicationPanel{
         mapDrawer.drawMap(g2d);
         gameBar.drawBar(g2d);
         entitiesDrawer.drawEntities(g2d,this);
-//        long endTime = System.nanoTime();
-//
-//        // get the difference between the two nano time valuess
-//        long timeElapsed = endTime - startTime;
-//
-//        System.out.println("Execution time in nanoseconds: " + timeElapsed);
-//        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+
     }
 
     public void updateGameBar(int score, int coin, int life, int bullet) {

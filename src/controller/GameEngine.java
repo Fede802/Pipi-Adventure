@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class GameEngine implements IGameEngine{
 
-    private static final int CHANGE_DAYTIME_SCORE = 2000;
+    private static final int CHANGE_DAYTIME_SCORE = 1000;
     private final int BULLET_INCREMENT_SCORE = 100;
     private final int TICK_TO_UPDATE_ANIMATION = 5;
     private PlayerHandler playerHandler = new PlayerHandler();
