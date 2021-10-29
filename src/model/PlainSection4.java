@@ -29,5 +29,6 @@ public class PlainSection4 extends MapSection{
     @Override
     protected void spawnEntities(int daytime) {
         mapEntities.add(new Snail(new EntityCoordinates.Builder(6,12).build()));
+        mapEntities.add(new Snail(new EntityCoordinates.Builder(7,12).build()));
     }
 }

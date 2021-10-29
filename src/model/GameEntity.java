@@ -94,7 +94,9 @@ public abstract class GameEntity implements IGameEntity{
 
     @Override
     public boolean isDead() {
-        return (isDying && animationList.get(currentAnimation).getNumLoop() == deathLoop);
+        Animation tempAnimation = animationList.get(currentAnimation);
+        tempAnimation.setCurrentAnimationStep(currentAnimationStep);
+        return (isDying && tempAnimation.getNumLoop() == deathLoop);
     }
 
 

@@ -25,6 +25,7 @@ public class Bullet extends GameEntity{
             currentWalkingStep++;
             if(currentWalkingStep == walkingStep)
                 updateEntityStatus();
+            System.out.println("bullet debug "+ entityCoordinates.getMapX());
         }
     }
 

@@ -102,8 +102,14 @@ public class Player extends GameEntity implements IPlayer{
 
     @Override
     public void shoot() {
-        bullets.add(new Bullet(new EntityCoordinates.Builder(entityCoordinates.getMapX()+1,entityCoordinates.getMapY())
-                .setStartMapIndex(entityCoordinates.getMapIndex())
+        int mapIndex = entityCoordinates.getMapIndex();
+        int mapX = entityCoordinates.getMapX()+1;
+        if(mapX == MapSection.SECTION_SIZE){
+            mapX = 0;
+            mapIndex++;
+        }
+        bullets.add(new Bullet(new EntityCoordinates.Builder(mapX,entityCoordinates.getMapY())
+                .setStartMapIndex(mapIndex)
                 .setTranslX(entityCoordinates.getTranslX())
                 .setTranslY(entityCoordinates.getTranslY())
                 .build()));

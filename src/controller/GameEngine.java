@@ -161,7 +161,7 @@ public class GameEngine implements IGameEngine{
     public void shoot() {
         if(GameData.getInstance().getCurrentBullets() > 0){
             GameModel.getInstance().shoot();
-            GameData.getInstance().updateCurrentBullets(-1);
+//            GameData.getInstance().updateCurrentBullets(-1);
         }
     }
 
