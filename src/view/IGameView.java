@@ -14,4 +14,6 @@ public interface IGameView {
     void setGameOverData(int currentScore, int recordScore, int currentCoin);
 
     void updateDayTime();
+
+    void setupDaytime();
 }

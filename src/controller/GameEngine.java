@@ -22,8 +22,6 @@ public class GameEngine implements IGameEngine{
     private int currentTick;
     private boolean updateAnimation = false;
     private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
-    long startTime;
-    boolean a = true;
     private static GameEngine instance = null;
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -173,6 +171,7 @@ public class GameEngine implements IGameEngine{
                 GameData.getInstance().getCurrentCoin(),
                 GameData.getInstance().getCurrentLife(),
                 GameData.getInstance().getCurrentBullets());
+        GameView.getInstance().setupDaytime();
         GameView.getInstance().isGameRunning(true);
         GameModel.getInstance().setup();
         playerHandler.setDying(false);

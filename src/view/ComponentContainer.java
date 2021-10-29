@@ -86,6 +86,8 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
 
     }
     private void openCurrentState(){
+        //todo fix with sfarfallameto
+        prev.setSize(getSize());
         prev.setVisible(false);
         curr.setVisible(true);
         setLayer(prev,DEFAULT_LAYER);

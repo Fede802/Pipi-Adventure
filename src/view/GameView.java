@@ -52,6 +52,11 @@ public class GameView implements IGameView{
         MAIN_FRAME.updateDayTime();
     }
 
+    @Override
+    public void setupDaytime() {
+        MAIN_FRAME.setupDaytime();
+    }
+
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();

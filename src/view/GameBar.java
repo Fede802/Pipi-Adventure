@@ -24,8 +24,8 @@ public class GameBar {
         try {
             coin = ImageIO.read(new File("Resources/Entities/Coin/Monetona.png"));
             lifeHeart = ImageIO.read(new File("Resources/GameImages/Cuoret.png"));
-            lostLifeHeart = ImageIO.read(new File("Resources/GameImages/Bordo_Cuore.png"));
-            missingLifeHeart = ImageIO.read(new File("Resources/GameImages/Cuore_Vuoto.png"));
+            lostLifeHeart = ImageIO.read(new File("Resources/GameImages/Cuore_Vuoto.png"));
+            missingLifeHeart = ImageIO.read(new File("Resources/GameImages/Bordo_Cuore.png"));
             pauseButton = ImageIO.read(new File("Resources/GameImages/Pause_Button2.png"));
             bullet = ImageIO.read(new File("Resources/GameImages/PIstola_Logo.png"));
         } catch (IOException e) {
@@ -45,7 +45,7 @@ public class GameBar {
             Image heart;
             if(i < life){
                 heart = lifeHeart;
-            }else if(life < GameConfig.getInstance().getCurrentMaxLife()){
+            }else if(i < GameConfig.getInstance().getCurrentMaxLife()){
                 heart = lostLifeHeart;
             }else{
                 heart = missingLifeHeart;

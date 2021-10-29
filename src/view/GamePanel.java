@@ -132,4 +132,12 @@ public class GamePanel extends ApplicationPanel{
         backgroundLayer_4.updateFrames();
         backgroundLayer_5.updateFrames();
     }
+
+    public void setupDayTime() {
+        backgroundLayer_1.reset();
+        backgroundLayer_2.reset();
+        backgroundLayer_3.reset();
+        backgroundLayer_4.reset();
+        backgroundLayer_5.reset();
+    }
 }

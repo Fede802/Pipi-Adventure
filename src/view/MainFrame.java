@@ -68,4 +68,8 @@ public class MainFrame extends JFrame {
     public void updateDayTime() {
         GAME_PANEL.updateDayTime();
     }
+
+    public void setupDaytime() {
+        GAME_PANEL.setupDayTime();
+    }
 }

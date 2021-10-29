@@ -81,5 +81,12 @@ public class BackgroundDrawer {
     public void updateFrames(){
         transition = true;
     }
+
+    public void reset(){
+        currentTick=0;
+        transition=false;
+        currentFrame=0;
+        descending=false;
+    }
 }
 

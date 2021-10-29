@@ -69,5 +69,8 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
         currentSlidingStep = 0;
         isSliding = false;
         isOnScreen = false;
+        //todo fix without sfarfallamento
+        setSize(componentContainer.getSize());
+//        setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
     }
 }
