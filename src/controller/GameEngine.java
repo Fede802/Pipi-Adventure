@@ -127,7 +127,7 @@ public class GameEngine implements IGameEngine{
                 animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),updateAnimation);
             else
                 animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),false);
-            if(type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
+            if(updateAnimation && type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
                 animation.switchOpacity();
                 playerHandler.updateImmortalityStep();
             }

@@ -165,6 +165,7 @@ public class Player extends GameEntity implements IPlayer{
     }
     @Override
     public void setup() {
+        currentAnimationStep = 0;
         getAnimation().resetAnimation();
         currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
         setAlive(true);
