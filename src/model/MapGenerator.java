@@ -86,8 +86,8 @@ public class MapGenerator {
     }
 
 
-    public Animation getEntityAnimation(EntityType entityType, int entityID){
-        return getEntity(entityType,entityID,EntityStatus.ALL).getAnimation();
+    public Animation getEntityAnimation(EntityType entityType, int entityID, boolean update){
+        return getEntity(entityType,entityID,EntityStatus.ALL).getAnimation(update);
     }
 
     public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus){

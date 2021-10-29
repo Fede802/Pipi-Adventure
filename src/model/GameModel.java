@@ -78,12 +78,12 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public Animation getEntityAnimation(EntityType entityType, int entityID) {
+    public Animation getEntityAnimation(EntityType entityType, int entityID, boolean update) {
         Animation animation= null;
         switch(entityType){
-            case PLAYER -> animation = PLAYER.getAnimation();
-            case COIN, ENEMY -> animation = MAP_GENERATOR.getEntityAnimation(entityType,entityID);
-            case BULLET -> animation = PLAYER.getBulletAnimation(entityID);
+            case PLAYER -> animation = PLAYER.getAnimation(update);
+            case COIN, ENEMY -> animation = MAP_GENERATOR.getEntityAnimation(entityType,entityID,update);
+            case BULLET -> animation = PLAYER.getBulletAnimation(entityID,update);
         }
         return animation;
     }

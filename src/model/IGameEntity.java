@@ -8,6 +8,7 @@ public interface IGameEntity {
 
     void move();
     EntityCoordinates getEntityCoordinates();
+    Animation getAnimation(boolean update);
     Animation getAnimation();
     boolean isAlive();
     void setAlive(boolean isAlive);

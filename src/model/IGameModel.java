@@ -19,7 +19,7 @@ public interface IGameModel {
     void shoot();
 
     EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus);
-    Animation getEntityAnimation(EntityType entityType, int entityID);
+    Animation getEntityAnimation(EntityType entityType, int entityID, boolean update);
     int getEntityCount(EntityType entityType);
     boolean isDead(EntityType entityType, int entityID);
 

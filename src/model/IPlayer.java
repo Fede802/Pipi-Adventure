@@ -14,7 +14,7 @@ public interface IPlayer {
     void shoot();
     void updateBulletStatus(int bulletID);
     EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus);
-    Animation getBulletAnimation(int entityID);
+    Animation getBulletAnimation(int entityID, boolean update);
     int bulletCount();
     boolean isBulletDead(int entityID);
     void setup();

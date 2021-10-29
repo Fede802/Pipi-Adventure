@@ -142,13 +142,10 @@ public class Player extends GameEntity implements IPlayer{
     }
 
 
+
     @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
-    }
-    @Override
-    public Animation getBulletAnimation(int entityID){
-        return bullets.get(entityID).getAnimation();
+    public Animation getBulletAnimation(int entityID, boolean update){
+        return bullets.get(entityID).getAnimation(update);
     }
 
     @Override

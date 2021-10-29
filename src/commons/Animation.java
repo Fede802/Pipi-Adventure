@@ -13,6 +13,9 @@ public class Animation {
 
     private static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultImageTileSize();
     private final ArrayList<Image> animationTile = new ArrayList<>();
+
+
+
     private final int animationStep;
 
 
@@ -84,5 +87,13 @@ public class Animation {
 
         currentNumLoop = 0;
         opacity = 1f;
+    }
+
+    public int getCurrentAnimationStep() {
+        return currentAnimationStep;
+    }
+
+    public void setCurrentAnimationStep(int currentAnimationStep) {
+        this.currentAnimationStep = currentAnimationStep;
     }
 }

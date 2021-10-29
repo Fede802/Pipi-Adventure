@@ -119,18 +119,19 @@ public class GameEngine implements IGameEngine{
     public Pair<EntityCoordinates, Animation> getEntityForRendering(int entityID) {
 
         Pair<EntityType,Integer> type = findEntityType(entityID);
-        Animation animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
+        Animation animation;
         EntityCoordinates entity = GameModel.getInstance().getEntityCoordinates(type.getKey(),type.getValue(), EntityStatus.ALL);
         renderingPair.updateKey(entity);
-        if(updateAnimation){
+
             if(!playerHandler.isDying() || type.getKey() == EntityType.PLAYER)
-            animation.update();
+                animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),updateAnimation);
+            else
+                animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),false);
             if(type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
                 animation.switchOpacity();
                 playerHandler.updateImmortalityStep();
             }
 //            System.out.println("update");
-        }
         renderingPair.updateValue(animation);
         return renderingPair;
     }

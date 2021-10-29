@@ -29,6 +29,7 @@ public abstract class GameEntity implements IGameEntity{
     protected int deathLoop = DEFAULT_DEATH_LOOP;
     protected int walkingStep = DEFAULT_WALKING_STEP;
     protected int currentWalkingStep;
+    protected int currentAnimationStep;
     //todo add control for animationstep
     protected EntityCoordinates entityCoordinates;
     protected boolean isAlive = true;
@@ -53,6 +54,17 @@ public abstract class GameEntity implements IGameEntity{
     @Override
     public EntityCoordinates getEntityCoordinates() {
         return entityCoordinates;
+    }
+
+    @Override
+    public Animation getAnimation(boolean update) {
+        Animation tempAnimation = animationList.get(currentAnimation);
+        tempAnimation.setCurrentAnimationStep(currentAnimationStep);
+        if(update){
+            tempAnimation.update();
+            currentAnimationStep = tempAnimation.getCurrentAnimationStep();
+        }
+        return animationList.get(currentAnimation);
     }
 
     @Override
