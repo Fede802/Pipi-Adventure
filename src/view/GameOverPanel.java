@@ -1,5 +1,6 @@
 package view;
 
+import controller.GameEngine;
 import controller.GameStateHandler;
 import utils.SoundManager;
 
@@ -33,11 +34,13 @@ public class GameOverPanel extends SlidableApplicationPanel {
     };
 
 
-    private String[] score = {
+    private String[] gameDataString = {
             "Score : ",
             "Record : ",
             "Coin : "
     };
+
+    private String[] gameDataValue = new String[3];
 
     private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
 
@@ -82,8 +85,8 @@ public class GameOverPanel extends SlidableApplicationPanel {
         }
 
         g2d.setColor(Color.BLACK);
-        for(int i = 0; i < score.length; i++) {
-            StringDrawer.drawString(g2d, score[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/10, this,StringDrawer.PADDING);;
+        for(int i = 0; i < gameDataString.length; i++) {
+            StringDrawer.drawString(g2d, gameDataString[i] + gameDataValue[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/10, this,StringDrawer.PADDING);;
         }
 
     }
@@ -100,11 +103,13 @@ public class GameOverPanel extends SlidableApplicationPanel {
             GameStateHandler.getInstance().startGame();
         }
         if(currentChoice == 1) {
-            // help
+            GameStateHandler.getInstance().openControlView();
         }
         if(currentChoice == 2) {
             GameStateHandler.getInstance().menu();
         }
+        GameEngine.getInstance().saveDataConfig();
+        System.out.println("datasaved");
     }
 
     @Override
@@ -156,14 +161,11 @@ public class GameOverPanel extends SlidableApplicationPanel {
     @Override
     public void stop() {
         super.stop();
-        score[0]="Score : ";
-        score[1]= "Record : ";
-        score[2]= "Coin : ";
     }
 
     public void setData(int currentScore, int recordScore, int currentCoin) {
-        score[0]+=String.valueOf(currentScore);
-        score[1]+=String.valueOf(recordScore);
-        score[2]+=String.valueOf(currentCoin);
+        gameDataValue[0]=String.valueOf(currentScore);
+        gameDataValue[1]=String.valueOf(recordScore);
+        gameDataValue[2]=String.valueOf(currentCoin);
     }
 }

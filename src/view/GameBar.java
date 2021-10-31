@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class GameBar {
     private final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
+    private int currentMaxLife;
     private Image coin,lifeHeart,lostLifeHeart,missingLifeHeart,pauseButton,bullet;
     private final JPanel panel;
     private int score,coinCollected,life,bullets;
@@ -32,7 +33,13 @@ public class GameBar {
             e.printStackTrace();
         }
     }
-
+    public void setupBar(int currentLife, int currentMaxLife, int currentBullets){
+        coinCollected = 0;
+        score = 0;
+        life = currentLife;
+        bullets = currentBullets;
+        this.currentMaxLife = currentMaxLife;
+    }
     public void updateBar(int score,int coinCollected,int life,int bullets){
         this.coinCollected = coinCollected;
         this.score = score;
@@ -45,7 +52,7 @@ public class GameBar {
             Image heart;
             if(i < life){
                 heart = lifeHeart;
-            }else if(i < GameConfig.getInstance().getCurrentMaxLife()){
+            }else if(i < currentMaxLife){
                 heart = lostLifeHeart;
             }else{
                 heart = missingLifeHeart;

@@ -1,5 +1,6 @@
 package controller;
 
+import model.GameData;
 import model.GameModel;
 import view.GameView;
 
@@ -38,6 +39,11 @@ public class GameStateHandler implements IGameStateHandler{public final static i
     @Override
     public void openUpgradePanel() {
         currentState = UPGRADE_STATE;
+        GameView.getInstance().setupUpgradePanel(
+                GameData.getInstance().getCurrentMaxLife(),
+                GameData.getInstance().getCurrentMaxBullets(),
+                GameData.getInstance().getTotalCoin()
+                );
         GameView.getInstance().openWindow();
     }
 

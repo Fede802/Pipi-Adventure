@@ -26,6 +26,7 @@ public class EntitiesDrawer {
     public void drawEntities(Graphics2D g2d, JPanel panel){
         //TODO panel in constructor
         int entityNum = GameEngine.getInstance().getTotalEntity();
+        int playerId = GameEngine.getInstance().getPlayerId();
         double mapTranslX = GameEngine.getInstance().getMapTranslX();
 //        g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
         for(int i = 0; i < entityNum; i++){
@@ -38,6 +39,16 @@ public class EntitiesDrawer {
                     renderedTileSize,
                     null
             );
+            if(i == playerId)
+                g2d.drawImage(gun,
+                        Math.toIntExact(Math.round((temp.getKey().getMapX()+ 1 + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX -(renderedTileSize/10) + temp.getKey().getTranslX())),
+                        Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
+                        renderedTileSize,
+                        renderedTileSize,
+                        null
+                );
+//                g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
+
 
         }
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

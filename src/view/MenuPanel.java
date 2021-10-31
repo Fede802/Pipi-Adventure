@@ -69,7 +69,7 @@ public class MenuPanel extends ApplicationPanel{
             GameStateHandler.getInstance().startGame();
         }
         if(currentChoice == 1) {
-            // upgrade
+            GameStateHandler.getInstance().openUpgradePanel();
         }
         if(currentChoice == 2){
             GameStateHandler.getInstance().openControlView();

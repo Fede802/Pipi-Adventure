@@ -27,6 +27,7 @@ public abstract class GameEntity implements IGameEntity{
     protected final EntityType ID;
     protected final HashMap<Integer, Animation> animationList = new HashMap<>();
     protected int deathLoop = DEFAULT_DEATH_LOOP;
+    protected int currentDeathloop;
     protected int walkingStep = DEFAULT_WALKING_STEP;
     protected int currentWalkingStep;
     protected int currentAnimationStep;
@@ -60,9 +61,13 @@ public abstract class GameEntity implements IGameEntity{
     public Animation getAnimation(boolean update) {
         Animation tempAnimation = animationList.get(currentAnimation);
         tempAnimation.setCurrentAnimationStep(currentAnimationStep);
+        if(isDying)
+            tempAnimation.setCurrentNumLoop(currentDeathloop);
         if(update){
             tempAnimation.update();
             currentAnimationStep = tempAnimation.getCurrentAnimationStep();
+            if(isDying)
+                currentDeathloop = tempAnimation.getCurrentNumLoop();
         }
         return animationList.get(currentAnimation);
     }
@@ -94,9 +99,7 @@ public abstract class GameEntity implements IGameEntity{
 
     @Override
     public boolean isDead() {
-        Animation tempAnimation = animationList.get(currentAnimation);
-        tempAnimation.setCurrentAnimationStep(currentAnimationStep);
-        return (isDying && tempAnimation.getNumLoop() == deathLoop);
+        return (isDying && currentDeathloop == deathLoop);
     }
 
 
@@ -134,6 +137,7 @@ public abstract class GameEntity implements IGameEntity{
         if(isAlive){
             setAlive(false);
             setDying(true);
+            currentAnimationStep = 0;
             setDeathAnimation();
         }else{
             setDying(false);

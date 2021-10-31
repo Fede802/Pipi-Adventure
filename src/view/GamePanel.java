@@ -89,17 +89,18 @@ public class GamePanel extends ApplicationPanel{
         if (e.getButton() == MouseEvent.BUTTON1){
             if (GameStateHandler.PAUSE_STATE != GameStateHandler.getInstance().getCurrentState() && this.pauseButton.contains(e.getX(),e.getY())){
                 GameStateHandler.getInstance().pause();
-            }else{
-                GameEngine.getInstance().setJumping(true);
             }
-        }else if (e.getButton() == MouseEvent.BUTTON3){
-            GameEngine.getInstance().shoot();
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if (e.getButton() == MouseEvent.BUTTON1){
+            if (!this.pauseButton.contains(e.getX(),e.getY()))
+                GameEngine.getInstance().setJumping(true);
+        }else if (e.getButton() == MouseEvent.BUTTON3){
+            GameEngine.getInstance().shoot();
+        }
     }
 
     @Override
@@ -139,5 +140,9 @@ public class GamePanel extends ApplicationPanel{
         backgroundLayer_3.reset();
         backgroundLayer_4.reset();
         backgroundLayer_5.reset();
+    }
+
+    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
+        gameBar.setupBar(currentLife,currentMaxLife,currentBullets);
     }
 }

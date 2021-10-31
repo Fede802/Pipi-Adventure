@@ -71,7 +71,7 @@ public class BackgroundDrawer {
     }
 
     public void drawBackground(Graphics2D g2d) {
-        g2d.drawImage(image.get(currentFrame), - (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom, null);
+        g2d.drawImage(image.get(currentFrame), - (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom,null);
         g2d.drawImage(image.get(currentFrame), panel.getWidth()- (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom, null);
     }
     public void setPaddingBottom(int paddingBottom){

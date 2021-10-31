@@ -16,4 +16,14 @@ public interface IGameEngine {
     void setupGame();
     void notifySizeChanged();
     int getTotalEntity();
+
+    void updateTotalCoin(int price);
+
+    void updateCurrentLife();
+
+    void updateCurrentBullets();
+
+    void saveDataConfig();
+
+    int getPlayerId();
 }

@@ -21,6 +21,9 @@ public class Animation {
 
 
     private int currentAnimationStep;
+
+
+
     private int currentNumLoop = 0;
     private float opacity = 1f;
 
@@ -95,5 +98,13 @@ public class Animation {
 
     public void setCurrentAnimationStep(int currentAnimationStep) {
         this.currentAnimationStep = currentAnimationStep;
+    }
+
+    public int getCurrentNumLoop() {
+        return currentNumLoop;
+    }
+
+    public void setCurrentNumLoop(int currentNumLoop) {
+        this.currentNumLoop = currentNumLoop;
     }
 }

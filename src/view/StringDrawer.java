@@ -33,7 +33,7 @@ public class StringDrawer {
         FontMetrics fm = g2d.getFontMetrics(font);
         int downShift = fm.getAscent();
         if(position == CENTER){
-            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2,downShift+paddingTop);
+            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2+paddingRight,downShift+paddingTop);
         }else{
             affineTransform.translate(paddingRight,downShift+paddingTop);
         }

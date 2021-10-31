@@ -16,4 +16,8 @@ public interface IGameView {
     void updateDayTime();
 
     void setupDaytime();
+
+    void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin);
+
+    void setupGameBar(int currentLife, int currentMaxLife, int currentBullets);
 }

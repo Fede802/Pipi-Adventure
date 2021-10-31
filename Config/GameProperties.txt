@@ -1,7 +1,7 @@
-maxLife=3
-maxBullets=10
-currentMaxLife=2
-currentMaxBullet=4
-totalCoin=0
+minBullets=4
 recordScore=0
-
+currentMaxBullet=4
+maxBullets=10
+totalCoin=10000
+maxLife=3
+currentMaxLife=0

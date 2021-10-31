@@ -98,8 +98,8 @@ public class GameEngine implements IGameEngine{
     }
 
     private void checkEntityCollision() {
-        //todo problem when dying
-        if(!playerHandler.isImmortal())
+        //todo problem when dying, dovrebbe essere fixato
+        if(!playerHandler.isImmortal() && !playerHandler.isDying())
             playerHandler.checkEntityCollision(enemyHandler);
         playerHandler.checkEntityCollision(coinHandler);
         bulletsHandler.checkEntityCollision(enemyHandler);
@@ -110,7 +110,6 @@ public class GameEngine implements IGameEngine{
             playerHandler.rigthCollision();
 
         bulletsHandler.rigthCollision();
-        //bullet and player with map
     }
 
 
@@ -161,17 +160,18 @@ public class GameEngine implements IGameEngine{
     public void shoot() {
         if(GameData.getInstance().getCurrentBullets() > 0){
             GameModel.getInstance().shoot();
-//            GameData.getInstance().updateCurrentBullets(-1);
+            GameData.getInstance().updateCurrentBullets(-1);
         }
     }
 
     @Override
     public void setupGame() {
         GameData.getInstance().resetData();
-        GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
-                GameData.getInstance().getCurrentCoin(),
+        GameView.getInstance().setupGameBar(
                 GameData.getInstance().getCurrentLife(),
-                GameData.getInstance().getCurrentBullets());
+                GameData.getInstance().getCurrentMaxLife(),
+                GameData.getInstance().getCurrentBullets()
+        );
         GameView.getInstance().setupDaytime();
         GameView.getInstance().isGameRunning(true);
         GameModel.getInstance().setup();
@@ -191,5 +191,33 @@ public class GameEngine implements IGameEngine{
     @Override
     public int getTotalEntity() {
         return playerHandler.getEntityNum()+bulletsHandler.getEntityNum()+coinHandler.getEntityNum()+enemyHandler.getEntityNum();
+    }
+
+    @Override
+    public void updateTotalCoin(int price) {
+        GameData.getInstance().updateTotalCoin(price);
+    }
+
+    @Override
+    public void updateCurrentLife() {
+        GameData.getInstance().updateCurrentMaxLife();
+    }
+
+    @Override
+    public void updateCurrentBullets() {
+        GameData.getInstance().updateCurrentMaxBullets();
+    }
+
+    @Override
+    public void saveDataConfig() {
+        GameData.getInstance().saveData();
+    }
+
+    @Override
+    public int getPlayerId() {
+        int id = -1;
+        if(!playerHandler.isDying())
+            id = coinHandler.getEntityNum()+enemyHandler.getEntityNum();
+        return id;
     }
 }

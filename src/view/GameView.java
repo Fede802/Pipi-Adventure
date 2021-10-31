@@ -57,6 +57,16 @@ public class GameView implements IGameView{
         MAIN_FRAME.setupDaytime();
     }
 
+    @Override
+    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
+        MAIN_FRAME.setupUpgradePanel(currentLife,currentBullets,totalCoin);
+    }
+
+    @Override
+    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
+        MAIN_FRAME.setupGameBar(currentLife,currentMaxLife,currentBullets);
+    }
+
     public static IGameView getInstance() {
         if (instance == null)
             instance = new GameView();

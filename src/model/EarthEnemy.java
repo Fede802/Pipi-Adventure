@@ -34,6 +34,9 @@ public abstract class EarthEnemy extends GameEntity{
     @Override
     public void setDeathAnimation() {
         //todo check if befaore is walking right or left
-        currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
+        if(currentAnimation == GameEntity.WALK_ANIMATION_RIGHT)
+            currentAnimation = GameEntity.DEATH_ANIMATION_RIGHT;
+        else
+            currentAnimation = GameEntity.DEATH_ANIMATION_LEFT;
     }
 }

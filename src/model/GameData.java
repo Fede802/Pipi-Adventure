@@ -5,9 +5,10 @@ import utils.GameConfig;
 public class GameData implements IGameData{
     private static IGameData instance = null;
     private static final int SCORE_INCREMENT = 2;
-    private static final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
-    private static final int MAX_BULLETS = GameConfig.getInstance().getMaxBullet();
     private int currentMaxLife = GameConfig.getInstance().getCurrentMaxLife();
+
+
+
     private int currentMaxBullets = GameConfig.getInstance().getCurrentMaxBullet();
     private int recordScore = GameConfig.getInstance().getRecordScore();
     private int totalCoin = GameConfig.getInstance().getTotalCoin();
@@ -24,6 +25,7 @@ public class GameData implements IGameData{
         }
         return instance;
     }
+
 
     @Override
     public int getCurrentLife() {
@@ -47,6 +49,26 @@ public class GameData implements IGameData{
         this.currentLife+=lifeVariation;
         if(currentLife > currentMaxLife)
             currentLife = currentMaxLife;
+    }
+
+    @Override
+    public int getCurrentMaxLife() {
+        return currentMaxLife;
+    }
+
+    @Override
+    public void updateCurrentMaxLife() {
+        currentMaxLife++;
+    }
+
+    @Override
+    public int getCurrentMaxBullets() {
+        return currentMaxBullets;
+    }
+
+    @Override
+    public void updateCurrentMaxBullets() {
+        currentMaxBullets++;
     }
 
     @Override
@@ -76,6 +98,11 @@ public class GameData implements IGameData{
     @Override
     public int getTotalCoin() {
         return totalCoin;
+    }
+
+    @Override
+    public void updateTotalCoin(int coinVariation) {
+        totalCoin-=coinVariation;
     }
 
     @Override
@@ -136,5 +163,17 @@ public class GameData implements IGameData{
         currentCoin = 0;
         currentBullets = currentMaxBullets;
         currentLife = currentMaxLife;
+    }
+
+    @Override
+    public void saveData() {
+        System.out.println(currentMaxLife);
+        GameConfig.getInstance().setCurrentMaxLife(currentMaxLife);
+        System.out.println(GameConfig.getInstance().getCurrentMaxLife());
+        GameConfig.getInstance().setCurrentMaxBullet(currentMaxBullets);
+        GameConfig.getInstance().setTotalCoin(totalCoin);
+        GameConfig.getInstance().setRecordScore(recordScore);
+        System.out.println("saving data");
+        GameConfig.getInstance().saveData();
     }
 }

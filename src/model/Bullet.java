@@ -6,9 +6,22 @@ import commons.EntityType;
 import utils.GameDataConfig;
 import view.GameOverPanel;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Bullet extends GameEntity{
 
-    private static final Animation WALK_ANIMATION_RIGHT = new Animation("Resources/Entities/Player/Guns/Nuovo_Proiettile.gif");
+    private static final Animation WALK_ANIMATION_RIGHT = new Animation(new ArrayList<>(
+            Arrays.asList(new File("resources/entities/Player/Guns/Nuovo_Proiettile1.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile2.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile3.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile4.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile5.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile6.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile7.png"),
+                    new File("resources/entities/Player/Guns/Nuovo_Proiettile8.png"))
+    ));
 
     public Bullet(EntityCoordinates entityCoordinates) {
         super(EntityType.BULLET,entityCoordinates);

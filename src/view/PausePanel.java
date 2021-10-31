@@ -1,5 +1,6 @@
 package view;
 
+import controller.GameEngine;
 import controller.GameStateHandler;
 import utils.SoundManager;
 
@@ -74,14 +75,7 @@ public class PausePanel extends SlidableApplicationPanel{
             else {
                 g2d.setColor(Color.BLACK);
             }
-            switch(i){
-                case 0:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2, this.getWidth()/2 ,this,StringDrawer.CENTER);
-                    break;
-                case 2:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + 50*i, this.getWidth()/2 ,this,StringDrawer.CENTER);
-                    break;
-                default:StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2+ 50*i, this.getWidth()/2 ,this,StringDrawer.CENTER);
-                    break;
-            }
+            StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,this.getHeight()/2 + 50*i, 0 ,this,StringDrawer.CENTER);
             double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
             double strHeight = StringDrawer.getStringHeight(g2d,font);
             buttons.get(i).setRect((this.getWidth()-strWidth)/2,this.getHeight()/2 + 50*i,strWidth,(strHeight));
@@ -91,12 +85,14 @@ public class PausePanel extends SlidableApplicationPanel{
 
     private void select() {
         if(currentChoice == 0) {
+            GameEngine.getInstance().saveDataConfig();
             GameStateHandler.getInstance().startGame();
         }
         if(currentChoice == 1) {
             GameStateHandler.getInstance().resumeGame();
         }
         if(currentChoice == 2) {
+            GameEngine.getInstance().saveDataConfig();
             GameStateHandler.getInstance().menu();
         }
     }

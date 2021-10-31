@@ -29,12 +29,14 @@ public class MainFrame extends JFrame {
 //        GAME_OVER.setVisible(false);
         PAUSE.setVisible(false);
         HELP.setVisible(false);
+        UPGRADE_PANEL.setVisible(false);
 
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.MENU_STATE,MAIN_MENU));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.GAME_STATE,GAME_PANEL));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.PAUSE_STATE,PAUSE));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.GAME_OVER_STATE,GAME_OVER));
         APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.HELP_STATE,HELP));
+        APPLICATION_SCREEN.add(new Pair<>(GameStateHandler.UPGRADE_STATE,UPGRADE_PANEL));
 
         this.add(APPLICATION_SCREEN);
 //        this.setPreferredSize(MINIMUM_SIZE);
@@ -71,5 +73,13 @@ public class MainFrame extends JFrame {
 
     public void setupDaytime() {
         GAME_PANEL.setupDayTime();
+    }
+
+    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
+        UPGRADE_PANEL.setup(currentLife, currentBullets, totalCoin);
+    }
+
+    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
+        GAME_PANEL.setupGameBar(currentLife,currentMaxLife,currentBullets);
     }
 }
