@@ -1,43 +1,57 @@
-package View;
+package view;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Controller.GameEngine;
+import commons.Animation;
+import commons.EntityCoordinates;
+import commons.Pair;
+import controller.GameEngine;
+import utils.GameConfig;
+import utils.GameDataConfig;
+import utils.ResouceLoader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class EntitiesDrawer {
-    private static final int TICK_TO_UPDATE_ANIMATION = 3;
-    private static ArrayList<Pair<EntityCoordinates, Animation>> entitiesCoordinates;
-    private static EntityCoordinates entityPos;
-    private static Animation animation;
-    private static int tick;
-    private EntitiesDrawer(){}
-    public static void drawEntities(Graphics2D g2d, JPanel panel){
-        //TODO get entitiesID
-        entitiesCoordinates = GameEngine.getInstance().getEntitiesCoordinates();
 
-        for(int i = 0; i < entitiesCoordinates.size(); i++){
-            entityPos = entitiesCoordinates.get(i).getKey();
-            animation = entitiesCoordinates.get(i).getValue();
-            if(entitiesCoordinates.get(i).getKey().getID() == 0){
-                g2d.drawImage(animation.getFrame(), entityPos.getSTART_MAP_X() * MapDrawer.RENDERED_TILE_SIZE, panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-            }else if(entitiesCoordinates.get(i).getKey().getID() == 3){
-                //drawBullets
-            }else{
-                g2d.drawImage(animation.getFrame(), (entityPos.getMapX() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-            }
-            if(tick == TICK_TO_UPDATE_ANIMATION){
-                animation.update();
-            }
-        }
-        if(tick == TICK_TO_UPDATE_ANIMATION){
-            tick = 0;
-        }
-        tick++;
+    private Image gun;
+    private int renderedTileSize;
+    private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
 
+    public EntitiesDrawer(){}
+
+    public void drawEntities(Graphics2D g2d, JPanel panel){
+        //TODO panel in constructor
+        int entityNum = GameEngine.getInstance().getTotalEntity();
+        int playerId = GameEngine.getInstance().getPlayerId();
+        double mapTranslX = GameEngine.getInstance().getMapTranslX();
+//        g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
+        for(int i = 0; i < entityNum; i++){
+            Pair<EntityCoordinates,Animation> temp = GameEngine.getInstance().getEntityForRendering(i);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, temp.getValue().getOpacity()));
+            g2d.drawImage(temp.getValue().getFrame(),
+                    Math.toIntExact(Math.round((temp.getKey().getMapX() + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX + temp.getKey().getTranslX())),
+                    Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
+                    renderedTileSize,
+                    renderedTileSize,
+                    null
+            );
+            if(i == playerId)
+                g2d.drawImage(gun,
+                        Math.toIntExact(Math.round((temp.getKey().getMapX()+ 1 + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX -(renderedTileSize/10) + temp.getKey().getTranslX())),
+                        Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
+                        renderedTileSize,
+                        renderedTileSize,
+                        null
+                );
+        }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+    }
+    public void updateRenderedTileSize(final int renderedTileSize){
+        this.renderedTileSize = renderedTileSize;
+    }
+
+    public void getRes(){
+        gun = ResouceLoader.getInstance().getRes("res\\images\\entities\\player\\Pistola.png").get(0);
     }
 }

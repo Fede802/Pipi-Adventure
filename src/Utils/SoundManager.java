@@ -1,13 +1,12 @@
-package Utils;
+package utils;
 
 import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
 public class SoundManager {
-
-    private static boolean isAudioActive = Config.getInstance().isAudioActive();
-    private static int audioVolume = Config.getInstance().getAudioVolume();
+    private static boolean isAudioActive = SoundConfig.getInstance().isAudioActive();
+    private static boolean isMusicActive;
 
     private Clip clip;
 
@@ -55,16 +54,16 @@ public class SoundManager {
     }
 
     public void playOnce() {
-        if(isAudioActive)
-        this.clip.stop();
-        this.clip.setMicrosecondPosition(0);
-        this.clip.start();
+        if(isAudioActive){
+            this.clip.stop();
+            this.clip.setMicrosecondPosition(0);
+            this.clip.start();}
     }
 
     public  void startLoop(){
-        if(isAudioActive)
-        this.clip.setMicrosecondPosition(0);
-        this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if(isAudioActive){
+            this.clip.setMicrosecondPosition(0);
+            this.clip.loop(Clip.LOOP_CONTINUOUSLY);}
     }
 
     public  void stopLoop(){
@@ -72,11 +71,7 @@ public class SoundManager {
     }
 
     public static void setIsAudioActive(boolean isAudioActive) {
+        SoundConfig.getInstance().setAudioActive(isAudioActive);
         SoundManager.isAudioActive = isAudioActive;
     }
-
-    public static void setAudioVolume(int audioVolume) {
-        SoundManager.audioVolume = audioVolume;
-    }
 }
-

@@ -1,16 +1,28 @@
-package Controller;
+package controller;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Model.GameModel;
-import Utils.Config;
-import View.GameView;
+import commons.*;
+import model.GameData;
+import model.GameModel;
+import utils.GameDataConfig;
+import view.GameView;
 
 import java.util.ArrayList;
 
 public class GameEngine implements IGameEngine{
-    private static final JumpAndFallHandler JUMP_AND_FALL_HANDLER = new JumpAndFallHandler();
+
+    private static final int CHANGE_DAYTIME_SCORE = 1000;
+    private final int BULLET_INCREMENT_SCORE = 100;
+    private final int TICK_TO_UPDATE_ANIMATION = 5;
+    private PlayerHandler playerHandler = new PlayerHandler();
+    private EnemyHandler enemyHandler = new EnemyHandler();
+    private BulletsHandler bulletsHandler = new BulletsHandler();
+    private CoinHandler coinHandler = new CoinHandler();
+    private Pair<EntityCoordinates,Animation> renderingPair = new Pair<>(null,null);
+    private Pair<EntityType,Integer> entity = new Pair<>(null,null);
+    private int currentTick;
+    private boolean shoot = true;
+    private boolean updateAnimation = false;
+    private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
     private static GameEngine instance = null;
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -18,73 +30,206 @@ public class GameEngine implements IGameEngine{
             instance = new GameEngine();
         return instance;
     }
-
     @Override
     public void updateGameStatus() {
-        if (GameModel.getInstance().isPlayerDead())
-            GameStateHandler.getInstance().gameOver();
-        //increment map traslation and if necessary update generatedMap
-        if(!GameModel.getInstance().isPlayerDying())
-            updateMap();
-        //check if player(+ bullets) has to jump or fall or collide with entity or map
-        updatePlayer();
-        //move entity and check if they collide with bullets or player
+        if (shoot){
+            shoot();
+            shoot = false;
+        }
+        updateAnimation = false;
         updateEntity();
-        CollisionHandler.entityCollision();
-        GameModel.getInstance().updateScore();
-        GameView.getInstance().updateGameBar(GameModel.getInstance().getScore(),GameModel.getInstance().getCoin(),GameModel.getInstance().getLife(),0);
-        //TODO deadly collision detection -> gameOver or add coin or !isAlive entity
-        //TODO update score
+        if(!playerHandler.isDying()) {
+            GameModel.getInstance().moveEntity();
+            playerHandler.jumpAndFall();
+            if (playerHandler.mapUpdate())
+                GameModel.getInstance().updateMap();
+            GameData.getInstance().updateCurrentScore();
+            if (GameData.getInstance().getCurrentScore() % BULLET_INCREMENT_SCORE == 0)
+                GameData.getInstance().updateCurrentBullets();
+            if (GameData.getInstance().getCurrentScore() % CHANGE_DAYTIME_SCORE == 0)
+                GameView.getInstance().updateDayTime();
+            checkMapCollision();
+            checkEntityCollision();
+            GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
+                    GameData.getInstance().getCurrentCoin(),
+                    GameData.getInstance().getCurrentLife(),
+                    GameData.getInstance().getCurrentBullets());
+        }
+        if(currentTick == TICK_TO_UPDATE_ANIMATION){
+            currentTick = 0;
+            updateAnimation = true;
+        }else{
+            currentTick++;
+        }
+
+    }
+    private Pair<EntityType,Integer> findEntityType(int entityID){
+        int coinCount = GameModel.getInstance().getEntityCount(EntityType.COIN);
+        int enemyCount = GameModel.getInstance().getEntityCount(EntityType.ENEMY);
+        EntityType type;
+        if(entityID < coinCount){
+            type = EntityType.COIN;
+        }else if(entityID < coinCount+enemyCount){
+            entityID-=coinCount;
+            type = EntityType.ENEMY;
+        }else if(entityID == coinCount+enemyCount){
+            type = EntityType.PLAYER;
+        }else{
+            entityID-=(coinCount+enemyCount+1);
+            type = EntityType.BULLET;
+        }
+        entity.updateKey(type);
+        entity.updateValue(entityID);
+        return entity;
+    }
+    private void updateEntity() {
+        boolean isDead;
+        Pair<EntityType,Integer> type;
+        int totalEntity =getTotalEntity();
+        for(int entityID = 0; entityID < totalEntity; entityID++){
+            type=findEntityType(entityID);
+            isDead = GameModel.getInstance().isDead(type.getKey(),type.getValue());
+            if(isDead)
+                if (type.getKey() == EntityType.PLAYER) {
+                    //TODO save best score
+                    GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoin());
+                    GameStateHandler.getInstance().gameOver();
+                } else {
+                    GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue());
+                    System.out.println("dead");
+                }
+
+
+        }
     }
 
-    @Override
-    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
-        return GameModel.getInstance().getEntitiesCoordinates();
+    private void checkEntityCollision() {
+        //todo problem when dying, dovrebbe essere fixato
+//        if(!playerHandler.isImmortal() && !playerHandler.isDying())
+//            playerHandler.checkEntityCollision(enemyHandler);
+//        playerHandler.checkEntityCollision(coinHandler);
+        bulletsHandler.checkEntityCollision(enemyHandler);
     }
 
+    private void checkMapCollision() {
+//        if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
+//            playerHandler.rigthCollision();
+//
+//        bulletsHandler.rigthCollision();
+    }
+
+
+
     @Override
-    public int getTileData(final int mapIndex, final int mapX, final int mapY) {
+    public Pair<EntityCoordinates, Animation> getEntityForRendering(int entityID) {
+
+        Pair<EntityType,Integer> type = findEntityType(entityID);
+        Animation animation;
+        EntityCoordinates entity = GameModel.getInstance().getEntityCoordinates(type.getKey(),type.getValue(), EntityStatus.ALL);
+        renderingPair.updateKey(entity);
+
+            if(!playerHandler.isDying() || type.getKey() == EntityType.PLAYER)
+                animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),updateAnimation);
+            else
+                animation = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue(),false);
+            if(updateAnimation && type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
+                animation.switchOpacity();
+                playerHandler.updateImmortalityStep();
+            }
+//            System.out.println("update");
+        renderingPair.updateValue(animation);
+        return renderingPair;
+    }
+
+
+
+    @Override
+    public int getTileData(int mapIndex, int mapX, int mapY) {
         return GameModel.getInstance().getTileData(mapIndex,mapX,mapY);
     }
 
-    @Override
-    public int getSectionSize() {
-        return GameModel.getInstance().getSectionSize();
-    }
 
-    @Override
-    public int getMapLength() {
-        return GameModel.getInstance().getMapLength();
-    }
-
-    @Override
-    public int getMapTraslX() {
-        return GameModel.getInstance().getMapTraslX();
-    }
 
     @Override
     public void setJumping(boolean isJumping) {
-        if(!CollisionHandler.playerBottomCollision()&&!GameModel.getInstance().isPlayerJumping())
+        if(!playerHandler.bottomCollision()&&!GameModel.getInstance().isPlayerJumping())
             isJumping = false;
         GameModel.getInstance().setPlayerJumping(isJumping);
     }
 
-    private void updateMap(){
-        GameModel.getInstance().updateMapTraslX();
-        if(GameModel.getInstance().getMapTraslX() >= Config.getInstance().getRenderedTileSize()*GameModel.getInstance().getSectionSize()){
-            GameModel.getInstance().setMapTraslX(0);
-            GameModel.getInstance().updateMap();
+    @Override
+    public double getMapTranslX() {
+        return playerHandler.playerTotalTranslation();
+    }
+
+    @Override
+    public void shoot() {
+        if(GameData.getInstance().getCurrentBullets() > 0){
+            GameModel.getInstance().shoot();
+            GameData.getInstance().updateCurrentBullets(-1);
         }
     }
 
-    private void updatePlayer(){
-        GameModel.getInstance().updatePlayerMapPosition();
-        JUMP_AND_FALL_HANDLER.jumpAndFall();
-        //CollisionHandler.playerRigthCollision -> dead
-        //
+    @Override
+    public void setupGame() {
+        GameData.getInstance().resetData();
+        GameView.getInstance().setupGameBar(
+                GameData.getInstance().getCurrentLife(),
+                GameData.getInstance().getCurrentMaxLife(),
+                GameData.getInstance().getCurrentBullets()
+        );
+        GameView.getInstance().setupDaytime();
+        GameView.getInstance().isGameRunning(true);
+        GameModel.getInstance().setup();
+        playerHandler.setDying(false);
+        playerHandler.setImmortal(false);
     }
 
-    private void updateEntity(){
-        GameModel.getInstance().updateEntitiesMapPosition();
+    @Override
+    public void notifySizeChanged() {
+        currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+        GameView.getInstance().notifySizeChanged();
+        GameModel.getInstance().changeCoordinate();
+    }
+
+
+
+    @Override
+    public int getTotalEntity() {
+        return playerHandler.getEntityNum()+bulletsHandler.getEntityNum()+coinHandler.getEntityNum()+enemyHandler.getEntityNum();
+    }
+
+    @Override
+    public void updateTotalCoin(int price) {
+        GameData.getInstance().updateTotalCoin(price);
+    }
+
+    @Override
+    public void updateCurrentLife() {
+        GameData.getInstance().updateCurrentMaxLife();
+    }
+
+    @Override
+    public void updateCurrentBullets() {
+        GameData.getInstance().updateCurrentMaxBullets();
+    }
+
+    @Override
+    public void saveDataConfig() {
+        GameData.getInstance().saveData();
+    }
+
+    @Override
+    public int getPlayerId() {
+        int id = -1;
+        if(!playerHandler.isDying())
+            id = coinHandler.getEntityNum()+enemyHandler.getEntityNum();
+        return id;
+    }
+
+    @Override
+    public void setResources() {
+        GameView.getInstance().getResources();
+        GameModel.getInstance().getResources();
     }
 }

@@ -1,4 +1,6 @@
-package Model;
+package model;
+
+import commons.EntityCoordinates;
 
 public class PlainStartSection extends MapSection{
     public PlainStartSection(){
@@ -18,15 +20,14 @@ public class PlainStartSection extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
+                {8,8,32,8,8,8,8,8,8,29,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
     @Override
-    protected void spawnEntities() {
-
+    protected void spawnEntities(int daytime) {
+        //nothing to spawn
+//        mapEntities.add(new Coin(new EntityCoordinates.Builder(3,12).build()));
     }
 }
-
-

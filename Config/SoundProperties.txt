@@ -1,2 +1,1 @@
-audioVolume=50
-isAudioActive=true
+isAudioActive=false

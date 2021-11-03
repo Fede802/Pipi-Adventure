@@ -1,20 +1,17 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
+import commons.*;
+import utils.GameDataConfig;
 
 import java.util.ArrayList;
 
 public class GameModel implements IGameModel{
-
     private static final MapGenerator MAP_GENERATOR = new MapGenerator();
-    private static final GameStatus GAME_STATUS = new GameStatus();
-    private static final Player PLAYER = new Player(new EntityCoordinates.Builder(2,12,GameEntity.PLAYER_ID)
-                                                    .setMapIndex(0)
-                                                    .build());
+    //    private static final GameStatus GAME_STATUS = new GameStatus();
+    private static  Player PLAYER;
 
     private static GameModel instance = null;
+
     private GameModel(){}
     public static IGameModel getInstance() {
         if (instance == null){
@@ -26,21 +23,7 @@ public class GameModel implements IGameModel{
     @Override
     public void updateMap() {
         MAP_GENERATOR.updateMap();
-    }
-
-    @Override
-    public int getMapTraslX() {
-        return MAP_GENERATOR.getMapTraslX();
-    }
-
-    @Override
-    public void setMapTraslX(final int mapTraslX) {
-        MAP_GENERATOR.setMapTraslX(mapTraslX);
-    }
-
-    @Override
-    public void updateMapTraslX() {
-        MAP_GENERATOR.updateMapTraslX();
+        PLAYER.updateBulletsIndex();
     }
 
     @Override
@@ -49,56 +32,10 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public int getSectionSize() {
-        return MapSection.SECTION_SIZE;
+    public void changeDaytime() {
+        MAP_GENERATOR.updateDayTime();
     }
 
-    @Override
-    public int getMapLength() {
-        return MapGenerator.MAP_LENGHT;
-    }
-
-    @Override
-    public EntityCoordinates getPlayerCoordinates() {
-        return PLAYER.getEntityCoordinates();
-    }
-
-    @Override
-    public ArrayList<Pair<Integer,EntityCoordinates>> getPlayerBullets() {
-        return PLAYER.getBullets();
-    }
-
-    @Override
-    public ArrayList<Pair<Integer, EntityCoordinates>> getEntities() {
-        return MAP_GENERATOR.getEntities();
-    }
-
-    @Override
-    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
-        ArrayList<Pair<EntityCoordinates, Animation>> entitiesCoordinates = MAP_GENERATOR.getMapEntitiesCoordinates();
-        entitiesCoordinates.add(new Pair<>(PLAYER.getEntityCoordinates(), PLAYER.getAnimation()));
-        for(int i = 0; i < PLAYER.getBullets().size();i++)
-            entitiesCoordinates.add(new Pair<>(PLAYER.getBullets().get(i).getValue(), PLAYER.getBulletAnimation(i)));
-        return entitiesCoordinates;
-    }
-
-    @Override
-    public void updateEntitiesStatus(final int entityID) {
-        MAP_GENERATOR.updateEntitiesStatus(entityID);
-    }
-
-    @Override
-    public void updatePlayerStatus(int entityID) {
-        if(entityID == -1){
-            PLAYER.setAlive(false);
-            PLAYER.setDying(true);
-        }
-    }
-
-    @Override
-    public void updatePlayerMapPosition() {
-        PLAYER.move();
-    }
 
     @Override
     public boolean isPlayerJumping() {
@@ -121,47 +58,108 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public void updateEntitiesMapPosition() {
-        MAP_GENERATOR.updateEntitiesMapPosition();
+    public void shoot() {
+        PLAYER.shoot();
+        System.out.println("shoot");
+    }
+
+
+
+
+    @Override
+    public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus) {
+        EntityCoordinates entity = null;
+        switch(entityType){
+            //todo player when is not alive has to return null as other method?
+            case PLAYER -> entity = PLAYER.getEntityCoordinates();
+            case COIN, ENEMY -> entity = MAP_GENERATOR.getEntityCoordinates(entityType,entityID,entityStatus);
+            case BULLET -> entity = PLAYER.getBulletCoordinate(entityID,entityStatus);
+        }
+        return entity;
     }
 
     @Override
-    public void addCoin() {
-        GAME_STATUS.addCoin();
+    public Animation getEntityAnimation(EntityType entityType, int entityID, boolean update) {
+        Animation animation= null;
+        switch(entityType){
+            case PLAYER -> animation = PLAYER.getAnimation(update);
+            case COIN, ENEMY -> animation = MAP_GENERATOR.getEntityAnimation(entityType,entityID,update);
+            case BULLET -> animation = PLAYER.getBulletAnimation(entityID,update);
+        }
+        return animation;
     }
 
     @Override
-    public void updateScore() {
-        GAME_STATUS.updateScore();
+    public boolean isDead(EntityType entityType, int entityID) {
+        boolean dead = false;
+        switch(entityType){
+            case PLAYER -> dead = PLAYER.isDead();
+            case COIN, ENEMY -> dead = MAP_GENERATOR.isDead(entityType,entityID);
+            case BULLET -> dead = PLAYER.isBulletDead(entityID);
+        }
+        return dead;
+    }
+
+
+
+    @Override
+    public int getEntityCount(EntityType entityType) {
+        int count = 0;
+        switch(entityType){
+            case PLAYER -> count = 1;
+            case COIN, ENEMY -> count = MAP_GENERATOR.entityCount(entityType);
+            case BULLET -> count = PLAYER.bulletCount();
+        }
+        return count;
+    }
+
+
+
+    @Override
+    public void updateEntitiesStatus(EntityType entityType, int entityID) {
+        switch(entityType){
+            case PLAYER -> PLAYER.updateEntityStatus();
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntitiesStatus(entityType,entityID);
+            case BULLET -> PLAYER.updateBulletStatus(entityID);
+        }
+    }
+
+
+    @Override
+    public void changeCoordinate() {
+        //todo controlla sto null
+        if(PLAYER!= null)
+        PLAYER.changeCoordinate();
+        MAP_GENERATOR.changeCoordinate();
     }
 
     @Override
-    public int getScore() {
-        return GAME_STATUS.getScore();
+    public void setup() {
+        MAP_GENERATOR.generateMap();
+        PLAYER.getEntityCoordinates().setMapX(GameDataConfig.getInstance().getPlayerStartMapX());
+        PLAYER.getEntityCoordinates().setMapY(GameDataConfig.getInstance().getPlayerStartMapY());
+        PLAYER.getEntityCoordinates().setMapIndex(0);
+        PLAYER.getEntityCoordinates().setTranslX(0);
+        PLAYER.getEntityCoordinates().setTranslY(0);
+        PLAYER.setup();
     }
 
     @Override
-    public int getCoin() {
-        return GAME_STATUS.getCoin();
+    public void getResources() {
+        System.out.println("LOAD MODEL");
+        Coin.load();
+        Snail.load();
+        Bullet.load();
+        Player.load();
+        PLAYER = new Player(new EntityCoordinates.Builder(GameDataConfig.getInstance().getPlayerStartMapX(), GameDataConfig.getInstance().getPlayerStartMapY()).build());
     }
 
     @Override
-    public void looseLife() {
-        GAME_STATUS.looseLife();
+    public void moveEntity() {
+        PLAYER.move();
+        PLAYER.moveBullets();
+        MAP_GENERATOR.moveEntities();
     }
 
-    @Override
-    public int getLife() {
-        return GAME_STATUS.getLife();
-    }
-
-    @Override
-    public boolean isPlayerDead() {
-        return PLAYER.isDead();
-    }
-
-    @Override
-    public boolean isPlayerDying() {
-        return PLAYER.isDying();
-    }
 }
+
