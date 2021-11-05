@@ -5,7 +5,7 @@ defaultTilesetTileSize=160
 defaultNumRowsOfTileset=5
 defaultNumColumnsOfTileset=7
 minTileToRender=20
-playerStartMapX=2
+playerStartMapX=5
 playerStartMapY=12
 
 

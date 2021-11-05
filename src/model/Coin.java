@@ -11,12 +11,12 @@ public class Coin extends GameEntity{
 
     public Coin(EntityCoordinates entityCoordinates) {
         super(EntityType.COIN,entityCoordinates);
-        System.out.println("create coin \n\n\n\n\n\n\n\n\n\n\n");
-        if(WALK_ANIMATION_RIGHT == null)
-            System.out.println("null anui");
+//        System.out.println("create coin \n\n\n\n\n\n\n\n\n\n\n");
+//        if(WALK_ANIMATION_RIGHT == null)
+//            System.out.println("null anui");
         animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
         animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
-        deathLoop = 10;
+        deathLoop = 5;
 
     }
 
@@ -37,4 +37,8 @@ public class Coin extends GameEntity{
         System.out.println("load animation coin");
     }
 
+    @Override
+    public boolean isDead() {
+        return super.isDead();
+    }
 }

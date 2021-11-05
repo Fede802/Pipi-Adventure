@@ -9,11 +9,19 @@ public class SoundConfig extends Config{
         super(SOUND_PROPERTIES_URL);
     }
 
-    public boolean isAudioActive(){
-        return properties.getProperty("isAudioActive","true").equals("true");
+    public boolean isSoundActive(){
+        return properties.getProperty("isSoundActive").equals("true");
     }
-    public void setAudioActive(final boolean isAudioActive){
-        properties.setProperty("isAudioActive",String.valueOf(isAudioActive));
+    public void setSoundActive(final boolean isSoundActive){
+        properties.setProperty("isSoundActive",String.valueOf(isSoundActive));
+        saveData();
+    }
+    public boolean isMusicActive(){
+        return properties.getProperty("isMusicActive").equals("true");
+    }
+    public void setMusicActive(final boolean isMusicActive){
+        properties.setProperty("isMusicActive",String.valueOf(isMusicActive));
+        saveData();
     }
 
 

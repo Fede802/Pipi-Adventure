@@ -5,21 +5,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResouceLoader {
+public class ResourceLoader {
 
     public static final int NUM_ROWS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumRowsOfTileset();
     public static final int NUM_COLUMNS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumColumnsOfTileset();
     public static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultTilesetTileSize();
     public static final int NUM_TILES = NUM_COLUMNS_OF_TILESET*NUM_ROWS_OF_TILESET;
 
-    private static ResouceLoader instance = null;
+    private static ResourceLoader instance = null;
     private Map<String,Image> resources = new HashMap<>();
     private Map<String, ArrayList<Image>> tileSets = new HashMap<>();
     private int numFile;
@@ -130,6 +127,15 @@ public class ResouceLoader {
         else if(!path.contains(".")){
             File f = new File(path);
             File[] tempFiles = f.listFiles();
+            for (int i = 0; i < tempFiles.length; i++) {
+                for (int j = 0; j < tempFiles.length; j++) {
+                    if(tempFiles[i].getPath().length() < tempFiles[j].getPath().length()){
+                        File temp = tempFiles[j];
+                        tempFiles[j] = tempFiles[i];
+                        tempFiles[i] = temp;
+                    }
+                }
+            }
             tempRes = new ArrayList<>();
             for(int i = 0; i<tempFiles.length; i++) {
                 if(path.contains("Luma"))
@@ -143,9 +149,9 @@ public class ResouceLoader {
         return tempRes;
     }
 
-    public static ResouceLoader getInstance() {
+    public static ResourceLoader getInstance() {
         if (instance == null)
-            instance = new ResouceLoader();
+            instance = new ResourceLoader();
         return instance;
     }
 

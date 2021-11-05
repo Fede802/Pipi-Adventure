@@ -2,10 +2,9 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -15,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 public class PausePanel extends SlidableApplicationPanel{
@@ -39,9 +37,9 @@ public class PausePanel extends SlidableApplicationPanel{
 
     public PausePanel(ComponentContainer componentContainer){
         super(componentContainer);
-        audio.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav"));
-        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav"));
-        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav"));
+        audio.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav",SoundManager.SOUND));
+        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
     @Override
     protected void timerActionEvent(ActionEvent e) {
@@ -143,8 +141,8 @@ public class PausePanel extends SlidableApplicationPanel{
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\pause\\Pause_BG.png"), this,DX);;
-        pipiRun = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\pause\\Pause_BackGround_GIF.gif").get(0);
-        frame = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\PictureFrame.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\pause\\Pause_BG.png"), this,DX);;
+        pipiRun = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\pause\\Pause_BackGround_GIF.gif").get(0);
+        frame = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\PictureFrame.png").get(0);
     }
 }

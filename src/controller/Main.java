@@ -2,21 +2,26 @@ package controller;
 
 
 import utils.FontLoader;
-import utils.ResouceLoader;
+
 import javax.swing.SwingUtilities;
+import java.util.Random;
 
 
 public class Main {
     private static int i;
 
     public static void main(String[] args) {
+//        Random r = new Random();
+//        for(int i = 0; i < 100; i++)
+//            System.out.println(r.nextInt(2));
+//        System.out.println("test finish");
 //        File dir = new File("res");
 //        File[] listFile = dir.listFiles();
 //        System.out.println(listFile.length);
 //        for(int i = 0; i < listFile.length; i++){
 //            System.out.println(listFile[i].getPath());
 //        }
-//        ResouceLoader loader = new ResouceLoader();
+//        ResourceLoader loader = new ResourceLoader();
 //        int f = loader.getFile("res");
 //
 //        Runnable r = new Runnable() {

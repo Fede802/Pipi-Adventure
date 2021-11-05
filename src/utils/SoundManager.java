@@ -5,12 +5,19 @@ import java.io.File;
 import java.io.IOException;
 
 public class SoundManager {
-    private static boolean isAudioActive = SoundConfig.getInstance().isAudioActive();
-    private static boolean isMusicActive;
+
+
+    private static boolean isSoundActive = SoundConfig.getInstance().isSoundActive();
+    private static boolean isMusicActive = SoundConfig.getInstance().isMusicActive();
+
+    public static final int SOUND = 0;
+    public static final int MUSIC = 1;
 
     private Clip clip;
+    private int audioType;
 
-    public SoundManager(String s) {
+    public SoundManager(String s,int audioType) {
+        this.audioType = audioType;
         File audio = new File(s);
         AudioFileFormat aff = null;
         try {
@@ -54,24 +61,41 @@ public class SoundManager {
     }
 
     public void playOnce() {
-        if(isAudioActive){
+
+        if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive) {
             this.clip.stop();
             this.clip.setMicrosecondPosition(0);
-            this.clip.start();}
+            this.clip.start();
+
+        }
     }
 
-    public  void startLoop(){
-        if(isAudioActive){
+    public void startLoop(){
+        System.out.println(isSoundActive);
+        if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive){
             this.clip.setMicrosecondPosition(0);
-            this.clip.loop(Clip.LOOP_CONTINUOUSLY);}
+            this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     public  void stopLoop(){
         this.clip.stop();
     }
 
-    public static void setIsAudioActive(boolean isAudioActive) {
-        SoundConfig.getInstance().setAudioActive(isAudioActive);
-        SoundManager.isAudioActive = isAudioActive;
+    public static void switchSoundConfig() {
+        isSoundActive = !isSoundActive;
+        SoundConfig.getInstance().setSoundActive(isSoundActive);
+    }
+    public static boolean isIsSoundActive() {
+        return isSoundActive;
+    }
+
+    public static boolean isIsMusicActive() {
+        return isMusicActive;
+    }
+
+    public static void switchMusicConfig() {
+        isMusicActive = !isMusicActive;
+        SoundConfig.getInstance().setMusicActive(isMusicActive);
     }
 }

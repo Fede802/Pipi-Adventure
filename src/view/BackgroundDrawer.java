@@ -36,7 +36,6 @@ public class BackgroundDrawer {
     }
 
     public void update() {
-
         x += dx;
         if(x>=panel.getWidth()){
             x = 0;

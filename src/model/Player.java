@@ -11,15 +11,20 @@ public class Player extends GameEntity implements IPlayer{
 
     private static  Animation DEATH_ANIMATION_RIGHT ;
     private static  Animation WALK_ANIMATION_RIGHT ;
+    private static  Animation JUMPING_ANIMATION ;
+    private static  Animation FALLING_ANIMATION ;
 
 
     private final ArrayList<Bullet> bullets = new ArrayList<>();
     private boolean isJumping = false;
+    private boolean isFalling = false;
 
     public Player(EntityCoordinates entityCoordinates) {
         super(EntityType.PLAYER,entityCoordinates);
         animationList.put(GameEntity.WALK_ANIMATION_RIGHT,WALK_ANIMATION_RIGHT);
         animationList.put(GameEntity.DEATH_ANIMATION_RIGHT,DEATH_ANIMATION_RIGHT);
+        animationList.put(GameEntity.JUMPING_ANIMATION,JUMPING_ANIMATION);
+        animationList.put(GameEntity.FALLING_ANIMATION,FALLING_ANIMATION);
     }
 
     public static void load() {
@@ -37,6 +42,8 @@ public class Player extends GameEntity implements IPlayer{
 //
         WALK_ANIMATION_RIGHT = new Animation("res\\images\\entities\\player\\Walk");
         DEATH_ANIMATION_RIGHT = new Animation("res\\images\\entities\\player\\Death");
+        JUMPING_ANIMATION = new Animation("res\\images\\entities\\player\\Jump");
+        FALLING_ANIMATION = new Animation("res\\images\\entities\\player\\Fall");
     }
 
 
@@ -93,6 +100,20 @@ public class Player extends GameEntity implements IPlayer{
     }
 
     @Override
+    public Animation getAnimation(boolean update) {
+        if(isJumping||isFalling){
+            if(currentAnimationStep == animationList.get(currentAnimation).getAnimationStep()-1)
+                update = false;
+        }
+//        Animation tempAnimation = animationList.get(currentAnimation);
+//        if(tempAnimation.getCurrentAnimationStep() == tempAnimation.getAnimationStep()-1)
+//                update = false;
+//        }
+
+        return super.getAnimation(update);
+    }
+
+    @Override
     public boolean isJumping() {
         return isJumping;
     }
@@ -100,6 +121,33 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void setJumping(boolean isJumping) {
         this.isJumping = isJumping;
+        float prevOpacity = animationList.get(currentAnimation).getOpacity();
+        animationList.get(currentAnimation).resetAnimation();
+        currentAnimation = GameEntity.JUMPING_ANIMATION;
+        if(!isJumping){
+            isFalling = true;
+        }else
+            currentAnimationStep = 0;
+        animationList.get(currentAnimation).setOpacity(prevOpacity);
+    }
+
+    @Override
+    public void setFalling(boolean isFalling) {
+        this.isFalling = isFalling;
+        float prevOpacity = animationList.get(currentAnimation).getOpacity();
+        animationList.get(currentAnimation).resetAnimation();
+//        currentAnimationStep =0;
+        if(isFalling){
+            currentAnimation = GameEntity.JUMPING_ANIMATION;
+            currentAnimationStep = animationList.get(currentAnimation).getAnimationStep()-1;
+        }else{
+            currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
+            currentAnimationStep =0;
+        }
+        animationList.get(currentAnimation).setOpacity(prevOpacity);
+
+//        if(!isFalling)
+//            currentAnimation = GameEntity.FALLING_ANIMATION;
     }
 
     @Override

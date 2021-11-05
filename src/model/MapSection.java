@@ -13,6 +13,7 @@ public abstract class MapSection {
     public static final int NIGHT = 1;
     public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
     protected ArrayList<GameEntity> mapEntities = new ArrayList<>();
+    protected int yspawngap = 2;
 
     protected int[][] map;
 
@@ -36,12 +37,12 @@ public abstract class MapSection {
 
     public GameEntity spawnFlyingEnemy(int daytime) {
         GameEntity temp = null;
-        if (random.nextInt(2) == 1) {
+        if (random.nextInt(10) == 0) {
+            int step = random.nextInt(2);
             if (daytime == DAY) {
-                temp = new Bee(new EntityCoordinates.Builder(6, 10).build());
+                temp = new Bee(new EntityCoordinates.Builder(6, 10-2*step).build());
             }else {
-                temp = new Bat(new EntityCoordinates.Builder(6, 10).build());
-
+                temp = new Bat(new EntityCoordinates.Builder(6, 10-2*step).build());
             }
         }
         return temp;

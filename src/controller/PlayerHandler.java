@@ -119,11 +119,15 @@ public class PlayerHandler extends EntityHandler{
                 GameModel.getInstance().setPlayerJumping(false);
             }
         }else if(!bottomCollision()){
-
+            if(!isFalling){
+                isFalling = true;
+                GameModel.getInstance().setPlayerFalling(true);
+            }
             GameModel.getInstance().playerFall();
 //            System.out.println(getNext().getTranslY() + "fall" +getNext().getMapY());
         }else if(isFalling && bottomCollision()){
             isFalling = false;
+            GameModel.getInstance().setPlayerFalling(false);
         }
 
     }

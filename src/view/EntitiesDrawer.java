@@ -4,13 +4,11 @@ import commons.Animation;
 import commons.EntityCoordinates;
 import commons.Pair;
 import controller.GameEngine;
-import utils.GameConfig;
 import utils.GameDataConfig;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class EntitiesDrawer {
 
@@ -52,6 +50,6 @@ public class EntitiesDrawer {
     }
 
     public void getRes(){
-        gun = ResouceLoader.getInstance().getRes("res\\images\\entities\\player\\Pistola.png").get(0);
+        gun = ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Pistola.png").get(0);
     }
 }

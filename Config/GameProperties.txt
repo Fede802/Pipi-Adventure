@@ -1,5 +1,5 @@
 minBullets=4
-recordScore=362
+recordScore=0
 currentMaxBullet=10
 maxBullets=10
 totalCoin=6550

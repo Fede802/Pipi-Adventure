@@ -11,6 +11,7 @@ public interface IPlayer {
     void fall();
     boolean isJumping();
     void setJumping(boolean isJumping);
+    void setFalling(boolean isFalling);
     void shoot();
     void updateBulletStatus(int bulletID);
     EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus);

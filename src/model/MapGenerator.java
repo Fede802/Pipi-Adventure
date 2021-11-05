@@ -14,6 +14,7 @@ public class MapGenerator {
     private final ArrayList<GameEntity> coins = new ArrayList<>();
     private final ArrayList<GameEntity> enemy = new ArrayList<>();
     private final Random random = new Random();
+    boolean mapGenerated;
 
     private boolean dayTime = true;
     private ArrayList<MapSection> generatedMap = new ArrayList<>();
@@ -30,24 +31,29 @@ public class MapGenerator {
     }
 
     public void generateMap(){
+        mapGenerated = false;
+        dayTime = true;
         generatedMap.clear();
         coins.clear();
         enemy.clear();
         generatedMap.add(sectionList.get(sectionList.size()-1));
         addEntities(6,0);
         for (int i = 1; i< MAP_LENGTH; i++){
-            generatedMap.add(sectionList.get(3));
-            addEntities(3,i);
+            generatedMap.add(sectionList.get(0));
+            addEntities(0,i);
         }
+        mapGenerated = true;
     }
     private void addEntities(int sectionIndex, int mapIndex){
         ArrayList<GameEntity> temp;
-        GameEntity gameEntity;
+        GameEntity gameEntity = null;
         if(dayTime) {
             temp = sectionList.get(sectionIndex).getMapEntities(MapSection.DAY);
+            if (mapGenerated)
             gameEntity = sectionList.get(sectionIndex).spawnFlyingEnemy(MapSection.DAY);
         } else {
             temp = sectionList.get(sectionIndex).getMapEntities(MapSection.NIGHT);
+            if (mapGenerated)
             gameEntity = sectionList.get(sectionIndex).spawnFlyingEnemy(MapSection.NIGHT);
         }
         if (gameEntity != null){

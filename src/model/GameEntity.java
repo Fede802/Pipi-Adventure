@@ -18,6 +18,8 @@ public abstract class GameEntity implements IGameEntity{
     protected static final int WALK_ANIMATION_LEFT = 1;
     protected static final int DEATH_ANIMATION_RIGHT = 2;
     protected static final int DEATH_ANIMATION_LEFT = 3;
+    protected static final int JUMPING_ANIMATION = 4;
+    protected static final int FALLING_ANIMATION = 5;
     protected static final int DEFAULT_DEATH_LOOP = 1;
     protected static final int DEFAULT_WALKING_STEP = 96;
 
@@ -63,6 +65,7 @@ public abstract class GameEntity implements IGameEntity{
         tempAnimation.setCurrentAnimationStep(currentAnimationStep);
         if(isDying)
             tempAnimation.setCurrentNumLoop(currentDeathloop);
+
         if(update){
             tempAnimation.update();
             currentAnimationStep = tempAnimation.getCurrentAnimationStep();

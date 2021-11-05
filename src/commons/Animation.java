@@ -1,28 +1,33 @@
 package commons;
 
 import utils.GameDataConfig;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Animation {
 
-    private static final int TILE_SIZE = GameDataConfig.getInstance().getDefaultImageTileSize();
     private ArrayList<Image> animationTile;
+
+    public int getAnimationStep() {
+        return animationStep;
+    }
+
     private final int animationStep;
     private int currentAnimationStep;
     private int currentNumLoop = 0;
+
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
     private float opacity = 1f;
 
 
 
     public Animation(String path){
-        animationTile = ResouceLoader.getInstance().getRes(path);
+        animationTile = ResourceLoader.getInstance().getRes(path);
         animationStep = animationTile.size();
     }
 
@@ -33,9 +38,10 @@ public class Animation {
     public void update(){
 
         currentAnimationStep++;
-        if(currentAnimationStep == animationStep-1){
+        if(currentAnimationStep == animationStep-1 || animationStep == 1){
             currentNumLoop++;
-        }else if(currentAnimationStep == animationStep)
+        }
+        if(currentAnimationStep == animationStep)
             currentAnimationStep = 0;
         //todo if death loop not checked max int problem
 
@@ -52,10 +58,6 @@ public class Animation {
             opacity = 1f;
     }
 
-
-    public int getNumLoop() {
-        return currentNumLoop;
-    }
 
     public void resetAnimation(){
         //maybe call it setupAnimation

@@ -1,15 +1,11 @@
 package view;
 
 import utils.GameConfig;
-import utils.GameDataConfig;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 
 public class GameBar {
     private final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
@@ -66,11 +62,11 @@ public class GameBar {
     }
 
     public void loadRes(){
-        coin = ResouceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
-        lifeHeart = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
-        lostLifeHeart = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Cuore_Vuoto.png").get(0);
-        missingLifeHeart = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Bordo_Cuore.png").get(0);
-        pauseButton = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Pause_Button2.png").get(0);
-        bullet = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\PIstola_Logo.png\n").get(0);
+        coin = ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
+        lifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
+        lostLifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuore_Vuoto.png").get(0);
+        missingLifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Bordo_Cuore.png").get(0);
+        pauseButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Pause_Button2.png").get(0);
+        bullet = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Proiettile_logo.png").get(0);
     }
 }

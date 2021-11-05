@@ -1,14 +1,12 @@
 package view;
 
 import controller.GameStateHandler;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 public class HelpPanel extends ApplicationPanel implements KeyListener, MouseListener {
@@ -33,21 +31,21 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
     private final Font titleFont = new Font("04b", Font.BOLD, 40);
     private final Font font = new Font("04b", Font.PLAIN, 25);
     private final Font font2 = new Font("04b", Font.PLAIN, 30);
-    private final Image leftClick = new ImageIcon("Resources/GameImages/Left_Click.png").getImage();
-    private final Image rightClick = new ImageIcon("Resources/GameImages/Right_Click.png").getImage();
-    private final Image pauseClick = new ImageIcon("Resources/GameImages/Pause_Click.png").getImage();
-    private final Image qButton = new ImageIcon("Resources/GameImages/Q_button.png").getImage();
-    private final Image pButton = new ImageIcon("Resources/GameImages/P_button.png").getImage();
-    private final Image spaceButton = new ImageIcon("Resources/GameImages/Space_button.png").getImage();
-    private final Image[] firstLineImages = {leftClick,rightClick,pauseClick};
-    private final Image[] secondLineImages = {qButton,pButton,spaceButton};
+    private Image leftClick;
+    private Image rightClick;
+    private Image pauseClick;
+    private Image qButton;
+    private Image pButton;
+    private Image spaceButton;
+    private Image[] firstLineImages;
+    private Image[] secondLineImages;
 
 
     public HelpPanel() {
         super();
-        audio.put(MUSIC_THEME, new SoundManager("res/audio/Title_Theme.wav"));
-        audio.put(SCROLL_THEME, new SoundManager("res/audio/MenuScroll.wav"));
-        audio.put(CONFIRM_THEME, new SoundManager("res/audio/MenuConfirm.wav"));
+        audio.put(MUSIC_THEME, new SoundManager("res/audio/Title_Theme.wav",SoundManager.SOUND));
+        audio.put(SCROLL_THEME, new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        audio.put(CONFIRM_THEME, new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
     @Override
@@ -92,7 +90,7 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
         for (int i = 0; i < button.length; i++) {
             if (i == currentChoice) {
                 g2d.setColor(Color.WHITE);
-                System.out.println(i);
+//                System.out.println(i);
             } else {
                 g2d.setColor(Color.BLACK);
             }
@@ -162,7 +160,14 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\help\\Help_BG.png"), this, 0);
-
+        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\help\\Help_BG.png"), this, 0);
+        leftClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Left_Click.png").get(0);
+        rightClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Right_Click.png").get(0);
+        pauseClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Pause_Click.png").get(0);
+        qButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Q_button.png").get(0);
+        pButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\p_button.png").get(0);
+        spaceButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Space_button.png").get(0);
+        firstLineImages = new Image[]{leftClick, rightClick, pauseClick};
+        secondLineImages = new Image[]{qButton, pButton, spaceButton};
     }
 }

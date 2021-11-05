@@ -1,16 +1,14 @@
 package view;
 
 import controller.GameStateHandler;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 public class MenuPanel extends ApplicationPanel{
@@ -21,7 +19,7 @@ public class MenuPanel extends ApplicationPanel{
     private BackgroundDrawer BG_DRAWER;
     private boolean transition = false;
     private boolean firstOpen = true;
-    private double paddingTop = 50+this.getHeight()/3;
+    private double paddingTop = 30+this.getHeight()/3;
     private int shiftBarVelY;
     private double shiftstep = 20;
 
@@ -52,9 +50,9 @@ public class MenuPanel extends ApplicationPanel{
 
     public MenuPanel(){
         super();
-        audio.put(MUSIC_THEME,new SoundManager("res/audio/Title_Theme.wav"));
-        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav"));
-        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav"));
+        audio.put(MUSIC_THEME,new SoundManager("res/audio/Title_Theme.wav",SoundManager.SOUND));
+        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
     public MenuPanel(BackgroundDrawer bg){
         this();
@@ -80,7 +78,7 @@ public class MenuPanel extends ApplicationPanel{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        paddingTop = 50+this.getHeight()/3;
+        paddingTop = 20+this.getHeight()/3;
         shiftBarVelY = (int) Math.ceil(paddingTop/shiftstep);
         BG_DRAWER.drawBackground(g2d);
         shiftTitleLength = (2*this.getHeight()/5-100)/2;
@@ -98,28 +96,28 @@ public class MenuPanel extends ApplicationPanel{
                 g2d.setColor(Color.DARK_GRAY);
             else
                 g2d.setColor(new Color(255, 120, 0));
-           if (i == 3)
+           if (i == 4)
                g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , null);
             switch (i){
                 case(4):{
-                    g2d.drawImage(music, this.getWidth()/10-50, this.getHeight()-(this.getHeight()/10)+5,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
-                    buttons.get(4).setRect((int)this.getWidth()/10-50,(int)this.getHeight()-(this.getHeight()/10)+5,(int)50*minSize/DEFAULT_WIDTH,(int)50*minSize/DEFAULT_WIDTH);
+                    g2d.drawImage(music, this.getWidth()/10-50, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
+                    buttons.get(4).setRect((int)this.getWidth()/10-50,(int)this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,(int)50*minSize/DEFAULT_WIDTH,(int)50*minSize/DEFAULT_WIDTH);
                     if (currentChoice == 4)
                         g2d.draw(buttons.get(4));
                     break;
                 }
                 case(5):{
-                    g2d.drawImage(sound, this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
-                    buttons.get(5).setRect(this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH);
+                    g2d.drawImage(sound, this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
+                    buttons.get(5).setRect(this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH);
                     if (currentChoice == 5)
                         g2d.draw(buttons.get(5));
                     break;
                 }
                 default:{
-                    StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,50+i*60+this.getHeight()/3+shiftBarVelY*currentStep, 0, this,StringDrawer.CENTER);
+                    StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep, 0, this,StringDrawer.CENTER);
                     double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
                     double strHeight = StringDrawer.getStringHeight(g2d,font);
-                    buttons.get(i).setRect((this.getWidth()-strWidth)/2,50+i*60+this.getHeight()/3+shiftBarVelY*currentStep,strWidth,(strHeight));
+                    buttons.get(i).setRect((this.getWidth()-strWidth)/2,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep,strWidth,(strHeight));
                 }
             }
             g2d.setColor(new Color(255, 120, 0));
@@ -141,18 +139,26 @@ public class MenuPanel extends ApplicationPanel{
             System.exit(0);
         }
         if (currentChoice == 4){
+            SoundManager.switchMusicConfig();
             if(music == musicOFF){
                 music = musicON;
+
             }else{
                 music = musicOFF;
+
             }
+
         }
         if (currentChoice == 5){
+            SoundManager.switchSoundConfig();
             if(sound == soundOFF){
                 sound = soundON;
+                audio.get(MUSIC_THEME).startLoop();
             }else{
                 sound = soundOFF;
+                audio.get(MUSIC_THEME).stopLoop();
             }
+
         }
     }
 
@@ -209,19 +215,25 @@ public class MenuPanel extends ApplicationPanel{
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\menu\\menubg.png"), this,DX);
-        musicON = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button1.png").get(0);
-        musicOFF = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button2.png").get(0);
-        soundON = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button1.png").get(0);
-        soundOFF = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button2.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\menu\\menubg.png"), this,DX);
+        musicON = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button1.png").get(0);
+        musicOFF = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button2.png").get(0);
+        soundON = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button1.png").get(0);
+        soundOFF = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button2.png").get(0);
     }
 
     public void setup(int bgTrasl, double titlePadding, Image bg) {
         BG_DRAWER.setX(bgTrasl);
         this.titlePadding = titlePadding;
         this.menuGIF = bg;
-        music = musicON;
-        sound = soundON;
+        if(SoundManager.isIsMusicActive())
+            music = musicON;
+        else
+            music = musicOFF;
+        if(SoundManager.isIsSoundActive())
+            sound = soundON;
+        else
+            sound = soundOFF;
 
     }
 }

@@ -89,6 +89,7 @@ public class GameModel implements IGameModel{
         return animation;
     }
 
+
     @Override
     public boolean isDead(EntityType entityType, int entityID) {
         boolean dead = false;
@@ -155,6 +156,11 @@ public class GameModel implements IGameModel{
         Slime.load();
         Player.load();
         PLAYER = new Player(new EntityCoordinates.Builder(GameDataConfig.getInstance().getPlayerStartMapX(), GameDataConfig.getInstance().getPlayerStartMapY()).build());
+    }
+
+    @Override
+    public void setPlayerFalling(boolean isFalling) {
+        PLAYER.setFalling(isFalling);
     }
 
     @Override

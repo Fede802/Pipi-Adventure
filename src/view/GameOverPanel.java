@@ -2,16 +2,14 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 public class GameOverPanel extends SlidableApplicationPanel {
@@ -48,9 +46,9 @@ public class GameOverPanel extends SlidableApplicationPanel {
 
     public GameOverPanel(ComponentContainer componentContainer){
         super(componentContainer);
-        audio.put(MUSIC_THEME,new SoundManager("res/audio/GameOverTheme.wav"));
-        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav"));
-        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav"));
+        audio.put(MUSIC_THEME,new SoundManager("res/audio/GameOverTheme.wav",SoundManager.SOUND));
+        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
     @Override
@@ -163,9 +161,9 @@ public class GameOverPanel extends SlidableApplicationPanel {
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this,DX);
-        bed = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver.gif").get(0);
-        frame = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\PictureFrame.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this,DX);
+        bed = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver.gif").get(0);
+        frame = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\PictureFrame.png").get(0);
 
     }
 

@@ -2,21 +2,16 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import model.GameData;
 import utils.GameConfig;
-import utils.GameDataConfig;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class UpgradePanel extends ApplicationPanel{
@@ -44,13 +39,13 @@ public class UpgradePanel extends ApplicationPanel{
     private String bulletPrice = lifePrice;
     private boolean lowbudget = false;
 
-    private int totalCoin = 9;
+    private int totalCoin;
 
 
     public UpgradePanel(){
         super();
-        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav"));
-        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav"));
+        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
     @Override
@@ -240,21 +235,21 @@ public class UpgradePanel extends ApplicationPanel{
         this.currentLife = currentLife;
         this.currentBullet = currentBullets;
         if(currentLife < MAX_LIFE)
-        lifePrice = String.valueOf(calculatePrice(currentLife));
+            lifePrice = String.valueOf(calculatePrice(currentLife));
         if(currentBullet <MAX_BULLET)
-        bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+            bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
 
     }
 
     @Override
     public void loadResources() {
-        BG = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\LAB_BG.gif").get(0);new ImageIcon("resources/backgrounds/Upgrade/LAB1.gif").getImage();
-//bb.updateframes = ture
+        BG = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\LAB_BG.gif").get(0);new ImageIcon("resources/backgrounds/Upgrade/LAB1.gif").getImage();
+        //bb.updateframes = ture
 
-        player = ResouceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
-        heart = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
-        bullet = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\PIstola_Logo.png").get(0);
-        coin = ResouceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
+        player = ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
+        heart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
+        bullet = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Proiettile_logo.png").get(0);
+        coin = ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
 
     }
 }

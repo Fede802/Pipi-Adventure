@@ -28,4 +28,6 @@ public interface IGameModel {
 
 
     void getResources();
+
+    void setPlayerFalling(boolean isFalling);
 }

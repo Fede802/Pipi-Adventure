@@ -2,9 +2,8 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.GameConfig;
 import utils.GameDataConfig;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -13,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.ArrayList;
 
 public class GamePanel extends ApplicationPanel{
     int count = 0;
@@ -37,7 +37,7 @@ public class GamePanel extends ApplicationPanel{
 
     public GamePanel(){
         super(); //redundant call to the superclass constructor
-        audio.put(MUSIC_THEME,new SoundManager("res/audio/Level1.wav"));
+        audio.put(MUSIC_THEME,new SoundManager("res/audio/Level1.wav",SoundManager.SOUND));
         renderedTileSize = GameDataConfig.getInstance().getRenderedTileSize();
         pauseButton = gameBar.getPauseButton();
     }
@@ -51,6 +51,7 @@ public class GamePanel extends ApplicationPanel{
             backgroundLayer_3.update();
             backgroundLayer_4.update();
             backgroundLayer_5.update();
+            mapDrawer.update();
         }
 
         repaint();
@@ -137,6 +138,7 @@ public class GamePanel extends ApplicationPanel{
         backgroundLayer_3.updateFrames();
         backgroundLayer_4.updateFrames();
         backgroundLayer_5.updateFrames();
+        mapDrawer.updateTileset();
     }
 
     public void setupDayTime() {
@@ -145,6 +147,7 @@ public class GamePanel extends ApplicationPanel{
         backgroundLayer_3.reset();
         backgroundLayer_4.reset();
         backgroundLayer_5.reset();
+        mapDrawer.reset();
     }
 
     public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
@@ -153,15 +156,23 @@ public class GamePanel extends ApplicationPanel{
 
     @Override
     public void loadResources() {
-        mapDrawer = new MapDrawer(this,ResouceLoader.getInstance().getRes("res\\images\\tilesets\\1.png"));
+        ArrayList<ArrayList<Image>> temp = new ArrayList<>();
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\1.png"));
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\2.png"));
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\3.png"));
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\4.png"));
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\5.png"));
+        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\6.png"));
+
+        mapDrawer = new MapDrawer(this, temp);
         mapDrawer.updateRenderedTileSize(renderedTileSize);
         entitiesDrawer.getRes();
         gameBar.loadRes();
-        backgroundLayer_1 = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
-        backgroundLayer_2 = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
-        backgroundLayer_3 = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);
-        backgroundLayer_4 = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer4"), this, 1,3*renderedTileSize);
-        backgroundLayer_5 = new BackgroundDrawer(ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Sky"), this, 2,3*renderedTileSize);
+        backgroundLayer_1 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
+        backgroundLayer_2 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
+        backgroundLayer_3 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);
+        backgroundLayer_4 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer4"), this, 1,3*renderedTileSize);
+        backgroundLayer_5 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Sky"), this, 2,3*renderedTileSize);
         loadedRes = true;
     }
 }

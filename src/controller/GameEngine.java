@@ -12,7 +12,7 @@ public class GameEngine implements IGameEngine{
 
     private static final int CHANGE_DAYTIME_SCORE = 1000;
     private final int BULLET_INCREMENT_SCORE = 100;
-    private final int TICK_TO_UPDATE_ANIMATION = 5;
+    private final int TICK_TO_UPDATE_ANIMATION = 3;
     private PlayerHandler playerHandler = new PlayerHandler();
     private EnemyHandler enemyHandler = new EnemyHandler();
     private BulletsHandler bulletsHandler = new BulletsHandler();
@@ -32,10 +32,10 @@ public class GameEngine implements IGameEngine{
     }
     @Override
     public void updateGameStatus() {
-        if (shoot){
-            shoot();
-            shoot = false;
-        }
+//        if (shoot){
+//            shoot();
+//            shoot = false;
+//        }
         updateAnimation = false;
         updateEntity();
         if(!playerHandler.isDying()) {
@@ -107,17 +107,16 @@ public class GameEngine implements IGameEngine{
 
     private void checkEntityCollision() {
         //todo problem when dying, dovrebbe essere fixato
-//        if(!playerHandler.isImmortal() && !playerHandler.isDying())
-//            playerHandler.checkEntityCollision(enemyHandler);
-//        playerHandler.checkEntityCollision(coinHandler);
+        if(!playerHandler.isImmortal() && !playerHandler.isDying())
+            playerHandler.checkEntityCollision(enemyHandler);
+        playerHandler.checkEntityCollision(coinHandler);
         bulletsHandler.checkEntityCollision(enemyHandler);
     }
 
     private void checkMapCollision() {
-//        if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
-//            playerHandler.rigthCollision();
-//
-//        bulletsHandler.rigthCollision();
+        if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
+            playerHandler.rigthCollision();
+        bulletsHandler.rigthCollision();
     }
 
 
@@ -154,9 +153,11 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public void setJumping(boolean isJumping) {
+
         if(!playerHandler.bottomCollision()&&!GameModel.getInstance().isPlayerJumping())
             isJumping = false;
-        GameModel.getInstance().setPlayerJumping(isJumping);
+        if(isJumping)
+            GameModel.getInstance().setPlayerJumping(isJumping);
     }
 
     @Override

@@ -2,11 +2,10 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.ResouceLoader;
+import utils.ResourceLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -22,7 +21,7 @@ public class LoadingPanel extends ApplicationPanel{
     private final String TITLE = "Pipi Adventure";
     private final Color titleColor = new Color(255, 216, 0);
     private final Font titleFont = new Font("04b", Font.BOLD, 45);
-    private int totalResFile = ResouceLoader.getInstance().getFile(imgResPath);
+    private int totalResFile = ResourceLoader.getInstance().getFile(imgResPath);
     private int currentFileLoaded;
     private BackgroundDrawer BG_DRAWER;
     private Image loadingGIF = new ImageIcon("res/images/backgrounds/menu/Sfondo_Menu.gif").getImage();
@@ -55,7 +54,7 @@ public class LoadingPanel extends ApplicationPanel{
         }
         System.out.println(barStep+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         BG_DRAWER = new BackgroundDrawer(temp,this,DX);
-        ResouceLoader.getInstance().loadResources(imgResPath,incrementLoadingbar);
+        ResourceLoader.getInstance().loadResources(imgResPath,incrementLoadingbar);
     }
 
 
@@ -110,7 +109,7 @@ private void loadfin(){
 
         Stroke ds = g2d.getStroke();
         g2d.setStroke(new BasicStroke(4));
-        g2d.drawRoundRect((this.getWidth()-loadingBarWidth)/2-2,3*this.getHeight()/5-12+shiftBarVelY*currentBarStep,loadingBarWidth+4,24,20,20);
+        g2d.drawRoundRect((this.getWidth()-loadingBarWidth)/2-1,3*this.getHeight()/5-12+shiftBarVelY*currentBarStep,loadingBarWidth+2,24,20,20);
         g2d.setColor(Color.MAGENTA);
 //        System.out.println("bar " +(int)(barStep*currentFileLoaded));
 //        System.out.println("barn "+barStep*currentFileLoaded);
