@@ -22,6 +22,7 @@ public class BackgroundDrawer {
     private int currentFrame;
     private boolean transition;
     private boolean descending;
+    private boolean loop = false;
 
 
     public BackgroundDrawer(ArrayList<Image> background, JPanel panel, final int dx){
@@ -35,6 +36,7 @@ public class BackgroundDrawer {
     }
 
     public void update() {
+
         x += dx;
         if(x>=panel.getWidth()){
             x = 0;
@@ -49,7 +51,9 @@ public class BackgroundDrawer {
                 }
                 currentTick = 0;
                 if (currentFrame == image.size()-1 || currentFrame==0){
-                    transition = false;
+                    if (!loop){
+                        transition = false;
+                    }
                     descending = !descending;
                 }
             }
@@ -65,6 +69,11 @@ public class BackgroundDrawer {
     }
 
     public void updateFrames(){
+        transition = true;
+    }
+
+    public void updateFrames(boolean loop){
+        this.loop = loop;
         transition = true;
     }
 

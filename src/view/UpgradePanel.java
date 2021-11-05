@@ -151,6 +151,7 @@ public class UpgradePanel extends ApplicationPanel{
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
+        //updatea background
         repaint();
     }
 
@@ -248,7 +249,7 @@ public class UpgradePanel extends ApplicationPanel{
     @Override
     public void loadResources() {
         BG = ResouceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\LAB_BG.gif").get(0);new ImageIcon("resources/backgrounds/Upgrade/LAB1.gif").getImage();
-
+//bb.updateframes = ture
 
         player = ResouceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
         heart = ResouceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
