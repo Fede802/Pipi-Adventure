@@ -68,7 +68,7 @@ public class BackgroundDrawer {
     }
 
     public void updateFrames(){
-        transition = true;
+        updateFrames(false);
     }
 
     public void updateFrames(boolean loop){

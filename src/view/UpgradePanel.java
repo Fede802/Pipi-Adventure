@@ -1,5 +1,6 @@
 package view;
 
+import commons.Animation;
 import controller.GameEngine;
 import controller.GameStateHandler;
 import utils.GameConfig;
@@ -13,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+
+import static javax.swing.text.StyleConstants.Background;
 
 public class UpgradePanel extends ApplicationPanel{
     private final String TITLE = "Upgrade";
@@ -38,6 +41,10 @@ public class UpgradePanel extends ApplicationPanel{
     private String lifePrice = "MAX";
     private String bulletPrice = lifePrice;
     private boolean lowbudget = false;
+    private BackgroundDrawer backGround;
+    private boolean upgrading = false;
+    private Animation pipi;
+    private Animation pedestal;
 
     private int totalCoin;
 
@@ -61,14 +68,17 @@ public class UpgradePanel extends ApplicationPanel{
         g2d.setColor(Color.BLACK);
 
         //draw bg, title, coin, player
-        g2d.drawImage(BG,0,0,this.getWidth(),this.getHeight(),this);
+        //g2d.drawImage(BG,0,0,this.getWidth(),this.getHeight(),this);
+        backGround.drawBackground(g2d);
         StringDrawer.drawString(g2d, TITLE, titleFont, null, StringDrawer.TITLE_STROKE, titleColor, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
         StringDrawer.drawString(g2d,"Coins: "+totalCoin,font,null, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
-        g2d.drawImage(player,(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.15),(int)(minSize*0.3),(int)(minSize*0.3),this);
+       // g2d.drawImage(player,(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.15),(int)(minSize*0.3),(int)(minSize*0.3),this);
+
+        g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.2),(int)(minSize*0.5),(int)(minSize*0.5),this);
+        g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),(int)(3*this.getHeight()/4-minSize*0.13),(int)(minSize*0.3),(int)(minSize*0.3),this);
 
 
-
-        //set buyLifeButton, draw coin and heart
+              //set buyLifeButton, draw coin and heart
         buttons.get(0).setRect(this.getWidth()/4*3+minSize*0.09,this.getHeight()/2-minSize*0.16,minSize*0.13,minSize*0.06);
         g2d.drawImage(coin,(int)(this.getWidth()/4*3+minSize*0.09),(int)(this.getHeight()/2-minSize*0.15),(int)(minSize*0.04),(int)(minSize*0.04),null);
         g2d.drawImage(heart, (int)(this.getWidth()/4*3-minSize*0.23),(int)(this.getHeight()/2-minSize*0.16),(int)(minSize*0.06),(int)(minSize*0.06),null);
@@ -146,7 +156,17 @@ public class UpgradePanel extends ApplicationPanel{
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
-        //updatea background
+        backGround.update();
+
+        if (upgrading){
+               pipi.update();
+               pedestal.update();
+               if (pipi.getCurrentNumLoop() == 1){
+                   upgrading = false;
+                   pipi.resetAnimation();
+                   pedestal.resetAnimation();
+               }
+           }
         repaint();
     }
 
@@ -155,6 +175,7 @@ public class UpgradePanel extends ApplicationPanel{
             if(currentLife < MAX_LIFE)
                 if(buy(calculatePrice(currentLife))){
                     currentLife++;
+                    upgrading = true;
                     if(currentLife < MAX_LIFE)
                         lifePrice = String.valueOf(calculatePrice(currentLife));
                     else
@@ -167,6 +188,7 @@ public class UpgradePanel extends ApplicationPanel{
             if(currentBullet <MAX_BULLET)
                 if(buy(calculatePrice(currentBullet-MIN_BULLET))){
                     currentBullet++;
+                    upgrading = true;
                     if(currentBullet <MAX_BULLET)
                         bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
                     else
@@ -243,8 +265,12 @@ public class UpgradePanel extends ApplicationPanel{
 
     @Override
     public void loadResources() {
-        BG = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\LAB_BG.gif").get(0);new ImageIcon("resources/backgrounds/Upgrade/LAB1.gif").getImage();
-        //bb.updateframes = ture
+
+        backGround = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
+        backGround.updateFrames(true);
+
+        pipi = new Animation("res\\images\\backgrounds\\upgrade\\Pipi");
+        pedestal = new Animation("res\\images\\backgrounds\\upgrade\\Pedestal");
 
         player = ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
         heart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);

@@ -39,6 +39,8 @@ public class GameOverPanel extends SlidableApplicationPanel {
             "Coin : "
     };
 
+    private String record = "NEW RECORD";
+
     private String[] gameDataValue = new String[3];
 
     private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
@@ -73,7 +75,7 @@ public class GameOverPanel extends SlidableApplicationPanel {
             else {
                 g2d.setColor(Color.BLACK);
             }
-            StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/2+this.getWidth()/4, this,StringDrawer.PADDING);;
+            StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/2+this.getWidth()/4, this,StringDrawer.PADDING);
             double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
             double strHeight = StringDrawer.getStringHeight(g2d,font);
             buttons.get(i).setRect((this.getWidth()/2+this.getWidth()/4),180+i*(this.getWidth()/12)+this.getHeight()/3,strWidth,(strHeight));
@@ -83,6 +85,10 @@ public class GameOverPanel extends SlidableApplicationPanel {
         g2d.setColor(Color.BLACK);
         for(int i = 0; i < gameDataString.length; i++) {
             StringDrawer.drawString(g2d, gameDataString[i] + gameDataValue[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,180+i*(this.getWidth()/12)+this.getHeight()/3, this.getWidth()/10, this,StringDrawer.PADDING);;
+        }
+
+        if (Integer.parseInt(String.valueOf(gameDataValue[0])) >= Integer.parseInt(String.valueOf(gameDataValue[1]))){
+            StringDrawer.drawString(g2d, record , font, new Color(255, 216, 0), StringDrawer.DEFAULT_STROKE,titleColor,180+this.getHeight()/4, 0,this,StringDrawer.CENTER);
         }
 
     }
