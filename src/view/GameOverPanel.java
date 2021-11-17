@@ -88,7 +88,7 @@ public class GameOverPanel extends SlidableApplicationPanel {
         }
 
         if (Integer.parseInt(String.valueOf(gameDataValue[0])) >= Integer.parseInt(String.valueOf(gameDataValue[1]))){
-            StringDrawer.drawString(g2d, record , font, new Color(255, 216, 0), StringDrawer.DEFAULT_STROKE,titleColor,180+this.getHeight()/4, 0,this,StringDrawer.CENTER);
+            StringDrawer.drawString(g2d, record , font, new Color(255, 0, 0), StringDrawer.DEFAULT_STROKE,Color.WHITE,180+this.getHeight()/4, 0,this,StringDrawer.CENTER);
         }
 
     }

@@ -224,9 +224,12 @@ public class Player extends GameEntity implements IPlayer{
         currentAnimationStep = 0;
         currentDeathloop = 0;
         if(getAnimation() != null)
-        getAnimation().resetAnimation();
+            getAnimation().resetAnimation();
         currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
+        getAnimation().resetAnimation();
         setAlive(true);
         setDying(false);
+        isFalling = false;
+        isJumping = false;
     }
 }

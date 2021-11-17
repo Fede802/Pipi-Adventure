@@ -74,9 +74,10 @@ public class UpgradePanel extends ApplicationPanel{
         StringDrawer.drawString(g2d,"Coins: "+totalCoin,font,null, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
        // g2d.drawImage(player,(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.15),(int)(minSize*0.3),(int)(minSize*0.3),this);
 
-        g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.2),(int)(minSize*0.5),(int)(minSize*0.5),this);
-        g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),(int)(3*this.getHeight()/4-minSize*0.13),(int)(minSize*0.3),(int)(minSize*0.3),this);
+        g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),this.getHeight()-(minSize/4),(int)(minSize*0.5),minSize/4,this);
+        g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),(int)(this.getHeight()-(minSize/4)-(minSize*0.3)),(int)(minSize*0.3),(int)(minSize*0.3),this);
 
+        //(int)(3*this.getHeight()/4-minSize*0.2)
 
               //set buyLifeButton, draw coin and heart
         buttons.get(0).setRect(this.getWidth()/4*3+minSize*0.09,this.getHeight()/2-minSize*0.16,minSize*0.13,minSize*0.06);
@@ -158,15 +159,16 @@ public class UpgradePanel extends ApplicationPanel{
     protected void timerActionEvent(ActionEvent e) {
         backGround.update();
 
-        if (upgrading){
-               pipi.update();
-               pedestal.update();
+        if (upgrading)
                if (pipi.getCurrentNumLoop() == 1){
                    upgrading = false;
                    pipi.resetAnimation();
                    pedestal.resetAnimation();
+               }else{
+                   pipi.update();
+                   pedestal.update();
                }
-           }
+
         repaint();
     }
 

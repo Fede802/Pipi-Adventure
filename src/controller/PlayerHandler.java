@@ -35,14 +35,24 @@ public class PlayerHandler extends EntityHandler{
     }
 
     private boolean dying = false;
-    private final int IMMORTALITY_STEP=12;
+    private final int IMMORTALITY_STEP=13;
+
+    public void setup() {
+        this.currentJumpStep = 0;
+        this.currentImmortalityStep = 0;
+        this.dying = false;
+        this.immortal = false;
+    }
+
     private int currentImmortalityStep;
 
     public void updateImmortalityStep(){
-        currentImmortalityStep++;
+
         if(currentImmortalityStep == IMMORTALITY_STEP){
             immortal = false;
             currentImmortalityStep = 0;
+        }else{
+            currentImmortalityStep++;
         }
 
     }

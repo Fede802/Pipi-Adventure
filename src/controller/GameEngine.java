@@ -153,11 +153,9 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public void setJumping(boolean isJumping) {
-
-        if(!playerHandler.bottomCollision()&&!GameModel.getInstance().isPlayerJumping())
-            isJumping = false;
-        if(isJumping)
-            GameModel.getInstance().setPlayerJumping(isJumping);
+        if (!playerHandler.isFalling()&&!playerHandler.isJumping()&&!playerHandler.isDying()&&isJumping){
+            GameModel.getInstance().setPlayerJumping(true);
+        }
     }
 
     @Override
@@ -184,8 +182,7 @@ public class GameEngine implements IGameEngine{
         GameView.getInstance().setupDaytime();
         GameView.getInstance().isGameRunning(true);
         GameModel.getInstance().setup();
-        playerHandler.setDying(false);
-        playerHandler.setImmortal(false);
+        playerHandler.setup();
     }
 
     @Override
