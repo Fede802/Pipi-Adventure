@@ -127,19 +127,32 @@ public class ResourceLoader {
         else if(!path.contains(".")){
             File f = new File(path);
             File[] tempFiles = f.listFiles();
-            for (int i = 0; i < tempFiles.length; i++) {
-                for (int j = 0; j < tempFiles.length; j++) {
-                    if(tempFiles[i].getPath().length() < tempFiles[j].getPath().length()){
-                        File temp = tempFiles[j];
-                        tempFiles[j] = tempFiles[i];
-                        tempFiles[i] = temp;
+            for(int i = 0; i<tempFiles.length; i++) {
+                for(int j = 0; j<tempFiles.length;j++) {
+
+                    String currPath = tempFiles[j].getPath().substring(tempFiles[j].getPath().lastIndexOf("\\"));
+
+                    for(int k = 0; k<currPath.length();k++) {
+                        char tempChar = currPath.charAt(k);
+                        if (Character.isDigit(tempChar)) {
+                            int position = Integer.valueOf(currPath.substring(k, k + 1));
+                            if(Character.isDigit(currPath.charAt(k+1))) {
+                                position = Integer.valueOf(currPath.substring(k, k + 2));
+                            }
+
+                            if (position-1 == i && i != j) {
+                                File temp = tempFiles[j];
+                                tempFiles[j] = tempFiles[i];
+                                tempFiles[i] = temp;
+                            }
+                        }
                     }
                 }
+
             }
+
             tempRes = new ArrayList<>();
             for(int i = 0; i<tempFiles.length; i++) {
-                if(path.contains("Luma"))
-                    System.out.println(tempFiles[i].getPath());
                 tempRes.add(resources.get(tempFiles[i].getPath()));
             }
         }else {
