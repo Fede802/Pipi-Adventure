@@ -1,18 +1,29 @@
-package Controller;
+package controller;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-
-import java.util.ArrayList;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.Pair;
 
 public interface IGameEngine {
     void updateGameStatus();
-    ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates();
+    Pair<EntityCoordinates, AnimationData> getEntityForRendering(int entityID);
     int getTileData(int mapIndex,int mapX,int mapY);
-    int getSectionSize();
-    int getMapLength();
-    int getMapTraslX();
     void setJumping(boolean isJumping);
+    double getMapTranslX();
+    void shoot();
+    void setupGame();
+    void notifySizeChanged();
+    int getTotalEntity();
 
+    void updateTotalCoin(int price);
+
+    void updateCurrentLife();
+
+    void updateCurrentBullets();
+
+    void saveDataConfig();
+
+    void updateAnimationData(AnimationData value,int entityID);
+
+    void setResources();
 }

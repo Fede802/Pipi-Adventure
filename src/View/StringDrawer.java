@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,8 +9,7 @@ import java.awt.geom.AffineTransform;
 public class StringDrawer {
 
     public static final int CENTER = 0;
-    //TODO change name
-    public static final int PADDALO = 1;
+    public static final int PADDING = 1;
 
     public static final int TITLE_STROKE=10;
     public static final int DEFAULT_STROKE=4;
@@ -34,7 +33,7 @@ public class StringDrawer {
         FontMetrics fm = g2d.getFontMetrics(font);
         int downShift = fm.getAscent();
         if(position == CENTER){
-            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2,downShift+paddingTop);
+            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2+paddingRight,downShift+paddingTop);
         }else{
             affineTransform.translate(paddingRight,downShift+paddingTop);
         }

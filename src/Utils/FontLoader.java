@@ -1,8 +1,9 @@
-package Utils;
+package utils;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class FontLoader {
     private FontLoader(){}
@@ -11,9 +12,10 @@ public class FontLoader {
         GraphicsEnvironment ge = null;
         try{
             ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Resources/Font/04B_30__.TTF")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/font/04B_30__.TTF")));
         } catch(FontFormatException e){} catch (IOException e){
             System.out.println("Failed loading font");
         }
     }
 }
+

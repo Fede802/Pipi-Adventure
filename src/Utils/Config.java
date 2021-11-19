@@ -1,111 +1,54 @@
-package Utils;
+package utils;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class Config {
-    private static final String AUDIO_PROPERTIES_URL = "Config/SoundProperties.txt";
-    private static final String GAME_PROPERTIES_URL = "Config/GameSaves.txt";
-    private static final String GAME_VARIABLES_URL = "Config/GameVariables.txt";
-    private static Config instance = null;
-    private final Properties audioProperties = new Properties(),gameProperties = new Properties(),gameVariables = new Properties();
-
-    private Config(){
-        try {
-            BufferedReader reader = Files.newBufferedReader(Path.of(AUDIO_PROPERTIES_URL));
-            audioProperties.load(reader);
-        } catch (IOException e) {
-            System.out.println("Failed loading audio configuration file");
+    private final String url;
+    protected final Properties properties = new Properties();
+    private final SwingWorker worker = new SwingWorker<Void,Void>() {
+        @Override
+        //javax.swing.SwingUtilities.isEventDispatchThread()
+        protected Void doInBackground()  {
+            try {
+                Files.write(Path.of(url),makeData(properties.toString()).getBytes());
+            } catch (IOException e) {
+                System.out.println("Failed saving properties");
+            }
+            return null;
         }
-        try {
-            BufferedReader reader = Files.newBufferedReader(Path.of(GAME_PROPERTIES_URL));
-            gameProperties.load(reader);
-        } catch (IOException e) {
-            System.out.println("Failed loading game configuration file");
+        @Override
+        public void done() {
+//                Thread.State.WAITING.notify();
+            System.out.println("finish");
         }
+
+    };
+
+    public Config(String url){
+        this.url = url;
         try {
-            BufferedReader reader = Files.newBufferedReader(Path.of(GAME_VARIABLES_URL));
-            gameVariables.load(reader);
+            BufferedReader reader = Files.newBufferedReader(Path.of(url));
+            properties.load(reader);
         } catch (IOException e) {
-            System.out.println("Failed loading game variables file");
+            System.out.println("Failed loading configuration file");
         }
-    }
-
-    public int getBestScore(){
-        return Integer.valueOf(gameProperties.getProperty("bestScore"));
-    }
-
-    public void setBestScore(int bestScore){
-        gameProperties.setProperty("bestScore",String.valueOf(bestScore));
-    }
-
-    public int getTotalCoin(){
-        return Integer.valueOf(gameProperties.getProperty("totalCoin"));
-    }
-
-    public void setTotalCoin(int totalCoin){
-        gameProperties.setProperty("totalCoin",String.valueOf(totalCoin));
-    }
-
-    public boolean isAudioActive(){
-        return audioProperties.getProperty("isAudioActive","true").equals("true");
-    }
-
-    public void setAudioActive(boolean isAudioActive){
-        audioProperties.setProperty("isAudioActive",String.valueOf(isAudioActive));
-    }
-
-    public int getAudioVolume(){
-        return Integer.valueOf(audioProperties.getProperty("audioVolume"));
-    }
-
-    public void setAudioVolume(int audioVolume){
-        audioProperties.setProperty("audioVolume",String.valueOf(audioVolume));
-    }
-
-    public int getRenderedTileSize(){
-        return Integer.valueOf(gameVariables.getProperty("renderedTileSize"));
-    }
-    public void setRenderedTileSize(int renderedTileSize){
-        gameVariables.setProperty("renderedTileSize",String.valueOf(renderedTileSize));
-    }
-    public int getCurrentLife(){
-        return Integer.valueOf(gameProperties.getProperty("currentLife"));
-    }
-    public void setCurrentLife(int currentLife){
-        gameProperties.setProperty("currentLife",String.valueOf(currentLife));
-    }
-    public int getCurrentMaxBullet(){
-        return Integer.valueOf(gameProperties.getProperty("currentMaxBullet"));
-    }
-    public void setCurrentMaxBullet(int currentMaxBullet){
-        gameProperties.setProperty("currentMaxBullet",String.valueOf(currentMaxBullet));
     }
 
     public void saveData(){
-        try {
-            Files.write(Path.of(AUDIO_PROPERTIES_URL),makeData(audioProperties.toString()).getBytes());
-        } catch (IOException e) {
-            System.out.println("Failed saving audio properties");
-        }
-        try {
-            Files.write(Path.of(GAME_PROPERTIES_URL),makeData(gameProperties.toString()).getBytes());
-        } catch (IOException e) {
-            System.out.println("Failed saving game properties");
-        }
-        try {
-            Files.write(Path.of(GAME_VARIABLES_URL),makeData(gameVariables.toString()).getBytes());
-        } catch (IOException e) {
-            System.out.println("Failed saving game variables properties");
-        }
+        worker.execute();
+//        try {
+//            Files.write(Path.of(url),makeData(properties.toString()).getBytes());
+//        } catch (IOException e) {
+//            System.out.println("Failed saving properties");
+//        }
     }
 
-    private String makeData(String str){
+    protected String makeData(String str){
         String data = "";
         str = str.replace("{","");
         str = str.replace("}","");
@@ -117,9 +60,4 @@ public class Config {
         return data;
     }
 
-    public static Config getInstance() {
-        if (instance == null)
-            instance = new Config();
-        return instance;
-    }
 }

@@ -1,44 +1,27 @@
-package Commons;
+package commons;
 
-import Utils.Config;
+import utils.GameConfig;
+import utils.GameDataConfig;
 
 public class EntityCoordinates {
-    //TODO maybe id not needed
-    private final int START_MAP_X;
-    private final int START_MAP_Y;
-    private final int ID;
-    private int mapIndex;
+
+    private static final int scale = (int) Math.pow(10, 4);
 
     private int mapX;
-    private int traslX;
-
     private int mapY;
-    private int traslY;
 
-    private EntityCoordinates(final int START_MAP_X, final int START_MAP_Y, final int ID){
-        this.ID = ID;
-        this.START_MAP_X = START_MAP_X;
-        this.START_MAP_Y = START_MAP_Y;
-    }
+    private int mapIndex;
 
-    public int getID() {
-        return ID;
-    }
+    private double width;
+    private double height;
 
-    public int getSTART_MAP_X() {
-        return START_MAP_X;
-    }
+    private double translX;
+    private double translY;
 
-    public int getSTART_MAP_Y() {
-        return START_MAP_Y;
-    }
-
-    public int getMapIndex() {
-        return mapIndex;
-    }
-
-    public void setMapIndex(int mapIndex) {
+    private EntityCoordinates(final int mapIndex, final int mapX, final int mapY){
         this.mapIndex = mapIndex;
+        this.mapX = mapX;
+        this.mapY = mapY;
     }
 
     public int getMapX() {
@@ -49,91 +32,117 @@ public class EntityCoordinates {
         this.mapX = mapX;
     }
 
-    public int getTraslX() {
-        return traslX;
-    }
-
-    public void setTraslX(int traslX) {
-        this.traslX = traslX;
-    }
-
-    public void updateTraslX(int traslXVariation){
-        this.traslX+=traslXVariation;
+    public void setMapY(int mapY) {
+        this.mapY = mapY;
     }
 
     public int getMapY() {
         return mapY;
     }
 
-    public void setMapY(int mapY) {
-        this.mapY = mapY;
+
+    public int getMapIndex() {
+        return mapIndex;
     }
 
-    public int getTraslY() {
-        return traslY;
+    public void setMapIndex(final int mapIndex){
+        this.mapIndex = mapIndex;
     }
 
-    public void setTraslY(int traslY) {
-        this.traslY = traslY;
+    public double getWidth() {
+        return width;
     }
-    public boolean intersects(EntityCoordinates r) {
-        int size = Config.getInstance().getRenderedTileSize();
-        int x1 = this.mapX*size+this.traslX;//+this.mapIndex*16*size;
-        int y1 = this.mapY*size+this.traslY;
-        int x2 = r.mapX*size+r.traslX;//+r.mapIndex*16*size;
-        int y2 = r.mapY*size+r.traslY;
-        return x2 < x1 + size && x2 + size > x1 && y2 < y1 + size && y2 + size > y1;
+
+    public void setWidth(double width) {
+        this.width = width;
     }
+
+    public double getTranslX() {
+        return translX;
+    }
+
+    public void setTranslX(double translX) {
+        this.translX = translX;
+    }
+
+    public void updateTraslX(double translXVariation){
+        this.translX = (double) Math.round((this.translX +translXVariation) * scale) / scale;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getTranslY() {
+        return translY;
+    }
+
+    public void setTranslY(double translY) {
+        this.translY = translY;
+    }
+
+    public void updateTraslY(double traslYVariation){
+        this.translY = (double) Math.round((this.translY +traslYVariation) * scale) / scale;
+    }
+
 
     public static class Builder{
         private final int START_MAP_X;
         private final int START_MAP_Y;
-        private final int ID;
+
         private int mapIndex;
 
-        private int mapX;
-        private int traslX;
+        private double width;
+        private double height;
 
-        private int mapY;
-        private int traslY;
+        private double translX;
+        private double translY;
 
-        public Builder(final int START_MAP_X, final int START_MAP_Y, final int ID){
-            this.ID = ID;
+        public Builder(final int START_MAP_X, final int START_MAP_Y){
             this.START_MAP_X = START_MAP_X;
             this.START_MAP_Y = START_MAP_Y;
             this.mapIndex = 0;
-            this.mapX = START_MAP_X;
-            this.traslX = 0;
-            this.mapY = START_MAP_Y;
-            this.traslY = 0;
+            this.width = GameDataConfig.getInstance().getRenderedTileSize();
+            this.height = GameDataConfig.getInstance().getRenderedTileSize();
+            this.translX = 0.0;
+            this.translY = 0.0;
         }
 
         public EntityCoordinates build(){
-            EntityCoordinates entityCoordinates = new EntityCoordinates(START_MAP_X,START_MAP_Y,ID);
-            entityCoordinates.mapIndex = mapIndex;
-            entityCoordinates.mapX = mapX;
-            entityCoordinates.traslX = traslX;
-            entityCoordinates.mapY = mapY;
-            entityCoordinates.traslY = traslY;
+            EntityCoordinates entityCoordinates = new EntityCoordinates(mapIndex,START_MAP_X,START_MAP_Y);
+            entityCoordinates.width = width;
+            entityCoordinates.height = height;
+            entityCoordinates.translX = translX;
+            entityCoordinates.translY = translY;
             return entityCoordinates;
         }
 
-        public Builder setMapIndex(int mapIndex) {
-            this.mapIndex = mapIndex;
+        public Builder setStartMapIndex(int startMapIndex) {
+            this.mapIndex = startMapIndex;
             return this;
         }
 
-        public Builder setTraslX(int traslX) {
-            this.traslX = traslX;
-            return this;
-        }
-        public Builder setTraslY(int traslY) {
-            this.traslY = traslY;
+        public Builder setTranslX(double translX) {
+            this.translX = translX;
             return this;
         }
 
-        public Builder setMapX(int mapX) {
-            this.mapX = mapX;
+        public Builder setTranslY(double translY) {
+            this.translY = translY;
+            return this;
+        }
+
+        public Builder setWidth(double width) {
+            this.width = width;
+            return this;
+        }
+
+        public Builder setHeight(double height) {
+            this.height = height;
             return this;
         }
     }

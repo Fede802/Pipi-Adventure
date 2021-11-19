@@ -1,15 +1,22 @@
-package Model;
+package model;
 
-import Commons.EntityCoordinates;
-import Commons.Pair;
-
-import java.util.ArrayList;
+import commons.*;
 
 public interface IPlayer {
+    void moveBullets();
+    void updateBulletsIndex();
     void jump();
     void fall();
     boolean isJumping();
     void setJumping(boolean isJumping);
+    void setFalling(boolean isFalling);
     void shoot();
-    ArrayList<Pair<Integer, EntityCoordinates>> getBullets();
+    void updateBulletStatus(int bulletID);
+    EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus);
+    AnimationData getBulletAnimation(int entityID);
+    int bulletCount();
+    boolean isBulletDead(int entityID);
+    void setup();
+
+    void updateBulletAnimationData(int entityID, AnimationData animation);
 }

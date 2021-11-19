@@ -1,13 +1,14 @@
-package Model;
+package model;
 
-import Commons.EntityCoordinates;
+import commons.EntityCoordinates;
+import commons.EntityType;
+
+import javax.swing.text.html.parser.Entity;
 
 public class PlainSection1 extends MapSection{
 
     public PlainSection1(){
         //super();
-
-        //mapEntities.put(GameEntity.COIN_ID,new Coin(GameEntity.COIN_ID,new EntityCoordinates.Builder(1,12).build()));
         map = new int[][]{
                 //TODO later, in all section refactor tile list
                 /*
@@ -34,21 +35,23 @@ public class PlainSection1 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
+                {34,34,34,34,34,34,21,22,22,23,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,34,34,34,34,34,34,34,21,23,34,34},
-                {34,34,34,34,34,34,34,34,21,23,34,34,34,34,34,34},
-                {34,34,34,0,1,2,34,34,34,34,34,34,34,34,34,34},
-                {1,1,1,8,8,8,1,1,1,1,1,1,1,1,1,1},
-                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
+                {34,34,21,22,22,23,34,34,34,34,21,22,22,23,34,34},
+                {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
+                {1,1,6,1,1,13,1,20,1,1,6,1,1,13,1,1},
+                {8,8,28,8,8,8,8,8,29,8,8,8,8,30,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
     @Override
-    protected void spawnEntities() {
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(1,12,GameEntity.COIN_ID).build()));
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(4,11,GameEntity.COIN_ID).build()));
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(10,9,GameEntity.COIN_ID).build()));
+    protected void spawnEntities(int daytime) {
+
+        mapEntities.add(new Coin(new EntityCoordinates.Builder(4,12).build()));
+        mapEntities.add(new Coin(new EntityCoordinates.Builder(11,9).build()));
+
     }
 
 }
+

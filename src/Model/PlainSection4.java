@@ -1,6 +1,7 @@
-package Model;
+package model;
 
-import Commons.EntityCoordinates;
+import commons.EntityCoordinates;
+import commons.RenderingType;
 
 public class PlainSection4 extends MapSection{
 
@@ -12,22 +13,26 @@ public class PlainSection4 extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,0,2,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,7,9,34,34,34,34,34,34,34,34,34},
-                {34,34,34,34,34,14,16,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
+                {34,34,34,34,34,34,34,21,23,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
-                {1,1,1,1,1,8,8,1,1,1,1,1,1,1,1,1},
-                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
+                {34,34,21,22,23,34,34,34,34,34,34,21,22,23,34,34},
+                {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
+                {1,6,1,6,1,20,1,1,13,1,1,1,13,1,6,1},
+                {8,8,29,8,8,8,8,8,8,28,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
     @Override
-    protected void spawnEntities() {
-        mapEntities.add(new Snail(new EntityCoordinates.Builder(3,12,GameEntity.ENEMY_ID).build()));
+    protected void spawnEntities(int daytime) {
+        if (daytime == DAY) {
+            mapEntities.add(new EarthEnemy(RenderingType.SNAIL,new EntityCoordinates.Builder(6, 12).build()));
+        }else{
+            mapEntities.add(new EarthEnemy(RenderingType.SLIME,new EntityCoordinates.Builder(6, 12).build()));
+        }
     }
 }
