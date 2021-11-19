@@ -75,7 +75,7 @@ public class UpgradePanel extends ApplicationPanel{
        // g2d.drawImage(player,(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.15),(int)(minSize*0.3),(int)(minSize*0.3),this);
 
         g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),this.getHeight()-(minSize/4),(int)(minSize*0.5),minSize/4,this);
-        g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),(int)(this.getHeight()-(minSize/4)-(minSize*0.3)),(int)(minSize*0.3),(int)(minSize*0.3),this);
+        g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),this.getHeight()-((3*minSize/10)+(9*minSize/128)),3*minSize/10,3*minSize/10,this);
 
         //(int)(3*this.getHeight()/4-minSize*0.2)
 
