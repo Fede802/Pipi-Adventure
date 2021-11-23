@@ -45,6 +45,8 @@ public class PlayerHandler extends EntityHandler{
     public void setup() {
         this.currentJumpStep = 0;
         this.currentImmortalityStep = 0;
+        this.isJumping = false;
+        this.isFalling = false;
         this.dying = false;
         this.immortal = false;
     }
