@@ -7,7 +7,6 @@ public interface IPlayer {
     void updateBulletsIndex();
     void jump();
     void fall();
-    boolean isJumping();
     void setJumping(boolean isJumping);
     void setFalling(boolean isFalling);
     void shoot();
@@ -16,7 +15,5 @@ public interface IPlayer {
     AnimationData getBulletAnimation(int entityID);
     int bulletCount();
     boolean isBulletDead(int entityID);
-    void setup();
-
     void updateBulletAnimationData(int entityID, AnimationData animation);
 }

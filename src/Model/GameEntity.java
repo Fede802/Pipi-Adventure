@@ -3,16 +3,15 @@ package model;
 import commons.*;
 import utils.GameDataConfig;
 
-import java.util.HashMap;
-
 public abstract class GameEntity implements IGameEntity{
 
     //    --------------------------------------------------------
     //                       STATIC FIELD
     //    --------------------------------------------------------
+    //todo maybe has not to be static
     protected static int RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
-    protected static int RIGHT_DIR = 0;
-    protected static int LEFT_DIR = 1;
+    protected static final int RIGHT_DIR = 0;
+    protected static final int LEFT_DIR = 1;
     protected static final int DEFAULT_DEATH_LOOP = 1;
     protected static final int DEFAULT_WALKING_STEP = 96;
     protected static final AnimationData TEMP_ANIMATION = new AnimationData();
@@ -20,19 +19,17 @@ public abstract class GameEntity implements IGameEntity{
     //    --------------------------------------------------------
     //                      INSTANCE FIELD
     //    --------------------------------------------------------
+
     protected final EntityType ID;
     protected final RenderingType R_ID;
     protected EntityStatus entityStatus = EntityStatus.ALIVE;
-//    protected final HashMap<Integer, Integer> animationStepList = new HashMap<>();
-//    private boolean entityDataLoaded;
+    protected EntityCoordinates entityCoordinates;
     protected int deathLoop = DEFAULT_DEATH_LOOP;
-    protected int currentDeathloop;
+    protected int currentDeathLoop;
     protected int walkingStep = DEFAULT_WALKING_STEP;
     protected int currentWalkingStep;
     protected int currentAnimationStep;
-    //todo add control for animationstep
-    protected EntityCoordinates entityCoordinates;
-    protected int currentAnimation = commons.AnimationData.WALK_ANIMATION_RIGHT;
+    protected int currentAnimation = AnimationData.WALK_ANIMATION_RIGHT;
     //change to 4 8 5 10
     protected double TILE_STEP = 5;
     protected double VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
@@ -50,48 +47,11 @@ public abstract class GameEntity implements IGameEntity{
     //    --------------------------------------------------------
     //                      INSTANCE METHOD
     //    --------------------------------------------------------
-    @Override
-    public EntityCoordinates getEntityCoordinates() {
-        return entityCoordinates;
-    }
 
     @Override
-    public AnimationData getAnimation() {
-
-
-
-//        AnimationData tempAnimation = animationList.get(currentAnimation);
-//        tempAnimation.setCurrentAnimationStep(currentAnimationStep);
-//        if(entityStatus == EntityStatus.DYING)
-//            tempAnimation.setCurrentNumLoop(currentDeathloop);
-
-//        int animationStep = animationStepList.get(currentAnimation);
-//        if(update){
-//            currentAnimationStep++;
-//            if(currentAnimationStep == animationStep-1 || animationStep == 1){
-//                if(entityStatus == EntityStatus.DYING)
-//                    currentDeathloop++;
-//            }
-//            if(currentAnimationStep == animationStep)
-//                currentAnimationStep = 0;
-//            tempAnimation.update();
-//            currentAnimationStep = tempAnimation.getCurrentAnimationStep();
-//            if(entityStatus == EntityStatus.DYING)
-//                currentDeathloop = tempAnimation.getCurrentNumLoop();
-//        }
-        TEMP_ANIMATION.setupAnimation(currentAnimationStep,currentAnimation,R_ID);
-        if(entityStatus == EntityStatus.DYING)
-            TEMP_ANIMATION.setCurrentNumLoop(currentDeathloop);
-        return TEMP_ANIMATION;
+    public EntityType getType(){
+        return ID;
     }
-
-    @Override
-    public void updateAnimationData(AnimationData animationData) {
-        currentAnimationStep = animationData.getCurrentAnimationStep();
-        if(entityStatus == EntityStatus.DYING)
-            currentDeathloop = animationData.getCurrentNumLoop();
-    }
-
 
     @Override
     public EntityStatus getEntityStatus() {
@@ -99,20 +59,19 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public void setEntityStatus(EntityStatus status) {
-        entityStatus = status;
+    public void updateEntityStatus(){
+        if(entityStatus == EntityStatus.ALIVE){
+            entityStatus = EntityStatus.DYING;
+            currentAnimationStep = 0;
+            setDeathAnimation();
+        }else{
+            entityStatus = EntityStatus.DEAD;
+        }
     }
-
 
     @Override
     public boolean isDead() {
-        return (entityStatus == EntityStatus.DYING && currentDeathloop == deathLoop);
-    }
-
-
-    @Override
-    public EntityType getType(){
-        return ID;
+        return (entityStatus == EntityStatus.DYING && currentDeathLoop == deathLoop);
     }
 
     protected void defaultWalkMovement(int movingDirection) {
@@ -140,26 +99,23 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public void updateEntityStatus(){
-        if(entityStatus == EntityStatus.ALIVE){
-            entityStatus = EntityStatus.DYING;
-            currentAnimationStep = 0;
-            setDeathAnimation();
-        }else{
-            entityStatus = EntityStatus.DEAD;
-//            if(getAnimation() != null)
-//                getAnimation().resetAnimation();
-        }
+    public EntityCoordinates getEntityCoordinates() {
+        return entityCoordinates;
     }
+
     @Override
-    public void resetEntity(){
-        //todo use this and move setup method from player
-//        getAnimation().resetAnimation();
-        //todo maybe non serve rimetterlo a 0
-        currentWalkingStep = 0;
-//        currentAnimation = GameEntity.WALK_ANIMATION_RIGHT;
-//        isAlive = true;
-//        isDying = false;
+    public AnimationData getAnimation() {
+        TEMP_ANIMATION.setupAnimation(currentAnimationStep,currentAnimation,R_ID);
+        if(entityStatus == EntityStatus.DYING)
+            TEMP_ANIMATION.setCurrentNumLoop(currentDeathLoop);
+        return TEMP_ANIMATION;
+    }
+
+    @Override
+    public void updateAnimationData(AnimationData animationData) {
+        currentAnimationStep = animationData.getCurrentAnimationStep();
+        if(entityStatus == EntityStatus.DYING)
+            currentDeathLoop = animationData.getCurrentNumLoop();
     }
 
     @Override
@@ -171,7 +127,6 @@ public abstract class GameEntity implements IGameEntity{
         entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(RENDERED_TILE_SIZE/TILE_STEP));
         VEL_Y = VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
     }
-
 
 }
 

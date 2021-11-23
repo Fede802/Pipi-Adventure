@@ -9,7 +9,7 @@ public class FontLoader {
     private FontLoader(){}
     public static void loadFonts(){
         //TODO add font file, read and iterate there, or iterate font folder
-        GraphicsEnvironment ge = null;
+        GraphicsEnvironment ge;
         try{
             ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("res/font/04B_30__.TTF")));

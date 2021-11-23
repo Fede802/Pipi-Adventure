@@ -29,10 +29,14 @@ public class EarthEnemy extends Enemy{
     }
     @Override
     public void setDeathAnimation() {
-        //todo check if befaore is walking right or left
         if(currentAnimation == commons.AnimationData.WALK_ANIMATION_RIGHT)
             currentAnimation = commons.AnimationData.DEATH_ANIMATION_RIGHT;
         else
             currentAnimation = commons.AnimationData.DEATH_ANIMATION_LEFT;
+    }
+
+    @Override
+    public void resetEntity() {
+        //nothing to do
     }
 }

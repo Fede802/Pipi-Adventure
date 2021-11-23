@@ -3,7 +3,7 @@ package view;
 import commons.*;
 import controller.GameEngine;
 import utils.GameDataConfig;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +32,7 @@ public class EntitiesDrawer {
                 temp.getValue().updateCurrentAnimationStep();
                 if(temp.getValue().getCurrentAnimationStep() == frameArray.size()-1 || frameArray.size() == 1){
                     temp.getValue().updateCurrentNumLoop();
+                    temp.getValue().setCurrentAnimationStep(AnimationData.LAST_FRAME);
                 }
                 if(temp.getValue().getCurrentAnimationStep() == frameArray.size())
                     temp.getValue().setCurrentAnimationStep(0);
@@ -66,39 +67,39 @@ public class EntitiesDrawer {
     }
 
     public void getRes(){
-        gun = ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Pistola.png").get(0);
+        gun = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Pistola.png").get(0);
         HashMap<Integer,ArrayList<Image>> player = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk") );
-            put(AnimationData.DEATH_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Death"));
-            put(AnimationData.JUMPING_ANIMATION,ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Jump"));
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Death"));
+            put(AnimationData.JUMPING_ANIMATION, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Jump"));
         }};
         HashMap<Integer,ArrayList<Image>> coin = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta.gif") );
-            put(AnimationData.DEATH_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png"));
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta.gif") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png"));
         }};
         HashMap<Integer,ArrayList<Image>> bullet = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Guns") );
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Guns") );
         }};
         HashMap<Integer,ArrayList<Image>> snail = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_R") );
-            put(AnimationData.DEATH_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_R"));
-            put(AnimationData.WALK_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_L") );
-            put(AnimationData.DEATH_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_L"));
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_R") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_R"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_L") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_L"));
 
         }};
         HashMap<Integer,ArrayList<Image>> slime = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_R") );
-            put(AnimationData.DEATH_ANIMATION_RIGHT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_R"));
-            put(AnimationData.WALK_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_L") );
-            put(AnimationData.DEATH_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_L"));
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_R") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_R"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_L") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_L"));
         }};
         HashMap<Integer,ArrayList<Image>> bee = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Ape\\Animazione") );
-            put(AnimationData.DEATH_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Ape\\Morte"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Ape\\Animazione") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Ape\\Morte"));
         }};
         HashMap<Integer,ArrayList<Image>> bat = new HashMap<>(){{
-            put(AnimationData.WALK_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Pipistrello\\Animazione") );
-            put(AnimationData.DEATH_ANIMATION_LEFT,ResourceLoader.getInstance().getRes("res\\images\\entities\\enemy\\Pipistrello\\Morte"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Pipistrello\\Animazione") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Pipistrello\\Morte"));
         }};
 
         entityFrames = new HashMap<>(){{

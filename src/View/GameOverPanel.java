@@ -2,7 +2,7 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -167,9 +167,9 @@ public class GameOverPanel extends SlidableApplicationPanel {
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this,DX);
-        bed = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\gameOver\\GameOver.gif").get(0);
-        frame = ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\PictureFrame.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this,DX);
+        bed = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\gameOver\\GameOver.gif").get(0);
+        frame = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\PictureFrame.png").get(0);
 
     }
 

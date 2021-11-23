@@ -4,7 +4,7 @@ import utils.GameConfig;
 import utils.GameDataConfig;
 
 public class EntityCoordinates {
-
+    //variable uses to fix approximation error due to double sum
     private static final int scale = (int) Math.pow(10, 4);
 
     private int mapX;
@@ -39,7 +39,6 @@ public class EntityCoordinates {
     public int getMapY() {
         return mapY;
     }
-
 
     public int getMapIndex() {
         return mapIndex;

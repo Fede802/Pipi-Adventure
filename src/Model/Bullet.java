@@ -27,4 +27,9 @@ public class Bullet extends GameEntity{
     public void setDeathAnimation() {
         //nothing to do, no death animation at the moment
     }
+
+    @Override
+    public void resetEntity() {
+
+    }
 }

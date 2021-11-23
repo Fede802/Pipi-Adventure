@@ -2,7 +2,7 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -21,7 +21,7 @@ public class LoadingPanel extends ApplicationPanel{
     private final String TITLE = "Pipi Adventure";
     private final Color titleColor = new Color(255, 216, 0);
     private final Font titleFont = new Font("04b", Font.BOLD, 45);
-    private int totalResFile = ResourceLoader.getInstance().getFile(imgResPath);
+    private int totalResFile = ImageLoader.getInstance().getNumFiles(imgResPath);
     private int currentFileLoaded;
     private BackgroundDrawer BG_DRAWER;
     private Image loadingGIF = new ImageIcon("res/images/backgrounds/menu/Sfondo_Menu.gif").getImage();
@@ -54,7 +54,7 @@ public class LoadingPanel extends ApplicationPanel{
         }
         System.out.println(barStep+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         BG_DRAWER = new BackgroundDrawer(temp,this,DX);
-        ResourceLoader.getInstance().loadResources(imgResPath,incrementLoadingbar);
+        ImageLoader.getInstance().loadImages(imgResPath,incrementLoadingbar);
     }
 
 

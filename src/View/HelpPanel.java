@@ -1,7 +1,7 @@
 package view;
 
 import controller.GameStateHandler;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -160,13 +160,13 @@ public class HelpPanel extends ApplicationPanel implements KeyListener, MouseLis
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\help\\Help_BG.png"), this, 0);
-        leftClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Left_Click.png").get(0);
-        rightClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Right_Click.png").get(0);
-        pauseClick = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Pause_Click.png").get(0);
-        qButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Q_button.png").get(0);
-        pButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\p_button.png").get(0);
-        spaceButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Space_button.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\help\\Help_BG.png"), this, 0);
+        leftClick = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Left_Click.png").get(0);
+        rightClick = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Right_Click.png").get(0);
+        pauseClick = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Pause_Click.png").get(0);
+        qButton = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Q_button.png").get(0);
+        pButton = ImageLoader.getInstance().getImages("res\\images\\gameImages\\p_button.png").get(0);
+        spaceButton = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Space_button.png").get(0);
         firstLineImages = new Image[]{leftClick, rightClick, pauseClick};
         secondLineImages = new Image[]{qButton, pButton, spaceButton};
     }

@@ -3,7 +3,7 @@ package view;
 import controller.GameEngine;
 import controller.GameStateHandler;
 import utils.GameDataConfig;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -80,7 +80,7 @@ public class GamePanel extends ApplicationPanel{
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            GameEngine.getInstance().setJumping(true);
+            GameEngine.getInstance().setJumping();
         }
         if(e.getKeyCode() == KeyEvent.VK_P)
             GameStateHandler.getInstance().pause();
@@ -101,7 +101,7 @@ public class GamePanel extends ApplicationPanel{
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
             if (!this.pauseButton.contains(e.getX(),e.getY()))
-                GameEngine.getInstance().setJumping(true);
+                GameEngine.getInstance().setJumping();
         }else if (e.getButton() == MouseEvent.BUTTON3){
             GameEngine.getInstance().shoot();
         }
@@ -157,22 +157,22 @@ public class GamePanel extends ApplicationPanel{
     @Override
     public void loadResources() {
         ArrayList<ArrayList<Image>> temp = new ArrayList<>();
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\1.png"));
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\2.png"));
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\3.png"));
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\4.png"));
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\5.png"));
-        temp.add(ResourceLoader.getInstance().getRes("res\\images\\tilesets\\6.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\1.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\2.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\3.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\4.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\5.png"));
+        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\6.png"));
 
         mapDrawer = new MapDrawer(this, temp);
         mapDrawer.updateRenderedTileSize(renderedTileSize);
         entitiesDrawer.getRes();
         gameBar.loadRes();
-        backgroundLayer_1 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
-        backgroundLayer_2 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
-        backgroundLayer_3 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);
-        backgroundLayer_4 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Layer4"), this, 1,3*renderedTileSize);
-        backgroundLayer_5 = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\game\\Sky"), this, 2,3*renderedTileSize);
+        backgroundLayer_1 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
+        backgroundLayer_2 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
+        backgroundLayer_3 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);
+        backgroundLayer_4 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer4"), this, 1,3*renderedTileSize);
+        backgroundLayer_5 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Sky"), this, 2,3*renderedTileSize);
         loadedRes = true;
     }
 }

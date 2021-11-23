@@ -1,7 +1,7 @@
 package view;
 
 import utils.GameConfig;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,11 +62,11 @@ public class GameBar {
     }
 
     public void loadRes(){
-        coin = ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
-        lifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
-        lostLifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuore_Vuoto.png").get(0);
-        missingLifeHeart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Bordo_Cuore.png").get(0);
-        pauseButton = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Pause_Button2.png").get(0);
-        bullet = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Proiettile_logo.png").get(0);
+        coin = ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png").get(0);
+        lifeHeart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);
+        lostLifeHeart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuore_Vuoto.png").get(0);
+        missingLifeHeart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Bordo_Cuore.png").get(0);
+        pauseButton = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Pause_Button2.png").get(0);
+        bullet = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Proiettile_logo.png").get(0);
     }
 }

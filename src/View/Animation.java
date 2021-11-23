@@ -1,6 +1,6 @@
 package view;
 
-import utils.ResourceLoader;
+import utils.ImageLoader;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class Animation {
 
 
     public Animation(String path){
-        animationTile = ResourceLoader.getInstance().getRes(path);
+        animationTile = ImageLoader.getInstance().getImages(path);
         animationStep = animationTile.size();
     }
 

@@ -1,7 +1,7 @@
 package view;
 
 import controller.GameStateHandler;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -215,11 +215,11 @@ public class MenuPanel extends ApplicationPanel{
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\menu\\menubg.png"), this,DX);
-        musicON = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button1.png").get(0);
-        musicOFF = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Music_Button2.png").get(0);
-        soundON = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button1.png").get(0);
-        soundOFF = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Sound_Button2.png").get(0);
+        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\menu\\menubg.png"), this,DX);
+        musicON = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Music_Button1.png").get(0);
+        musicOFF = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Music_Button2.png").get(0);
+        soundON = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Sound_Button1.png").get(0);
+        soundOFF = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Sound_Button2.png").get(0);
     }
 
     public void setup(int bgTrasl, double titlePadding, Image bg) {

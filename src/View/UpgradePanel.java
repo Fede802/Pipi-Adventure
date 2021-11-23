@@ -4,7 +4,7 @@ package view;
 import controller.GameEngine;
 import controller.GameStateHandler;
 import utils.GameConfig;
-import utils.ResourceLoader;
+import utils.ImageLoader;
 import utils.SoundManager;
 
 import java.awt.*;
@@ -265,16 +265,16 @@ public class UpgradePanel extends ApplicationPanel{
     @Override
     public void loadResources() {
 
-        backGround = new BackgroundDrawer(ResourceLoader.getInstance().getRes("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
+        backGround = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
         backGround.updateFrames(true);
 
         pipi = new Animation("res\\images\\backgrounds\\upgrade\\Pipi");
         pedestal = new Animation("res\\images\\backgrounds\\upgrade\\Pedestal");
 
-        player = ResourceLoader.getInstance().getRes("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
-        heart = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Cuoret.png").get(0);
-        bullet = ResourceLoader.getInstance().getRes("res\\images\\gameImages\\Proiettile_logo.png").get(0);
-        coin = ResourceLoader.getInstance().getRes("res\\images\\entities\\coin\\Moneta_img.png").get(0);
+        player = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
+        heart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);
+        bullet = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Proiettile_logo.png").get(0);
+        coin = ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png").get(0);
 
     }
 }

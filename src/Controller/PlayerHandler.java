@@ -9,9 +9,14 @@ import utils.GameDataConfig;
 import view.GameView;
 
 public class PlayerHandler extends EntityHandler{
-    public static final int JUMP_STEP = 13;
+    public static final int JUMP_STEP = 23;//13;
     private int currentJumpStep;
     private int playerStartMapX = GameDataConfig.getInstance().getPlayerStartMapX();
+
+    public void setJumping(boolean jumping) {
+        isJumping = jumping;
+    }
+
     private boolean isJumping = false;
 
     public boolean isJumping() {
@@ -117,14 +122,14 @@ public class PlayerHandler extends EntityHandler{
     }
 
     public void jumpAndFall(){
-        isJumping = GameModel.getInstance().isPlayerJumping();
-//        System.out.println(bottomCollision());
+
+
         if(isJumping){
             GameModel.getInstance().playerJump();
-//            System.out.println(getNext().getTranslY() + "jump"+getNext().getMapY());
             currentJumpStep++;
             if(currentJumpStep == JUMP_STEP) {
                 currentJumpStep = 0;
+                isJumping = false;
                 isFalling = true;
                 GameModel.getInstance().setPlayerJumping(false);
             }
@@ -134,7 +139,6 @@ public class PlayerHandler extends EntityHandler{
                 GameModel.getInstance().setPlayerFalling(true);
             }
             GameModel.getInstance().playerFall();
-//            System.out.println(getNext().getTranslY() + "fall" +getNext().getMapY());
         }else if(isFalling && bottomCollision()){
             isFalling = false;
             GameModel.getInstance().setPlayerFalling(false);

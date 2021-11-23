@@ -37,7 +37,7 @@ public class GameEngine implements IGameEngine{
         updateAnimation = false;
         updateEntity();
         if(!playerHandler.isDying()) {
-            GameModel.getInstance().moveEntity();
+            GameModel.getInstance().moveEntities();
             playerHandler.jumpAndFall();
             if (playerHandler.mapUpdate())
                 GameModel.getInstance().updateMap();
@@ -126,22 +126,17 @@ public class GameEngine implements IGameEngine{
         AnimationData animationData;
         EntityCoordinates entity = GameModel.getInstance().getEntityCoordinates(type.getKey(),type.getValue(), EntityStatus.ALL);
         renderingPair.updateKey(entity);
-        animationData = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
+        animationData = GameModel.getInstance().getEntityAnimationData(type.getKey(),type.getValue());
             if(type.getKey() == EntityType.PLAYER){
-                if(!((playerHandler.isJumping() || playerHandler.isFalling()) && animationData.getCurrentNumLoop() == 1))
+                if(!((playerHandler.isJumping() || playerHandler.isFalling()) && animationData.getCurrentAnimationStep() == AnimationData.LAST_FRAME))
                     animationData.hasToUpdate(updateAnimation);
             }else if(!playerHandler.isDying()){
-//                animationData = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
-////                if(!playerHandler.isJumping() && !playerHandler.isFalling() && type.getKey() != EntityType.PLAYER)
                     animationData.hasToUpdate(updateAnimation);
             }
-//            else
-//                animationData = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
             if(updateAnimation && type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
                 animationData.switchOpacity();
                 playerHandler.updateImmortalityStep();
             }
-//            System.out.println("update");
         renderingPair.updateValue(animationData);
         return renderingPair;
     }
@@ -156,8 +151,9 @@ public class GameEngine implements IGameEngine{
 
 
     @Override
-    public void setJumping(boolean isJumping) {
-        if (!playerHandler.isFalling()&&!playerHandler.isJumping()&&!playerHandler.isDying()&&isJumping){
+    public void setJumping() {
+        if (!playerHandler.isFalling()&&!playerHandler.isJumping()&&!playerHandler.isDying()){
+            playerHandler.setJumping(true);
             GameModel.getInstance().setPlayerJumping(true);
         }
     }

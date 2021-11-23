@@ -20,7 +20,10 @@ public class Coin extends GameEntity{
         currentAnimation = commons.AnimationData.DEATH_ANIMATION_RIGHT;
     }
 
-
+    @Override
+    public void resetEntity() {
+        //nothing to do
+    }
 
 
 }

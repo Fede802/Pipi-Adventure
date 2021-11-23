@@ -34,6 +34,7 @@ public abstract class MapSection {
         return mapEntities;
     }
     //todo add day/night spawn
+
     protected abstract void spawnEntities(int daytime);
 
     public GameEntity spawnFlyingEnemy(int daytime) {
