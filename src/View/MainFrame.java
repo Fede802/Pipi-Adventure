@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         //todo useless pack
-        this.pack();
+        //this.pack();
     }
 
     public ComponentContainer getComponentContainer(){

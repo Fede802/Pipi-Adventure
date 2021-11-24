@@ -50,8 +50,10 @@ public class UpgradePanel extends ApplicationPanel{
 
     public UpgradePanel(){
         super();
+        //TODO init menu theme
         audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
+        //TODO init upgrade sound and not enough money sound
     }
 
     @Override
@@ -186,6 +188,8 @@ public class UpgradePanel extends ApplicationPanel{
             if(currentLife < MAX_LIFE)
                 if(buy(calculatePrice(currentLife))){
                     currentLife++;
+                    pipi.resetAnimation();
+                    pedestal.resetAnimation();
                     upgrading = true;
                     if(currentLife < MAX_LIFE)
                         lifePrice = String.valueOf(calculatePrice(currentLife));
@@ -201,6 +205,8 @@ public class UpgradePanel extends ApplicationPanel{
             if(currentBullet <MAX_BULLET)
                 if(buy(calculatePrice(currentBullet-MIN_BULLET))){
                     currentBullet++;
+                    pipi.resetAnimation();
+                    pedestal.resetAnimation();
                     upgrading = true;
                     if(currentBullet <MAX_BULLET)
                         bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));

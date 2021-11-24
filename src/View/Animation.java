@@ -18,6 +18,11 @@ public class Animation {
         animationStep = animationTile.size();
     }
 
+    public Animation(ArrayList<Image> img ){
+        animationTile = img;
+        animationStep = animationTile.size();
+    }
+
     public Image getFrame(){
         return animationTile.get(currentAnimationStep);
     }

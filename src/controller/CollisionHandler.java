@@ -25,7 +25,7 @@ public class CollisionHandler {
             frontMapIndex++;
         }
         if(next.getTranslY() == 0){
-            //TODO add emptyTileKeyCode and maybe all the keyCode
+            //TODO add emptyTileKeyCode
             if(GameModel.getInstance().getTileData(next.getMapIndex(), next.getMapX(), next.getMapY()+1) != 34)
                 isColliding = true;
             if(next.getTranslX() != 0)

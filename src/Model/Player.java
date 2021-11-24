@@ -15,7 +15,6 @@ public class Player extends GameEntity implements IPlayer{
     }
     @Override
     public void move() {
-        //TODO maybe use for start movement
         if(entityStatus == EntityStatus.ALIVE) {
             defaultWalkMovement(RIGHT_DIR);
         }

@@ -22,7 +22,10 @@ public class LoadingPanel extends ApplicationPanel{
     private final Color TITLE_COLOR = new Color(255, 216, 0);
     private final Font TITLE_FONT = new Font("04b", Font.BOLD, 45);
     private final int TOTAL_IMG_FILES = ImageLoader.getInstance().getNumFiles(IMG_RES_PATH);
-    private final Image LOADING_GIF = new ImageIcon("res/images/backgrounds/menu/Sfondo_Menu.gif").getImage();
+    private final Animation LOADING_ANIMATION;
+    //TODO config
+    private final int BG_TICK_ANIMATION =10;
+    private  int currentBGTickAnimation;
     private int currentFileLoaded;
     private BackgroundDrawer BG_DRAWER;
 
@@ -52,7 +55,31 @@ public class LoadingPanel extends ApplicationPanel{
             e.printStackTrace();
         }
         BG_DRAWER = new BackgroundDrawer(temp,this,DX);
+
+        ArrayList<Image> tempBGAnimation = new ArrayList<>();
+
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation1.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation2.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation3.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation4.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation5.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation6.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation7.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation8.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation9.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation10.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation11.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation12.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation13.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation14.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation15.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation16.png").getImage());
+        tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation17.png").getImage());
+
+        LOADING_ANIMATION = new Animation(tempBGAnimation);
+
         ImageLoader.getInstance().loadImages(IMG_RES_PATH, updateLoadingBar);
+
     }
 
     private Runnable updateLoadingBar = new Runnable() {
@@ -73,6 +100,11 @@ public class LoadingPanel extends ApplicationPanel{
     @Override
     protected void timerActionEvent(ActionEvent e) {
         BG_DRAWER.update();
+        currentBGTickAnimation++;
+        if (currentBGTickAnimation == BG_TICK_ANIMATION){
+            currentBGTickAnimation = 0;
+            LOADING_ANIMATION.update();
+        }
         if(transition){
             currentBarStep++;
             if(currentBarStep%2 == 0)
@@ -101,7 +133,7 @@ public class LoadingPanel extends ApplicationPanel{
         g2d.fillRoundRect((this.getWidth()-loadingBarWidth)/2,3*this.getHeight()/5-10+shiftBarVelY*currentBarStep,(int)(barStep*currentFileLoaded),20,20,20);
         g2d.setColor(Color.BLACK);
         g2d.setStroke(ds);
-        g2d.drawImage(LOADING_GIF, 0,100,this.getWidth(),this.getHeight()-100 , null);
+        g2d.drawImage(LOADING_ANIMATION.getFrame(), 0,100,this.getWidth(),this.getHeight()-100 , null);
 
     }
 
@@ -136,9 +168,9 @@ public class LoadingPanel extends ApplicationPanel{
         return BG_DRAWER.getX();
     }
 
-
-
-    public Image getBgGif() {
-    return LOADING_GIF;
+    public Animation getBgGif() {
+    return LOADING_ANIMATION;
     }
+
+
 }

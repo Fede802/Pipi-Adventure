@@ -6,6 +6,7 @@ import commons.EntityType;
 import model.GameData;
 import model.GameModel;
 import utils.GameDataConfig;
+import utils.SoundManager;
 import view.GameView;
 
 public class PlayerHandler extends EntityHandler{
@@ -15,6 +16,8 @@ public class PlayerHandler extends EntityHandler{
 
     public void setJumping(boolean jumping) {
         isJumping = jumping;
+        if(isJumping)
+            JUMP.playOnce();
     }
 
     private boolean isJumping = false;
@@ -41,6 +44,9 @@ public class PlayerHandler extends EntityHandler{
 
     private boolean dying = false;
     private final int IMMORTALITY_STEP=13;
+
+    private final SoundManager COIN = new SoundManager("res/audio/coinpickup.wav", SoundManager.MUSIC);
+    private final SoundManager JUMP = new SoundManager("res/audio/Jump.wav", SoundManager.MUSIC);
 
     public void setup() {
         this.currentJumpStep = 0;
@@ -102,7 +108,7 @@ public class PlayerHandler extends EntityHandler{
     protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
         GameModel.getInstance().updateEntitiesStatus(EntityType.COIN,outerCurrentEntity);
         GameData.getInstance().updateCurrentCoin();
-
+        COIN.playOnce();
     }
 
     @Override

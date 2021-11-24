@@ -4,6 +4,7 @@ import commons.*;
 import model.GameData;
 import model.GameModel;
 import utils.GameDataConfig;
+import utils.SoundManager;
 import view.GameView;
 
 public class GameEngine implements IGameEngine{
@@ -19,9 +20,10 @@ public class GameEngine implements IGameEngine{
     private final Pair<EntityType,Integer> entity = new Pair<>(null,null);
     private int currentTick;
     private boolean updateAnimation = false;
-    //todo will use?
     private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
     private static GameEngine instance = null;
+    private final SoundManager BULLET = new SoundManager("res/audio/bullet.wav", SoundManager.MUSIC);
+
 
     private GameEngine(){}
     public static GameEngine getInstance() {
@@ -162,7 +164,9 @@ public class GameEngine implements IGameEngine{
         if(GameData.getInstance().getCurrentBullets() > 0){
             GameModel.getInstance().shoot();
             GameData.getInstance().updateCurrentBullets(-1);
+            BULLET.playOnce();
         }
+
     }
 
     @Override

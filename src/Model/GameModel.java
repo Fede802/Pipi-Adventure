@@ -107,7 +107,7 @@ public class GameModel implements IGameModel{
     public void updateAnimationData(EntityType entityType, int entityID, AnimationData animation) {
         switch(entityType){
             case PLAYER -> PLAYER.updateAnimationData(animation);
-            case COIN, ENEMY ->MAP_GENERATOR.updateAnimationData(entityType,entityID,animation);
+            case COIN, ENEMY -> MAP_GENERATOR.updateAnimationData(entityType,entityID,animation);
             case BULLET ->  PLAYER.updateBulletAnimationData(entityID,animation);
         }
     }

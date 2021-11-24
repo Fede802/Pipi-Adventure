@@ -42,8 +42,11 @@ public class MenuPanel extends ApplicationPanel{
     private final Color TITLE_COLOR = new Color(255, 216, 0);
     private final Font TITLE_FONT = new Font("04b", Font.BOLD, 45);
     private final Font FONT = new Font("04b", Font.PLAIN,30);
-    private Image menuGIF,soundON,soundOFF,musicON,musicOFF,music,sound;
-
+    private Image soundON,soundOFF,musicON,musicOFF,music,sound;
+    private Animation menuGIF;
+    //TODO config
+    private final int BG_TICK_ANIMATION =10;
+    private  int currentBGTickAnimation;
 
     public MenuPanel(){
         super();
@@ -56,6 +59,11 @@ public class MenuPanel extends ApplicationPanel{
     @Override
     protected void timerActionEvent(ActionEvent e) {
         BG_DRAWER.update();
+        currentBGTickAnimation++;
+        if (currentBGTickAnimation == BG_TICK_ANIMATION){
+            currentBGTickAnimation = 0;
+            menuGIF.update();
+        }
         if(firstOpen && transition){
             currentStep--;
             if(currentStep%2 == 0)
@@ -85,7 +93,7 @@ public class MenuPanel extends ApplicationPanel{
             else
                 g2d.setColor(new Color(255, 120, 0));
            if (i == 4)
-               g2d.drawImage(menuGIF, 0,100,this.getWidth(),this.getHeight()-100 , null);
+               g2d.drawImage(menuGIF.getFrame(), 0,100,this.getWidth(),this.getHeight()-100 , null);
             switch (i){
                 case(4):{
                     g2d.drawImage(music, this.getWidth()/10-50, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
@@ -210,7 +218,7 @@ public class MenuPanel extends ApplicationPanel{
         soundOFF = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Sound_Button2.png").get(0);
     }
 
-    public void setup(int bgTransl, Image bg) {
+    public void setup(int bgTransl, Animation bg) {
         BG_DRAWER.setX(bgTransl);
         this.menuGIF = bg;
         if(SoundManager.isIsMusicActive())
