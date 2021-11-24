@@ -11,16 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.util.ArrayList;
 
 public class GamePanel extends ApplicationPanel{
-    int count = 0;
-    private int renderedTileSize;
-    private boolean isRunning = false;
-    private boolean loadedRes = false;
 
-    private final File tileSet = new File("Resources/TileSet/Tileset_Day.png");
+    private int renderedTileSize;
+    private boolean loadedRes = false;
 
     private BackgroundDrawer backgroundLayer_1;
     private BackgroundDrawer backgroundLayer_2;
@@ -29,14 +25,14 @@ public class GamePanel extends ApplicationPanel{
     private BackgroundDrawer backgroundLayer_5;
     private MapDrawer mapDrawer;
     private final GameBar gameBar = new GameBar(this);
-    private final EntitiesDrawer entitiesDrawer = new EntitiesDrawer();
+    private final EntitiesDrawer entitiesDrawer = new EntitiesDrawer(this);
     private final Rectangle2D.Double pauseButton;
     private boolean running = true;
 
 
 
     public GamePanel(){
-        super(); //redundant call to the superclass constructor
+        super();
         audio.put(MUSIC_THEME,new SoundManager("res/audio/Level1.wav",SoundManager.SOUND));
         renderedTileSize = GameDataConfig.getInstance().getRenderedTileSize();
         pauseButton = gameBar.getPauseButton();
@@ -53,7 +49,6 @@ public class GamePanel extends ApplicationPanel{
             backgroundLayer_5.update();
             mapDrawer.update();
         }
-
         repaint();
     }
 
@@ -69,7 +64,7 @@ public class GamePanel extends ApplicationPanel{
         backgroundLayer_1.drawBackground(g2d);
         mapDrawer.drawMap(g2d);
         gameBar.drawBar(g2d);
-        entitiesDrawer.drawEntities(g2d,this);
+        entitiesDrawer.drawEntities(g2d);
 
     }
 
@@ -80,7 +75,7 @@ public class GamePanel extends ApplicationPanel{
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            GameEngine.getInstance().setJumping();
+            GameEngine.getInstance().jump();
         }
         if(e.getKeyCode() == KeyEvent.VK_P)
             GameStateHandler.getInstance().pause();
@@ -101,7 +96,7 @@ public class GamePanel extends ApplicationPanel{
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
             if (!this.pauseButton.contains(e.getX(),e.getY()))
-                GameEngine.getInstance().setJumping();
+                GameEngine.getInstance().jump();
         }else if (e.getButton() == MouseEvent.BUTTON3){
             GameEngine.getInstance().shoot();
         }
@@ -123,7 +118,6 @@ public class GamePanel extends ApplicationPanel{
             backgroundLayer_4.setPaddingBottom(3 * renderedTileSize);
             backgroundLayer_5.setPaddingBottom(3 * renderedTileSize);
         }
-        System.out.println(renderedTileSize+"updategamepanel");
     }
 
 
@@ -163,11 +157,11 @@ public class GamePanel extends ApplicationPanel{
         temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\4.png"));
         temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\5.png"));
         temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\6.png"));
-
+//todo load resources as entitydrawer?
         mapDrawer = new MapDrawer(this, temp);
         mapDrawer.updateRenderedTileSize(renderedTileSize);
-        entitiesDrawer.getRes();
-        gameBar.loadRes();
+        entitiesDrawer.loadResources();
+        gameBar.loadResources();
         backgroundLayer_1 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
         backgroundLayer_2 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
         backgroundLayer_3 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);

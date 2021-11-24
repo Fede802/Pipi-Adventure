@@ -33,7 +33,6 @@ public abstract class MapSection {
         spawnEntities(daytime);
         return mapEntities;
     }
-    //todo add day/night spawn
 
     protected abstract void spawnEntities(int daytime);
 

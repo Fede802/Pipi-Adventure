@@ -13,16 +13,14 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
 
     protected Timer timer;
     protected Map<Integer, SoundManager> audio;
+    protected int minSize;
 
     public ApplicationPanel(){
-        timer = new Timer(TIMER_TICK, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                timerActionEvent(e);
-            }
+        timer = new Timer(TIMER_TICK, e -> {
+            timerActionEvent(e);
         });
         audio = new HashMap<>();
-        setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
+        this.setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
         this.setFocusable(true);
         this.addKeyListener(this);
         this.addMouseListener(this);
@@ -43,6 +41,16 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
         timer.stop();
         if(audio.containsKey(MUSIC_THEME))
             audio.get(MUSIC_THEME).stopLoop();
+    }
+
+    @Override
+    public void setSize(Dimension d) {
+        super.setSize(d);
+        minSize = getWidth();
+        int size = getHeight();
+        if(size < minSize){
+            minSize = size;
+        }
     }
 
     @Override

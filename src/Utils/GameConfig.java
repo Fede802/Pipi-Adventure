@@ -45,7 +45,6 @@ public class GameConfig extends Config{
         properties.setProperty("recordScore",String.valueOf(recordScore));
     }
 
-    //todo set total coin and record score and save with a swingworker(?)
     public static GameConfig getInstance() {
         if (instance == null)
             instance = new GameConfig();

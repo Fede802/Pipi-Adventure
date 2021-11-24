@@ -8,14 +8,15 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 public class GameBar {
+
     private final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
     private int currentMaxLife;
     private Image coin,lifeHeart,lostLifeHeart,missingLifeHeart,pauseButton,bullet;
     private final JPanel panel;
     private int score,coinCollected,life,bullets;
     private final Font  font = new Font("04b", Font.PLAIN, 20 );
-    private int padding = 10;
-    private Rectangle2D.Double button = new Rectangle2D.Double();
+    private final int padding = 10;
+    private final Rectangle2D.Double button = new Rectangle2D.Double();
 
     public GameBar(JPanel panel){
         this.panel = panel;
@@ -61,7 +62,7 @@ public class GameBar {
         return button;
     }
 
-    public void loadRes(){
+    public void loadResources(){
         coin = ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png").get(0);
         lifeHeart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);
         lostLifeHeart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuore_Vuoto.png").get(0);

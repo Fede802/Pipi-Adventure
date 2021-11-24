@@ -7,21 +7,22 @@ import utils.GameDataConfig;
 import view.GameView;
 
 public class GameEngine implements IGameEngine{
-
-    private static final int CHANGE_DAYTIME_SCORE = 1000;
+    //todo config
+    private  final int CHANGE_DAYTIME_SCORE = 1000;
     private final int BULLET_INCREMENT_SCORE = 100;
     private final int TICK_TO_UPDATE_ANIMATION = 3;
-    private PlayerHandler playerHandler = new PlayerHandler();
-    private EnemyHandler enemyHandler = new EnemyHandler();
-    private BulletsHandler bulletsHandler = new BulletsHandler();
-    private CoinHandler coinHandler = new CoinHandler();
-    private Pair<EntityCoordinates, AnimationData> renderingPair = new Pair<>(null,null);
-    private Pair<EntityType,Integer> entity = new Pair<>(null,null);
+    private final PlayerHandler playerHandler = new PlayerHandler();
+    private final EnemyHandler enemyHandler = new EnemyHandler();
+    private final BulletsHandler bulletsHandler = new BulletsHandler();
+    private final CoinHandler coinHandler = new CoinHandler();
+    private final Pair<EntityCoordinates, AnimationData> renderingPair = new Pair<>(null,null);
+    private final Pair<EntityType,Integer> entity = new Pair<>(null,null);
     private int currentTick;
-    private boolean shoot = true;
     private boolean updateAnimation = false;
+    //todo will use?
     private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
     private static GameEngine instance = null;
+
     private GameEngine(){}
     public static GameEngine getInstance() {
         if (instance == null)
@@ -30,10 +31,6 @@ public class GameEngine implements IGameEngine{
     }
     @Override
     public void updateGameStatus() {
-//        if (shoot){
-//            shoot();
-//            shoot = false;
-//        }
         updateAnimation = false;
         updateEntity();
         if(!playerHandler.isDying()) {
@@ -91,12 +88,10 @@ public class GameEngine implements IGameEngine{
             isDead = GameModel.getInstance().isDead(type.getKey(),type.getValue());
             if(isDead)
                 if (type.getKey() == EntityType.PLAYER) {
-                    //TODO save best score
                     GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoin());
                     GameStateHandler.getInstance().gameOver();
                 } else {
                     GameModel.getInstance().updateEntitiesStatus(type.getKey(), type.getValue());
-                    System.out.println("dead");
                 }
 
 
@@ -104,7 +99,6 @@ public class GameEngine implements IGameEngine{
     }
 
     private void checkEntityCollision() {
-        //todo problem when dying, dovrebbe essere fixato
         if(!playerHandler.isImmortal() && !playerHandler.isDying())
             playerHandler.checkEntityCollision(enemyHandler);
         playerHandler.checkEntityCollision(coinHandler);
@@ -151,7 +145,7 @@ public class GameEngine implements IGameEngine{
 
 
     @Override
-    public void setJumping() {
+    public void jump() {
         if (!playerHandler.isFalling()&&!playerHandler.isJumping()&&!playerHandler.isDying()){
             playerHandler.setJumping(true);
             GameModel.getInstance().setPlayerJumping(true);
@@ -218,14 +212,6 @@ public class GameEngine implements IGameEngine{
     public void saveDataConfig() {
         GameData.getInstance().saveData();
     }
-
-//    @Override
-//    public int getPlayerId() {
-//        int id = -1;
-//        if(!playerHandler.isDying())
-//            id = coinHandler.getEntityNum()+enemyHandler.getEntityNum();
-//        return id;
-//    }
 
     @Override
     public void setResources() {

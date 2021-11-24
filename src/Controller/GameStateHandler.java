@@ -29,7 +29,6 @@ public class GameStateHandler implements IGameStateHandler{
         currentState = GAME_STATE;
         GameView.getInstance().hasToNotifyChangingScreen(true);
         GameView.getInstance().openWindow();
-
     }
 
     @Override

@@ -16,14 +16,15 @@ public class EntitiesDrawer {
     private int renderedTileSize;
     private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
     private HashMap<RenderingType,HashMap<Integer, ArrayList<Image>>> entityFrames;
+    private final JPanel panel;
 
-    public EntitiesDrawer(){}
+    public EntitiesDrawer(JPanel panel){
+        this.panel = panel;
+    }
 
-    public void drawEntities(Graphics2D g2d, JPanel panel){
-        //TODO panel in constructor
+    public void drawEntities(Graphics2D g2d){
         int entityNum = GameEngine.getInstance().getTotalEntity();
         double mapTranslX = GameEngine.getInstance().getMapTranslX();
-//        g2d.drawImage(gun,  (GameDataConfig.getInstance().getPlayerStartMapX()+1) * renderedTileSize -(renderedTileSize/10), (panel.getHeight()-(SECTION_SIZE-GameDataConfig.getInstance().getPlayerStartMapY())*renderedTileSize)+(int)(entityPos.getTranslY()) , renderedTileSize, renderedTileSize, null);
         for(int i = 0; i < entityNum; i++){
             Pair<EntityCoordinates, AnimationData> temp = GameEngine.getInstance().getEntityForRendering(i);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, temp.getValue().getOpacity()));
@@ -66,7 +67,7 @@ public class EntitiesDrawer {
         this.renderedTileSize = renderedTileSize;
     }
 
-    public void getRes(){
+    public void loadResources(){
         gun = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Pistola.png").get(0);
         HashMap<Integer,ArrayList<Image>> player = new HashMap<>(){{
             put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk") );

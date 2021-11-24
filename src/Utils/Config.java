@@ -12,7 +12,6 @@ public class Config {
     protected final Properties properties = new Properties();
     private final SwingWorker worker = new SwingWorker<Void,Void>() {
         @Override
-        //javax.swing.SwingUtilities.isEventDispatchThread()
         protected Void doInBackground()  {
             try {
                 Files.write(Path.of(url),makeData(properties.toString()).getBytes());
@@ -23,7 +22,6 @@ public class Config {
         }
         @Override
         public void done() {
-//                Thread.State.WAITING.notify();
             System.out.println("finish");
         }
 
@@ -31,21 +29,23 @@ public class Config {
 
     public Config(String url){
         this.url = url;
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = Files.newBufferedReader(Path.of(url));
+            reader = Files.newBufferedReader(Path.of(url));
             properties.load(reader);
         } catch (IOException e) {
             System.out.println("Failed loading configuration file");
+        }finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void saveData(){
         worker.execute();
-//        try {
-//            Files.write(Path.of(url),makeData(properties.toString()).getBytes());
-//        } catch (IOException e) {
-//            System.out.println("Failed saving properties");
-//        }
     }
 
     protected String makeData(String str){

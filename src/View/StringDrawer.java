@@ -24,7 +24,7 @@ public class StringDrawer {
     public static double getStringHeight(final Graphics2D g2d, final Font textFont){
         return g2d.getFontMetrics(textFont).getHeight();
     }
-    //TODO maybePanel field non serve
+
     public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor, int strokeWidth, Color fillColor, final double paddingTop, final double paddingRight, final JPanel panel, int position){
         Color prevColor = g2d.getColor();
         Font prevFont = g2d.getFont();

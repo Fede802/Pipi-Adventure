@@ -9,7 +9,7 @@ import utils.GameDataConfig;
 import view.GameView;
 
 public class PlayerHandler extends EntityHandler{
-    public static final int JUMP_STEP = 23;//13;
+    public static final int JUMP_STEP = 13;
     private int currentJumpStep;
     private int playerStartMapX = GameDataConfig.getInstance().getPlayerStartMapX();
 
@@ -87,7 +87,6 @@ public class PlayerHandler extends EntityHandler{
 
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
-        System.out.println("enemy collision");
         if(GameData.getInstance().getCurrentLife() == 0) {
             GameModel.getInstance().updateEntitiesStatus(EntityType.PLAYER, currentEntity);
             GameView.getInstance().isGameRunning(false);
@@ -101,7 +100,6 @@ public class PlayerHandler extends EntityHandler{
 
     @Override
     protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
-        System.out.println("COOOOOOLLIIIII");
         GameModel.getInstance().updateEntitiesStatus(EntityType.COIN,outerCurrentEntity);
         GameData.getInstance().updateCurrentCoin();
 

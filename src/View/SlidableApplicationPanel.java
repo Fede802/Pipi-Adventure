@@ -22,17 +22,15 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
             if(isOnScreen) {
                 setLocation(getX(), getY() + SLIDING_STEP);
                 currentSlidingStep-=SLIDING_STEP;
-//                setBounds((int) (componentContainer.getWidth() - Slidable.DEFAULT_WIDTH) / 2, (int) getY(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
-                if (getY() > (int) (componentContainer.getHeight())) {
+                if (getY() > componentContainer.getHeight()) {
                     stop();
-//                    setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
                     componentContainer.notifyResume();
                 }
             }else{
                 setLocation(getX(), getY() - SLIDING_STEP);
                 currentSlidingStep+=SLIDING_STEP;
-//                setBounds((int) (componentContainer.getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight() - currentSlidingStep, Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
-                if (getY() <= (int) (componentContainer.getHeight() - Slidable.DEFAULT_HEIGHT) / 2) {
+
+                if (getY() <= (componentContainer.getHeight() - Slidable.DEFAULT_HEIGHT) / 2) {
                     currentSlidingStep = 0;
                     requestFocus();
                     isSliding = false;
@@ -55,9 +53,9 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     public void setSize(Dimension d) {
         super.setSize(d);
         if(isOnScreen)
-            setBounds((int) (getWidth()-Slidable.DEFAULT_WIDTH)/2,(int)(getHeight()-Slidable.DEFAULT_HEIGHT)/2,Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT);
+            setBounds( (getWidth()-Slidable.DEFAULT_WIDTH)/2,(getHeight()-Slidable.DEFAULT_HEIGHT)/2,Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT);
         else if(isSliding)
-            setBounds((int) (getWidth() - Slidable.DEFAULT_WIDTH) / 2, (int) getHeight() - currentSlidingStep, Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
+            setBounds( (getWidth() - Slidable.DEFAULT_WIDTH) / 2,  getHeight() - currentSlidingStep, Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
         else
             setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
     }
@@ -65,12 +63,9 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     @Override
     public void stop(){
         super.stop();
-//        setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, (int) ComponentContainers.size.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
         currentSlidingStep = 0;
         isSliding = false;
         isOnScreen = false;
-        //todo fix without sfarfallamento
         setSize(componentContainer.getSize());
-//        setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
     }
 }

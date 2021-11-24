@@ -8,12 +8,10 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class BackgroundDrawer {
-    private static final int UPDATE_TICK_DELAY = 40;
-
-    private ArrayList<Image> image = new ArrayList<>();
-    private JPanel panel;
-
-
+    //todo config
+    private final int UPDATE_TICK_DELAY = 40;
+    private final ArrayList<Image> image;
+    private final JPanel panel;
 
     private int x;
     private int dx;
@@ -63,6 +61,7 @@ public class BackgroundDrawer {
         g2d.drawImage(image.get(currentFrame), - (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom,null);
         g2d.drawImage(image.get(currentFrame), panel.getWidth()- (x), 0,panel.getWidth(),panel.getHeight()-paddingBottom, null);
     }
+
     public void setPaddingBottom(int paddingBottom){
         this.paddingBottom = paddingBottom;
     }
@@ -82,12 +81,15 @@ public class BackgroundDrawer {
         currentFrame=0;
         descending=false;
     }
+
     public int getX() {
         return x;
     }
+
     public void setX(int x) {
         this.x = x;
     }
+
     public boolean isTransition() {
         return transition;
     }

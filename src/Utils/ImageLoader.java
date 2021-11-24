@@ -36,7 +36,6 @@ public class ImageLoader {
                     getNumFiles(file.getPath());
                 else {
                     numFile++;
-//                    System.out.println(numFile);
                 }
 
         }

@@ -17,7 +17,6 @@ public class BulletsHandler extends EntityHandler{
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
         GameModel.getInstance().updateEntitiesStatus(EntityType.ENEMY,outerCurrentEntity);
         GameModel.getInstance().updateEntitiesStatus(EntityType.BULLET,currentEntity);
-        System.out.println("COLLIDEEEEEEE");
     }
 
     @Override

@@ -12,15 +12,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class ComponentContainer extends JLayeredPane implements ComponentListener {
+
     private Component prev,curr;
     private boolean isClosing = true,transition = false,notifyChangingScreen=false;
     private final ArrayList<Pair<Integer,Component>> components = new ArrayList<>();
     private int transitionRectWidth, transitionRectHeight;
     private final int CLOSING_STEP = 40;
+    private final Rectangle2D.Double tempRect = new Rectangle2D.Double();
+    private final RoundRectangle2D.Double tempRoundRect = new RoundRectangle2D.Double();
+    //todo timer delay config?
     private final Timer TIMER = new Timer(16, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -97,8 +102,6 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
 
     }
     private void openCurrentState(){
-//        //todo fix with sfarfallameto
-//        prev.setSize(getSize());
         prev.setVisible(false);
         curr.setVisible(true);
         setLayer(prev,DEFAULT_LAYER);
@@ -109,7 +112,6 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
 
     @Override
     public void componentResized(ComponentEvent e) {
-        System.out.println("componentResized");
         this.setSize(Math.round(this.getWidth()),Math.round(this.getHeight()));
         if(!transition){
             transitionRectHeight = this.getHeight();
@@ -142,8 +144,10 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         if(transition){
-            Area shape = new Area(new Rectangle(0,0,this.getWidth(),this.getHeight()));
-            shape.subtract(new Area(new RoundRectangle2D.Double((this.getWidth()- transitionRectWidth)/2,(this.getHeight()- transitionRectHeight)/2, transitionRectWidth, transitionRectHeight,20,20)));
+            tempRect.setRect(0,0,this.getWidth(),this.getHeight());
+            Area shape = new Area(tempRect);
+            tempRoundRect.setRoundRect((this.getWidth()- transitionRectWidth)/2,(this.getHeight()- transitionRectHeight)/2, transitionRectWidth, transitionRectHeight,20,20);
+            shape.subtract(new Area(tempRoundRect));
             g2d.fill(shape);
             if(isClosing){
                 if(transitionRectHeight -CLOSING_STEP < 0 || transitionRectWidth -CLOSING_STEP < 0){

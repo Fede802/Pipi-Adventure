@@ -8,7 +8,7 @@ public interface IGameEngine {
     void updateGameStatus();
     Pair<EntityCoordinates, AnimationData> getEntityForRendering(int entityID);
     int getTileData(int mapIndex,int mapX,int mapY);
-    void setJumping();
+    void jump();
     double getMapTranslX();
     void shoot();
     void setupGame();

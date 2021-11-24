@@ -15,25 +15,22 @@ public class MenuPanel extends ApplicationPanel{
 
     private final int DX = 1;
     private final String TITLE = "Pipi Adventure";
-    private final ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
+    private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
     private BackgroundDrawer BG_DRAWER;
     private boolean transition = false;
     private boolean firstOpen = true;
-    private double paddingTop = 30+this.getHeight()/3;
-    private int shiftBarVelY;
-    private double shiftstep = 20;
 
-    //todo never used
-    private double titlePadding;
+    private double paddingTop = 30+this.getHeight()/3;
+    private final double SHIFT_STEP = 20;
+    private final int SHIFT_TITLE_STEP = 10;
+    private int currentStep = 20;
+    private int shiftBarVelY;
     private int currentTitleStep;
     private double shiftTitleLength;
-    private final int shiftTitleStep = 10;
     private int shiftTitleVelY;
 
-    private int currentStep = 20;
-
     private int currentChoice = 0;
-    private String[] options = {
+    private final String[] OPTIONS = {
             "Start",
             "Upgrade",
             "Help",
@@ -42,9 +39,9 @@ public class MenuPanel extends ApplicationPanel{
             "Sound"
     };
 
-    private final Color titleColor = new Color(255, 216, 0);
-    private final Font titleFont = new Font("04b", Font.BOLD, 45);
-    private final Font font = new Font("04b", Font.PLAIN,30);
+    private final Color TITLE_COLOR = new Color(255, 216, 0);
+    private final Font TITLE_FONT = new Font("04b", Font.BOLD, 45);
+    private final Font FONT = new Font("04b", Font.PLAIN,30);
     private Image menuGIF,soundON,soundOFF,musicON,musicOFF,music,sound;
 
 
@@ -54,10 +51,7 @@ public class MenuPanel extends ApplicationPanel{
         audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
-    public MenuPanel(BackgroundDrawer bg){
-        this();
-        BG_DRAWER = bg;
-    }
+
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
@@ -79,19 +73,13 @@ public class MenuPanel extends ApplicationPanel{
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         paddingTop = 20+this.getHeight()/3;
-        shiftBarVelY = (int) Math.ceil(paddingTop/shiftstep);
+        shiftBarVelY = (int) Math.ceil(paddingTop/ SHIFT_STEP);
         BG_DRAWER.drawBackground(g2d);
         shiftTitleLength = (2*this.getHeight()/5-100)/2;
-        shiftTitleVelY = (int) Math.ceil(shiftTitleLength/shiftTitleStep);
-        StringDrawer.drawString(g2d, TITLE, titleFont, new Color(255, 120, 0),StringDrawer.TITLE_STROKE,titleColor,100+(2*this.getHeight()/5-100)/2-currentTitleStep*shiftTitleVelY, 0, this,StringDrawer.CENTER);
+        shiftTitleVelY = (int) Math.ceil(shiftTitleLength/ SHIFT_TITLE_STEP);
+        StringDrawer.drawString(g2d, TITLE, TITLE_FONT, new Color(255, 120, 0),StringDrawer.TITLE_STROKE, TITLE_COLOR,100+(2*this.getHeight()/5-100)/2-currentTitleStep*shiftTitleVelY, 0, this,StringDrawer.CENTER);
 
-        int minSize = this.getWidth();
-        int size = this.getHeight();
-        if(size < minSize){
-            minSize = size;
-        }
-
-        for(int i = 0; i < options.length; i++) {
+        for(int i = 0; i < OPTIONS.length; i++) {
             if(i == currentChoice)
                 g2d.setColor(Color.DARK_GRAY);
             else
@@ -101,23 +89,23 @@ public class MenuPanel extends ApplicationPanel{
             switch (i){
                 case(4):{
                     g2d.drawImage(music, this.getWidth()/10-50, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
-                    buttons.get(4).setRect((int)this.getWidth()/10-50,(int)this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,(int)50*minSize/DEFAULT_WIDTH,(int)50*minSize/DEFAULT_WIDTH);
+                    BUTTONS.get(4).setRect((int)this.getWidth()/10-50,(int)this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,(int)50*minSize/DEFAULT_WIDTH,(int)50*minSize/DEFAULT_WIDTH);
                     if (currentChoice == 4)
-                        g2d.draw(buttons.get(4));
+                        g2d.draw(BUTTONS.get(4));
                     break;
                 }
                 case(5):{
                     g2d.drawImage(sound, this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH,null);
-                    buttons.get(5).setRect(this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH);
+                    BUTTONS.get(5).setRect(this.getWidth()-this.getWidth()/10, this.getHeight()-(this.getHeight()/10)+5+shiftBarVelY*currentStep,50*minSize/DEFAULT_WIDTH,50*minSize/DEFAULT_WIDTH);
                     if (currentChoice == 5)
-                        g2d.draw(buttons.get(5));
+                        g2d.draw(BUTTONS.get(5));
                     break;
                 }
                 default:{
-                    StringDrawer.drawString(g2d, options[i], font, null,StringDrawer.DEFAULT_STROKE,titleColor,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep, 0, this,StringDrawer.CENTER);
-                    double strWidth = StringDrawer.getStringWidth(g2d,options[i],font);
-                    double strHeight = StringDrawer.getStringHeight(g2d,font);
-                    buttons.get(i).setRect((this.getWidth()-strWidth)/2,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep,strWidth,(strHeight));
+                    StringDrawer.drawString(g2d, OPTIONS[i], FONT, null,StringDrawer.DEFAULT_STROKE, TITLE_COLOR,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep, 0, this,StringDrawer.CENTER);
+                    double strWidth = StringDrawer.getStringWidth(g2d, OPTIONS[i], FONT);
+                    double strHeight = StringDrawer.getStringHeight(g2d, FONT);
+                    BUTTONS.get(i).setRect((this.getWidth()-strWidth)/2,20+i*60+this.getHeight()/3+shiftBarVelY*currentStep,strWidth,(strHeight));
                 }
             }
             g2d.setColor(new Color(255, 120, 0));
@@ -178,13 +166,13 @@ public class MenuPanel extends ApplicationPanel{
             audio.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
-                currentChoice = options.length - 1;
+                currentChoice = OPTIONS.length - 1;
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice++;
-            if(currentChoice == options.length) {
+            if(currentChoice == OPTIONS.length) {
                 currentChoice = 0;
             }
         }
@@ -203,8 +191,8 @@ public class MenuPanel extends ApplicationPanel{
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        for(int i = 0; i < buttons.size(); i++){
-            if(buttons.get(i).contains(e.getX(),e.getY())){
+        for(int i = 0; i < BUTTONS.size(); i++){
+            if(BUTTONS.get(i).contains(e.getX(),e.getY())){
                 if(currentChoice != i){
                     currentChoice = i;
                     audio.get(SCROLL_THEME).playOnce();
@@ -222,9 +210,8 @@ public class MenuPanel extends ApplicationPanel{
         soundOFF = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Sound_Button2.png").get(0);
     }
 
-    public void setup(int bgTrasl, double titlePadding, Image bg) {
-        BG_DRAWER.setX(bgTrasl);
-        this.titlePadding = titlePadding;
+    public void setup(int bgTransl, Image bg) {
+        BG_DRAWER.setX(bgTransl);
         this.menuGIF = bg;
         if(SoundManager.isIsMusicActive())
             music = musicON;

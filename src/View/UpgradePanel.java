@@ -16,29 +16,31 @@ import java.util.ArrayList;
 
 public class UpgradePanel extends ApplicationPanel{
     private final String TITLE = "Upgrade";
-    //todo fix bg
-    private Image BG;
-    private final Color titleColor = Color.MAGENTA;
+    private final Color TITLE_COLOR = Color.MAGENTA;
+    //todo config
+    private final int DISSOLUTION_STEP = 40;
+    private float dissolutionGrade = 1f;
+    private int currentDissolutionStep;
     private final int MAX_LIFE = GameConfig.getInstance().getMaxLife();
     private final int MAX_BULLET = GameConfig.getInstance().getMaxBullet();
     private final int MIN_BULLET = GameConfig.getInstance().getMinBullet();
     private int currentLife;
     private int currentBullet;
-    private final Font titleFont = new Font("04b", Font.BOLD, 40);
-    private final Font font = new Font("04b", Font.PLAIN, 22);
-    private final Font fontSign = new Font("04b", Font.PLAIN, 12);
-    private final Font fontNum = new Font("Arial", Font.PLAIN, 12);
+    private final Font TITLE_FONT = new Font("04b", Font.BOLD, 40);
+    private final Font FONT = new Font("04b", Font.PLAIN, 22);
+    private final Font ERROR_FONT = new Font("04b", Font.PLAIN, 16);
+    private final Font PRICE_FONT = new Font("04b", Font.PLAIN, 12);
+    private final Font BAR_PLACEHOLDER_FONT = new Font("Arial", Font.PLAIN, 12);
     private int currentChoice = 0;
 
-    private ArrayList<Rectangle2D.Double> buttons = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
-    private Image player;
+    private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
     private Image heart;
     private Image bullet;
     private Image coin;
     private String lifePrice = "MAX";
     private String bulletPrice = lifePrice;
     private boolean lowbudget = false;
-    private BackgroundDrawer backGround;
+    private BackgroundDrawer BG_DRAWER;
     private boolean upgrading = false;
     private Animation pipi;
     private Animation pedestal;
@@ -56,79 +58,76 @@ public class UpgradePanel extends ApplicationPanel{
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        int minSize = this.getWidth();
-        int size = this.getHeight();
-        if(size < minSize){
-            minSize = size;
-        }
+
         //todo e rimasto un grigio somewhere
         g2d.setColor(Color.BLACK);
 
         //draw bg, title, coin, player
-        //g2d.drawImage(BG,0,0,this.getWidth(),this.getHeight(),this);
-        backGround.drawBackground(g2d);
-        StringDrawer.drawString(g2d, TITLE, titleFont, null, StringDrawer.TITLE_STROKE, titleColor, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
-        StringDrawer.drawString(g2d,"Coins: "+totalCoin,font,null, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
-       // g2d.drawImage(player,(int)(this.getWidth()/4-minSize*0.15),(int)(3*this.getHeight()/4-minSize*0.15),(int)(minSize*0.3),(int)(minSize*0.3),this);
 
+        BG_DRAWER.drawBackground(g2d);
+        StringDrawer.drawString(g2d, TITLE, TITLE_FONT, null, StringDrawer.TITLE_STROKE, TITLE_COLOR, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
+        StringDrawer.drawString(g2d,"Coins: "+totalCoin, FONT,null, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
+        if(lowbudget){
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dissolutionGrade));
+            StringDrawer.drawString(g2d, "Not enough coins",ERROR_FONT,null,StringDrawer.DEFAULT_STROKE,Color.RED,this.getHeight()/4-minSize*0.01+StringDrawer.getStringHeight(g2d,FONT),this.getWidth()/4,this,StringDrawer.CENTER);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        }
         g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),this.getHeight()-(minSize/4),(int)(minSize*0.5),minSize/4,this);
         g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),this.getHeight()-((3*minSize/10)+(9*minSize/128)),3*minSize/10,3*minSize/10,this);
 
-        //(int)(3*this.getHeight()/4-minSize*0.2)
 
-              //set buyLifeButton, draw coin and heart
-        buttons.get(0).setRect(this.getWidth()/4*3+minSize*0.09,this.getHeight()/2-minSize*0.16,minSize*0.13,minSize*0.06);
-        g2d.drawImage(coin,(int)(this.getWidth()/4*3+minSize*0.09),(int)(this.getHeight()/2-minSize*0.15),(int)(minSize*0.04),(int)(minSize*0.04),null);
-        g2d.drawImage(heart, (int)(this.getWidth()/4*3-minSize*0.23),(int)(this.getHeight()/2-minSize*0.16),(int)(minSize*0.06),(int)(minSize*0.06),null);
+        //set buyLifeButton, draw coin and heart
+        BUTTONS.get(0).setRect(this.getWidth()/4*3+minSize*0.09,this.getHeight()/2-minSize*0.12,minSize*0.13,minSize*0.06);
+        g2d.drawImage(coin,(int)(this.getWidth()/4*3+minSize*0.09),(int)(this.getHeight()/2-minSize*0.11),(int)(minSize*0.04),(int)(minSize*0.04),null);
+        g2d.drawImage(heart, (int)(this.getWidth()/4*3-minSize*0.23),(int)(this.getHeight()/2-minSize*0.12),(int)(minSize*0.06),(int)(minSize*0.06),null);
 
         //set buyBulletsButton, draw coin and bullet
-        buttons.get(1).setRect((this.getWidth()/4*3+minSize*0.09),(this.getHeight()/2+minSize*0.05),(minSize*0.13),(minSize*0.06));
-        g2d.drawImage(coin,(int)(this.getWidth()/4*3+minSize*0.09),(int)(this.getHeight()/2+minSize*0.06),(int)(minSize*0.04),(int)(minSize*0.04),null);
-        g2d.drawImage(bullet,(int)(this.getWidth()/4*3-minSize*0.23),(int)(this.getHeight()/2+minSize*0.05),(int)(minSize*0.06),(int)(minSize*0.06),null);
+        BUTTONS.get(1).setRect((this.getWidth()/4*3+minSize*0.09),(this.getHeight()/2+minSize*0.09),(minSize*0.13),(minSize*0.06));
+        g2d.drawImage(coin,(int)(this.getWidth()/4*3+minSize*0.09),(int)(this.getHeight()/2+minSize*0.1),(int)(minSize*0.04),(int)(minSize*0.04),null);
+        g2d.drawImage(bullet,(int)(this.getWidth()/4*3-minSize*0.23),(int)(this.getHeight()/2+minSize*0.09),(int)(minSize*0.06),(int)(minSize*0.06),null);
 
         //set menu/play buttons
-        buttons.get(2).setRect(this.getWidth()/2+this.getWidth()/4-minSize*0.1-StringDrawer.getStringWidth(g2d,"Menu",font)/2,this.getHeight()/2+minSize*0.25,StringDrawer.getStringWidth(g2d,"Menu",font),StringDrawer.getStringHeight(g2d,font));
-        buttons.get(3).setRect(this.getWidth()/2+this.getWidth()/4+minSize*0.1-StringDrawer.getStringWidth(g2d,"Play",font)/2,this.getHeight()/2+minSize*0.25,StringDrawer.getStringWidth(g2d,"Menu",font),StringDrawer.getStringHeight(g2d,font));
-//        g2d.draw(buttons.get(2));
-//        g2d.draw(buttons.get(3));
+        BUTTONS.get(2).setRect(this.getWidth()/2+this.getWidth()/4-minSize*0.1-StringDrawer.getStringWidth(g2d,"Menu", FONT)/2,this.getHeight()/2+minSize*0.29,StringDrawer.getStringWidth(g2d,"Menu", FONT),StringDrawer.getStringHeight(g2d, FONT));
+        BUTTONS.get(3).setRect(this.getWidth()/2+this.getWidth()/4+minSize*0.1-StringDrawer.getStringWidth(g2d,"Play", FONT)/2,this.getHeight()/2+minSize*0.29,StringDrawer.getStringWidth(g2d,"Menu", FONT),StringDrawer.getStringHeight(g2d, FONT));
+
 
 
 
 
         //draw fistLine pedici
-        StringDrawer.drawString(g2d,"0",fontNum,null,0,Color.BLACK,this.getHeight()/2-minSize*0.11,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
-        StringDrawer.drawString(g2d,"3",fontNum,null,0,Color.BLACK,this.getHeight()/2-minSize*0.11,this.getWidth()/4*3-minSize*0.16+minSize*0.08*MAX_LIFE-StringDrawer.getStringWidth(g2d,"3",fontNum),this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,"0", BAR_PLACEHOLDER_FONT,null,0,Color.BLACK,this.getHeight()/2-minSize*0.07,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,"3", BAR_PLACEHOLDER_FONT,null,0,Color.BLACK,this.getHeight()/2-minSize*0.07,this.getWidth()/4*3-minSize*0.16+minSize*0.08*MAX_LIFE-StringDrawer.getStringWidth(g2d,"3", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
 
         //draw seconLine pedici
-        StringDrawer.drawString(g2d,"4",fontNum,null,0,Color.BLACK,this.getHeight()/2+minSize*0.1,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
-        StringDrawer.drawString(g2d,"10",fontNum,null,0,Color.BLACK,this.getHeight()/2+minSize*0.1,this.getWidth()/4*3-minSize*0.16+minSize*0.04*(MAX_BULLET-4)-StringDrawer.getStringWidth(g2d,"10",fontNum),this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,"4", BAR_PLACEHOLDER_FONT,null,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,"10", BAR_PLACEHOLDER_FONT,null,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16+minSize*0.04*(MAX_BULLET-4)-StringDrawer.getStringWidth(g2d,"10", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
 
-        for(int i = 0; i < buttons.size();i++){
+        for(int i = 0; i < BUTTONS.size(); i++){
             Color boundColor = Color.BLACK;
             if(i == currentChoice)
                 boundColor = Color.MAGENTA;
             switch(i){
-                case 0: StringDrawer.drawString(g2d,lifePrice,fontSign,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2-minSize*0.13-StringDrawer.getStringHeight(g2d,fontSign)/2,this.getWidth()/4*3+minSize*0.1+minSize*0.045,this,StringDrawer.PADDING);
-                case 1: StringDrawer.drawString(g2d,bulletPrice,fontSign,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.08-StringDrawer.getStringHeight(g2d,fontSign)/2,this.getWidth()/4*3+minSize*0.1+minSize*0.045,this,StringDrawer.PADDING);
-                case 2: StringDrawer.drawString(g2d,"Menu",font,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.25,this.getWidth()/4-minSize*0.1,this,StringDrawer.CENTER);
-                case 3: StringDrawer.drawString(g2d,"Play",font,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.25,this.getWidth()/4+minSize*0.1,this,StringDrawer.CENTER);
+                case 0: StringDrawer.drawString(g2d,lifePrice, PRICE_FONT,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2-minSize*0.09-StringDrawer.getStringHeight(g2d, PRICE_FONT)/2,this.getWidth()/4*3+minSize*0.1+minSize*0.045,this,StringDrawer.PADDING);
+                case 1: StringDrawer.drawString(g2d,bulletPrice, PRICE_FONT,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.12-StringDrawer.getStringHeight(g2d, PRICE_FONT)/2,this.getWidth()/4*3+minSize*0.1+minSize*0.045,this,StringDrawer.PADDING);
+                case 2: StringDrawer.drawString(g2d,"Menu", FONT,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.29,this.getWidth()/4-minSize*0.1,this,StringDrawer.CENTER);
+                case 3: StringDrawer.drawString(g2d,"Play", FONT,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.29,this.getWidth()/4+minSize*0.1,this,StringDrawer.CENTER);
             }
         }
 
         for(int i = 0; i < MAX_LIFE; i++){
-            g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.15),(int)(minSize*0.08),(int)(minSize*0.04));
+            g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.11),(int)(minSize*0.08),(int)(minSize*0.04));
             if(currentLife>i){
                 g2d.setColor(Color.ORANGE);
-                g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.15),(int)(minSize*0.08),(int)(minSize*0.04));
+                g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.11),(int)(minSize*0.08),(int)(minSize*0.04));
                 g2d.setColor(Color.BLACK);
             }
 
         }
         for(int i = 0; i < MAX_BULLET-MIN_BULLET;i++){
-            g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.06),(int)(minSize*0.04),(int)(minSize*0.04));
+            g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.1),(int)(minSize*0.04),(int)(minSize*0.04));
             if(currentBullet-MIN_BULLET>i){
                 g2d.setColor(Color.ORANGE);
-                g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.06),(int)(minSize*0.04),(int)(minSize*0.04));
+                g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.1),(int)(minSize*0.04),(int)(minSize*0.04));
                 g2d.setColor(Color.BLACK);
             }
         }
@@ -154,21 +153,34 @@ public class UpgradePanel extends ApplicationPanel{
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
-        backGround.update();
+        BG_DRAWER.update();
+        if(lowbudget){
+            if(currentDissolutionStep == DISSOLUTION_STEP){
+                resetLowBudgetAnimation();
+            }
+            if(currentDissolutionStep > DISSOLUTION_STEP/2){
+                if(currentDissolutionStep%2 == 0)
+                    dissolutionGrade-=0.1f;
+            }
 
-        if (upgrading)
-               if (pipi.getCurrentNumLoop() == 1){
-                   upgrading = false;
-                   pipi.resetAnimation();
-                   pedestal.resetAnimation();
-               }else{
-                   pipi.update();
-                   pedestal.update();
-               }
-
+            currentDissolutionStep++;
+        }
+        if (upgrading) {
+            pipi.update();
+            pedestal.update();
+            if (pipi.isFinish()) {
+                upgrading = false;
+                pipi.resetAnimation();
+                pedestal.resetAnimation();
+            }
+        }
         repaint();
     }
-
+    private void resetLowBudgetAnimation(){
+        dissolutionGrade = 1f;
+        currentDissolutionStep = 0;
+        lowbudget = false;
+    }
     private void select() {
         if(currentChoice == 0) {
             if(currentLife < MAX_LIFE)
@@ -180,8 +192,10 @@ public class UpgradePanel extends ApplicationPanel{
                     else
                         lifePrice = "MAX";
                     GameEngine.getInstance().updateCurrentLife();
-                }else
+                }else{
+                    resetLowBudgetAnimation();
                     lowbudget = true;
+                }
         }
         if(currentChoice == 1) {
             if(currentBullet <MAX_BULLET)
@@ -193,8 +207,10 @@ public class UpgradePanel extends ApplicationPanel{
                     else
                         bulletPrice = "MAX";
                     GameEngine.getInstance().updateCurrentBullets();
-                }else
+                }else{
+                    resetLowBudgetAnimation();
                     lowbudget = true;
+                }
         }
         if(currentChoice == 2){
             GameEngine.getInstance().saveDataConfig();
@@ -216,13 +232,13 @@ public class UpgradePanel extends ApplicationPanel{
             audio.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
-                currentChoice = buttons.size() - 1;
+                currentChoice = BUTTONS.size() - 1;
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
             audio.get(SCROLL_THEME).playOnce();
             currentChoice++;
-            if(currentChoice == buttons.size()) {
+            if(currentChoice == BUTTONS.size()) {
                 currentChoice = 0;
             }
         }
@@ -241,8 +257,8 @@ public class UpgradePanel extends ApplicationPanel{
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        for(int i = 0; i < buttons.size(); i++){
-            if(buttons.get(i).contains(e.getX(),e.getY())){
+        for(int i = 0; i < BUTTONS.size(); i++){
+            if(BUTTONS.get(i).contains(e.getX(),e.getY())){
                 if(currentChoice != i){
                     currentChoice = i;
                     audio.get(SCROLL_THEME).playOnce();
@@ -265,13 +281,12 @@ public class UpgradePanel extends ApplicationPanel{
     @Override
     public void loadResources() {
 
-        backGround = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
-        backGround.updateFrames(true);
+        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
+        BG_DRAWER.updateFrames(true);
 
         pipi = new Animation("res\\images\\backgrounds\\upgrade\\Pipi");
         pedestal = new Animation("res\\images\\backgrounds\\upgrade\\Pedestal");
 
-        player = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk\\Pinguino_Walk1.png").get(0);
         heart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);
         bullet = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Proiettile_logo.png").get(0);
         coin = ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png").get(0);
