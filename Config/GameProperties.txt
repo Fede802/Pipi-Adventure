@@ -1,7 +1,7 @@
 minBullets=4
 recordScore=1324
-currentMaxBullet=5
+currentMaxBullet=7
 maxBullets=10
-totalCoin=10000
+totalCoin=255
 maxLife=3
-currentMaxLife=0
+currentMaxLife=3

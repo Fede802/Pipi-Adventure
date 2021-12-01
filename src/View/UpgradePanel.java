@@ -51,12 +51,11 @@ public class UpgradePanel extends ApplicationPanel{
     public UpgradePanel(){
         super();
         //TODO init menu theme
-        audio.put(MUSIC_THEME, new SoundManager("res/audio/Upgrade_Theme.wav",SoundManager.MUSIC));
+        audio.put(MUSIC_THEME, new SoundManager("res/audio/Upgrade_Theme.wav",SoundManager.SOUND));
         audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
         audio.put(ERROR_THEME,new SoundManager("res/audio/NoCoin.wav",SoundManager.MUSIC));
-        audio.put(UPGRADE_THEME,new SoundManager("res/audio/LevelUp.wav",SoundManager.MUSIC));
-        //TODO init upgrade sound and not enough money sound
+        audio.put(SUCCESS_THEME,new SoundManager("res/audio/LevelUp.wav",SoundManager.MUSIC));
     }
 
     @Override
@@ -72,11 +71,7 @@ public class UpgradePanel extends ApplicationPanel{
         BG_DRAWER.drawBackground(g2d);
         StringDrawer.drawString(g2d, TITLE, TITLE_FONT, null, StringDrawer.TITLE_STROKE, TITLE_COLOR, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
         StringDrawer.drawString(g2d,"Coins: "+totalCoin, FONT,null, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
-        if(lowbudget){
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dissolutionGrade));
-            StringDrawer.drawString(g2d, "Not enough coins",ERROR_FONT,null,StringDrawer.DEFAULT_STROKE,Color.RED,this.getHeight()/4-minSize*0.01+StringDrawer.getStringHeight(g2d,FONT),this.getWidth()/4,this,StringDrawer.CENTER);
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        }
+
         g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),this.getHeight()-(minSize/4),(int)(minSize*0.5),minSize/4,this);
         g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),this.getHeight()-((3*minSize/10)+(9*minSize/128)),3*minSize/10,3*minSize/10,this);
 
@@ -136,6 +131,11 @@ public class UpgradePanel extends ApplicationPanel{
                 g2d.setColor(Color.BLACK);
             }
         }
+        if(lowbudget){
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dissolutionGrade));
+            StringDrawer.drawString(g2d, "Not enough coins",ERROR_FONT,null,StringDrawer.DEFAULT_STROKE,Color.RED,this.getHeight()/4-minSize*0.01+StringDrawer.getStringHeight(g2d,FONT),this.getWidth()/4,this,StringDrawer.CENTER);
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+        }
 
 //        g2d.drawLine(this.getWidth()/2,0,this.getWidth()/2,this.getHeight());
 //        g2d.drawLine(0,this.getHeight()/2,this.getWidth(),this.getHeight()/2);
@@ -190,7 +190,7 @@ public class UpgradePanel extends ApplicationPanel{
         if(currentChoice == 0) {
             if(currentLife < MAX_LIFE)
                 if(buy(calculatePrice(currentLife))){
-                    audio.get(UPGRADE_THEME).playOnce();
+                    audio.get(SUCCESS_THEME).playOnce();
                     currentLife++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
@@ -209,7 +209,7 @@ public class UpgradePanel extends ApplicationPanel{
         if(currentChoice == 1) {
             if(currentBullet <MAX_BULLET)
                 if(buy(calculatePrice(currentBullet-MIN_BULLET))){
-                    audio.get(UPGRADE_THEME).playOnce();
+                    audio.get(SUCCESS_THEME).playOnce();
                     currentBullet++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
