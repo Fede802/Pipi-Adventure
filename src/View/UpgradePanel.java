@@ -51,8 +51,11 @@ public class UpgradePanel extends ApplicationPanel{
     public UpgradePanel(){
         super();
         //TODO init menu theme
+        audio.put(MUSIC_THEME, new SoundManager("res/audio/Upgrade_Theme.wav",SoundManager.MUSIC));
         audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
+        audio.put(ERROR_THEME,new SoundManager("res/audio/NoCoin.wav",SoundManager.MUSIC));
+        audio.put(UPGRADE_THEME,new SoundManager("res/audio/LevelUp.wav",SoundManager.MUSIC));
         //TODO init upgrade sound and not enough money sound
     }
 
@@ -187,6 +190,7 @@ public class UpgradePanel extends ApplicationPanel{
         if(currentChoice == 0) {
             if(currentLife < MAX_LIFE)
                 if(buy(calculatePrice(currentLife))){
+                    audio.get(UPGRADE_THEME).playOnce();
                     currentLife++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
@@ -199,11 +203,13 @@ public class UpgradePanel extends ApplicationPanel{
                 }else{
                     resetLowBudgetAnimation();
                     lowbudget = true;
+                    audio.get(ERROR_THEME).playOnce();
                 }
         }
         if(currentChoice == 1) {
             if(currentBullet <MAX_BULLET)
                 if(buy(calculatePrice(currentBullet-MIN_BULLET))){
+                    audio.get(UPGRADE_THEME).playOnce();
                     currentBullet++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
@@ -216,6 +222,7 @@ public class UpgradePanel extends ApplicationPanel{
                 }else{
                     resetLowBudgetAnimation();
                     lowbudget = true;
+                    audio.get(ERROR_THEME).playOnce();
                 }
         }
         if(currentChoice == 2){

@@ -9,6 +9,7 @@ public interface IApplicationPanel{
     int CONFIRM_THEME = 1;
     int SCROLL_THEME = 2;
     int ERROR_THEME = 3;
+    int UPGRADE_THEME = 3;
 
     void start();
     void stop();
