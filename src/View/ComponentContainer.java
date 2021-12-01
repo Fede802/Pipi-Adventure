@@ -117,11 +117,10 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             transitionRectHeight = this.getHeight();
             transitionRectWidth = this.getWidth();
         }
-        for(int i = 0; i < this.getComponentCount(); i++){
+        for(int i = 0; i < this.getComponentCount(); i++) {
             this.getComponent(i).setSize(this.getSize());
         }
-        GameDataConfig.getInstance().setRenderedTileSize((int) (Math.min(this.getWidth(),this.getHeight())/GameDataConfig.getInstance().getMinTileToRender()));
-        GameEngine.getInstance().notifySizeChanged();
+        GameEngine.getInstance().notifySizeChanged((int) (Math.min(this.getWidth(),this.getHeight())/GameDataConfig.getInstance().getMinTileToRender()));
     }
 
     @Override

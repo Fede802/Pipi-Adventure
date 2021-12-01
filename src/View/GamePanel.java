@@ -23,7 +23,7 @@ public class GamePanel extends ApplicationPanel{
     private BackgroundDrawer backgroundLayer_3;
     private BackgroundDrawer backgroundLayer_4;
     private BackgroundDrawer backgroundLayer_5;
-    private MapDrawer mapDrawer;
+    private final MapDrawer mapDrawer = new MapDrawer(this);
     private final GameBar gameBar = new GameBar(this);
     private final EntitiesDrawer entitiesDrawer = new EntitiesDrawer(this);
     private final Rectangle2D.Double pauseButton;
@@ -31,10 +31,11 @@ public class GamePanel extends ApplicationPanel{
 
 
 
+
+
     public GamePanel(){
         super();
         audio.put(MUSIC_THEME,new SoundManager("res/audio/Level1.wav",SoundManager.SOUND));
-        renderedTileSize = GameDataConfig.getInstance().getRenderedTileSize();
         pauseButton = gameBar.getPauseButton();
     }
 
@@ -107,11 +108,11 @@ public class GamePanel extends ApplicationPanel{
 
     }
 
-    public void updateTileSize(){
-        renderedTileSize = GameDataConfig.getInstance().getRenderedTileSize();
+    public void updateTileSize(int renderedTileSize){
+        this.renderedTileSize = renderedTileSize;
         entitiesDrawer.updateRenderedTileSize(renderedTileSize);
+        mapDrawer.updateRenderedTileSize(renderedTileSize);
         if(loadedRes) {
-            mapDrawer.updateRenderedTileSize(renderedTileSize);
             backgroundLayer_1.setPaddingBottom(3 * renderedTileSize);
             backgroundLayer_2.setPaddingBottom(3 * renderedTileSize);
             backgroundLayer_3.setPaddingBottom(3 * renderedTileSize);
@@ -150,16 +151,7 @@ public class GamePanel extends ApplicationPanel{
 
     @Override
     public void loadResources() {
-        ArrayList<ArrayList<Image>> temp = new ArrayList<>();
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\1.png"));
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\2.png"));
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\3.png"));
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\4.png"));
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\5.png"));
-        temp.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\6.png"));
-//todo load resources as entitydrawer?
-        mapDrawer = new MapDrawer(this, temp);
-        mapDrawer.updateRenderedTileSize(renderedTileSize);
+        mapDrawer.loadResources();
         entitiesDrawer.loadResources();
         gameBar.loadResources();
         backgroundLayer_1 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);

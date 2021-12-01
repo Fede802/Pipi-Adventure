@@ -44,7 +44,6 @@ public class HelpPanel extends ApplicationPanel {
 
     public HelpPanel() {
         super();
-        //TODO change menu theme
         audio.put(MUSIC_THEME, new SoundManager("res/audio/Help_Theme.wav",SoundManager.SOUND));
         audio.put(SCROLL_THEME, new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME, new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));

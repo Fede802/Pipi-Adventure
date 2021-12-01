@@ -50,7 +50,6 @@ public class UpgradePanel extends ApplicationPanel{
 
     public UpgradePanel(){
         super();
-        //TODO init menu theme
         audio.put(MUSIC_THEME, new SoundManager("res/audio/Upgrade_Theme.wav",SoundManager.SOUND));
         audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
@@ -136,7 +135,6 @@ public class UpgradePanel extends ApplicationPanel{
             StringDrawer.drawString(g2d, "Not enough coins",ERROR_FONT,null,StringDrawer.DEFAULT_STROKE,Color.RED,this.getHeight()/4-minSize*0.01+StringDrawer.getStringHeight(g2d,FONT),this.getWidth()/4,this,StringDrawer.CENTER);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
-
 //        g2d.drawLine(this.getWidth()/2,0,this.getWidth()/2,this.getHeight());
 //        g2d.drawLine(0,this.getHeight()/2,this.getWidth(),this.getHeight()/2);
     }

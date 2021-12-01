@@ -127,12 +127,12 @@ public class MapGenerator implements IMapGenerator{
     }
 
     @Override
-    public void changeCoordinate() {
+    public void changeCoordinate(int renderedTileSize) {
         for(int i = 0; i < coins.size();i++){
-            coins.get(i).changeCoordinate();
+            coins.get(i).changeCoordinate(renderedTileSize);
         }
         for(int i = 0; i < enemy.size();i++){
-            enemy.get(i).changeCoordinate();
+            enemy.get(i).changeCoordinate(renderedTileSize);
         }
     }
 

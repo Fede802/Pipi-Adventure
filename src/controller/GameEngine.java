@@ -3,7 +3,6 @@ package controller;
 import commons.*;
 import model.GameData;
 import model.GameModel;
-import utils.GameDataConfig;
 import utils.SoundManager;
 import view.GameView;
 
@@ -20,7 +19,6 @@ public class GameEngine implements IGameEngine{
     private final Pair<EntityType,Integer> entity = new Pair<>(null,null);
     private int currentTick;
     private boolean updateAnimation = false;
-    private static int currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
     private static GameEngine instance = null;
     private final SoundManager BULLET = new SoundManager("res/audio/bullet.wav", SoundManager.MUSIC);
 
@@ -109,8 +107,8 @@ public class GameEngine implements IGameEngine{
 
     private void checkMapCollision() {
         if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
-            playerHandler.rigthCollision();
-        bulletsHandler.rigthCollision();
+            playerHandler.rightCollision();
+        bulletsHandler.rightCollision();
     }
 
 
@@ -184,10 +182,13 @@ public class GameEngine implements IGameEngine{
     }
 
     @Override
-    public void notifySizeChanged() {
-        currentTileSize = GameDataConfig.getInstance().getRenderedTileSize();
-        GameView.getInstance().notifySizeChanged();
-        GameModel.getInstance().changeCoordinate();
+    public void notifySizeChanged(int renderedTileSize) {
+        int currentTileSize = renderedTileSize;
+        EntityCoordinates.setDefaultDimension(renderedTileSize);
+        CollisionHandler.setRenderedTileSize(renderedTileSize);
+        PlayerHandler.setRenderedTileSize(renderedTileSize);
+        GameView.getInstance().notifySizeChanged(currentTileSize);
+        GameModel.getInstance().changeCoordinate(currentTileSize);
     }
 
 

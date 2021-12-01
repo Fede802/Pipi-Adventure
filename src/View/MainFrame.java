@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame(){
         super(FRAME_TITLE);
-        GameDataConfig.getInstance().setRenderedTileSize((int) (Math.min(MINIMUM_SIZE.getWidth(),MINIMUM_SIZE.getHeight())/GameDataConfig.getInstance().getMinTileToRender()));
+//        GameDataConfig.getInstance().setRenderedTileSize((int) (Math.min(MINIMUM_SIZE.getWidth(),MINIMUM_SIZE.getHeight())/GameDataConfig.getInstance().getMinTileToRender()));
         GAME_PANEL.setVisible(false);
         GAME_OVER.setVisible(false);
         PAUSE.setVisible(false);
@@ -58,8 +58,8 @@ public class MainFrame extends JFrame {
         GAME_PANEL.updateGameBar(score,coin,life,bullet);
     }
 
-    public void notifySizeChanged() {
-        GAME_PANEL.updateTileSize();
+    public void notifySizeChanged(int renderedTileSize) {
+        GAME_PANEL.updateTileSize(renderedTileSize);
     }
 
     public void setGameRunning(boolean running) {

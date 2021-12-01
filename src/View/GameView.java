@@ -23,8 +23,8 @@ public class GameView implements IGameView{
     }
 
     @Override
-    public void notifySizeChanged() {
-        MAIN_FRAME.notifySizeChanged();
+    public void notifySizeChanged(int renderedTileSize) {
+        MAIN_FRAME.notifySizeChanged(renderedTileSize);
     }
 
     @Override
@@ -75,9 +75,7 @@ public class GameView implements IGameView{
 
     @Override
     public void getResources() {
-        System.out.println("getmainFrameres");
         MAIN_FRAME.getResources();
-        System.out.println("finishgetting");
     }
 
     public static IGameView getInstance() {

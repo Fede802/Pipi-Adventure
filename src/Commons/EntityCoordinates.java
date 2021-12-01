@@ -7,6 +7,12 @@ public class EntityCoordinates {
     //variable uses to fix approximation error due to double sum
     private static final int scale = (int) Math.pow(10, 4);
 
+    public static void setDefaultDimension(int defaultDimension) {
+        EntityCoordinates.defaultDimension = defaultDimension;
+    }
+
+    private static int defaultDimension;
+
     private int mapX;
     private int mapY;
 
@@ -105,8 +111,8 @@ public class EntityCoordinates {
             this.START_MAP_X = START_MAP_X;
             this.START_MAP_Y = START_MAP_Y;
             this.mapIndex = 0;
-            this.width = GameDataConfig.getInstance().getRenderedTileSize();
-            this.height = GameDataConfig.getInstance().getRenderedTileSize();
+            this.width = defaultDimension;
+            this.height = defaultDimension;
             this.translX = 0.0;
             this.translY = 0.0;
         }

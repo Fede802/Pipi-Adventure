@@ -17,6 +17,6 @@ public interface IGameEntity {
     void updateAnimationData(AnimationData animationData);
     void setDeathAnimation();
     void resetEntity();
-    void changeCoordinate();
+    void changeCoordinate(int renderedTileSize);
 
 }

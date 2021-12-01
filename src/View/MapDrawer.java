@@ -2,6 +2,8 @@ package view;
 
 import controller.GameEngine;
 import utils.GameDataConfig;
+import utils.ImageLoader;
+
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
@@ -28,6 +30,9 @@ public class MapDrawer {
     public MapDrawer(final JPanel parentPanel, final ArrayList<ArrayList<Image>> tileSet){
         this.parentPanel = parentPanel;
         tileArray = tileSet;
+    }
+    public MapDrawer(final JPanel parentPanel){
+        this.parentPanel = parentPanel;
     }
 
     public void drawMap(final Graphics2D g2d){
@@ -74,5 +79,15 @@ public class MapDrawer {
         transition=false;
         currentTileset=0;
         descending=false;
+    }
+
+    public void loadResources(){
+        tileArray = new ArrayList<>();
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\1.png"));
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\2.png"));
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\3.png"));
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\4.png"));
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\5.png"));
+        tileArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\6.png"));
     }
 }

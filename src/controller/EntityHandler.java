@@ -43,17 +43,17 @@ public abstract class EntityHandler {
 
     protected void collideWithBullet(int currentEntity, int outerCurrentEntity){
         //nothing to do
-    };
+    }
 
     protected abstract void collideWithEnemy(int currentEntity, int outerCurrentEntity);
 
     protected void collideWithPlayer(int currentEntity, int outerCurrentEntity){
         //nothing to do
-    };
+    }
 
     protected abstract void collideWithCoin(int currentEntity, int outerCurrentEntity);
 
-    public void rigthCollision() {
+    public void rightCollision() {
         for (int i = getEntityNum() - 1; i >= 0; i--) {
             EntityCoordinates curr = getEntity(i, EntityStatus.ALIVE);
             if (curr != null && CollisionHandler.rigthCollision(curr))

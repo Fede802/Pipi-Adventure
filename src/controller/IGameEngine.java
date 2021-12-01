@@ -12,7 +12,7 @@ public interface IGameEngine {
     double getMapTranslX();
     void shoot();
     void setupGame();
-    void notifySizeChanged();
+    void notifySizeChanged(int renderedTileSize);
     int getTotalEntity();
 
     void updateTotalCoin(int price);

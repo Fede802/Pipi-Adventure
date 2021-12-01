@@ -53,10 +53,10 @@ public class Player extends GameEntity implements IPlayer{
     }
 
     @Override
-    public void changeCoordinate(){
-        super.changeCoordinate();
+    public void changeCoordinate(int renderedTileSize){
+        super.changeCoordinate(renderedTileSize);
         for(int i = 0; i < bullets.size();i++){
-            bullets.get(i).changeCoordinate();
+            bullets.get(i).changeCoordinate(renderedTileSize);
         }
     }
 

@@ -11,7 +11,6 @@ public interface IApplicationPanel{
     int ERROR_THEME = 3;
     int SUCCESS_THEME = 4;
 
-
     void start();
     void stop();
     void loadResources();

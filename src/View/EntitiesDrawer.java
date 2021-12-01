@@ -60,8 +60,9 @@ public class EntitiesDrawer {
                         renderedTileSize,
                         null
                 );
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
     }
     public void updateRenderedTileSize(final int renderedTileSize){
         this.renderedTileSize = renderedTileSize;

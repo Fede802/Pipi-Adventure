@@ -22,6 +22,7 @@ public class AnimationData {
         this.animationType = animationType;
         this.renderingType = renderingType;
         this.currentNumLoop = currentNumLoop;
+        this.opacity = 1f;
         hasToUpdate = false;
     }
 

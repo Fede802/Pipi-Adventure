@@ -7,11 +7,17 @@ import utils.GameDataConfig;
 public class CollisionHandler {
     private static int sectionSize = GameDataConfig.getInstance().getMapSectionSize();
 
+    public static void setRenderedTileSize(int renderedTileSize) {
+        CollisionHandler.renderedTileSize = renderedTileSize;
+    }
+
+    private static int renderedTileSize;
+
     public static boolean collide(EntityCoordinates entity1, EntityCoordinates entity2) {
-        double entity1X = (entity1.getMapIndex()*sectionSize+entity1.getMapX())*GameDataConfig.getInstance().getRenderedTileSize()+entity1.getTranslX();
-        double entity2X = (entity2.getMapIndex()*sectionSize+entity2.getMapX())*GameDataConfig.getInstance().getRenderedTileSize()+entity2.getTranslX();
-        double entity1Y = entity1.getMapY()*GameDataConfig.getInstance().getRenderedTileSize()+entity1.getTranslY();
-        double entity2Y = entity2.getMapY()*GameDataConfig.getInstance().getRenderedTileSize()+entity2.getTranslY();
+        double entity1X = (entity1.getMapIndex()*sectionSize+entity1.getMapX())*renderedTileSize+entity1.getTranslX();
+        double entity2X = (entity2.getMapIndex()*sectionSize+entity2.getMapX())*renderedTileSize+entity2.getTranslX();
+        double entity1Y = entity1.getMapY()*renderedTileSize+entity1.getTranslY();
+        double entity2Y = entity2.getMapY()*renderedTileSize+entity2.getTranslY();
         return entity1X < entity2X+entity2.getWidth() && entity1X +entity1.getWidth() > entity2X &&
                 entity1Y < entity2Y + entity2.getHeight() && entity1Y + entity1.getHeight() > entity2Y;
     }

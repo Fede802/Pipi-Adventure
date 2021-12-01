@@ -221,11 +221,11 @@ public class MenuPanel extends ApplicationPanel{
     public void setup(int bgTransl, Animation bg) {
         BG_DRAWER.setX(bgTransl);
         this.menuGIF = bg;
-        if(SoundManager.isIsMusicActive())
+        if(SoundManager.isMusicActive())
             music = musicON;
         else
             music = musicOFF;
-        if(SoundManager.isIsSoundActive())
+        if(SoundManager.isSoundActive())
             sound = soundON;
         else
             sound = soundOFF;

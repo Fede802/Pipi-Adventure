@@ -9,7 +9,7 @@ public abstract class GameEntity implements IGameEntity{
     //                       STATIC FIELD
     //    --------------------------------------------------------
     //todo maybe has not to be static
-    protected static int RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
+    protected static int RENDERED_TILE_SIZE;
     protected static final int RIGHT_DIR = 0;
     protected static final int LEFT_DIR = 1;
     protected static final int DEFAULT_DEATH_LOOP = 1;
@@ -119,13 +119,13 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public void changeCoordinate(){
-        RENDERED_TILE_SIZE = GameDataConfig.getInstance().getRenderedTileSize();
-        entityCoordinates.setHeight(RENDERED_TILE_SIZE);
-        entityCoordinates.setWidth(RENDERED_TILE_SIZE);
-        entityCoordinates.setTranslX(entityCoordinates.getTranslX()/VEL_X*(RENDERED_TILE_SIZE/TILE_STEP));
-        entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(RENDERED_TILE_SIZE/TILE_STEP));
-        VEL_Y = VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
+    public void changeCoordinate(int renderedTileSize){
+        RENDERED_TILE_SIZE = renderedTileSize;
+        entityCoordinates.setHeight(renderedTileSize);
+        entityCoordinates.setWidth(renderedTileSize);
+        entityCoordinates.setTranslX(entityCoordinates.getTranslX()/VEL_X*(renderedTileSize/TILE_STEP));
+        entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(renderedTileSize/TILE_STEP));
+        VEL_Y = VEL_X = renderedTileSize/TILE_STEP;
     }
 
 }

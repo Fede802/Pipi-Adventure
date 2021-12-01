@@ -86,11 +86,13 @@ public class SoundManager {
         isSoundActive = !isSoundActive;
         SoundConfig.getInstance().setSoundActive(isSoundActive);
     }
-    public static boolean isIsSoundActive() {
+
+    //TODO refactor name
+    public static boolean isSoundActive() {
         return isSoundActive;
     }
 
-    public static boolean isIsMusicActive() {
+    public static boolean isMusicActive() {
         return isMusicActive;
     }
 

@@ -22,7 +22,7 @@ public interface IGameModel {
     int getEntityCount(EntityType entityType);
     boolean isDead(EntityType entityType, int entityID);
 
-    void changeCoordinate();
+    void changeCoordinate(int renderedTileSize);
     void setup();
 
 

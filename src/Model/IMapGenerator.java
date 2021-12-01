@@ -17,5 +17,5 @@ public interface IMapGenerator {
     void updateAnimationData(EntityType entityType, int entityID, AnimationData animation);
     void updateEntitiesStatus(EntityType entityType,final int entityID);
     boolean isDead(EntityType entityType, int entityID);
-    void changeCoordinate();
+    void changeCoordinate(int renderedTileSize);
 }

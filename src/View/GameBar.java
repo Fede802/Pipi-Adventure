@@ -18,6 +18,11 @@ public class GameBar {
     private final int padding = 10;
     private final Rectangle2D.Double button = new Rectangle2D.Double();
 
+    //debug purpose
+    private boolean wallCollision;
+    private boolean infiniteBullets;
+    private boolean entityCollision;
+
     public GameBar(JPanel panel){
         this.panel = panel;
     }
@@ -56,6 +61,7 @@ public class GameBar {
         StringDrawer.drawString(g2d,"x"+bullets,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,paddingTop,2*padding+fontHeight,panel,StringDrawer.PADDING);
         StringDrawer.drawString(g2d,"x"+coinCollected,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,paddingTop,paddingLeft,panel,StringDrawer.PADDING);
         g2d.drawImage(coin,(int)(paddingLeft-fontHeight/5-fontHeight),paddingTop,(int)(fontHeight),(int)(fontHeight),null);
+
     }
 
     public Rectangle2D.Double getPauseButton() {

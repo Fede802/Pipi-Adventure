@@ -135,9 +135,9 @@ public class GameModel implements IGameModel{
     }
 
     @Override
-    public void changeCoordinate() {
-        PLAYER.changeCoordinate();
-        MAP_GENERATOR.changeCoordinate();
+    public void changeCoordinate(int renderedTileSize) {
+        PLAYER.changeCoordinate(renderedTileSize);
+        MAP_GENERATOR.changeCoordinate(renderedTileSize);
     }
 
     @Override

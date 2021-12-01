@@ -12,6 +12,12 @@ import view.GameView;
 public class PlayerHandler extends EntityHandler{
     public static final int JUMP_STEP = 13;
     private int currentJumpStep;
+
+    public static void setRenderedTileSize(int renderedTileSize) {
+        PlayerHandler.renderedTileSize = renderedTileSize;
+    }
+
+    private static int renderedTileSize;
     private int playerStartMapX = GameDataConfig.getInstance().getPlayerStartMapX();
 
     public void setJumping(boolean jumping) {
@@ -154,7 +160,7 @@ public class PlayerHandler extends EntityHandler{
 
     public double playerTotalTranslation(){
         EntityCoordinates player = getEntity();
-        return (player.getMapX()+player.getMapIndex()*GameDataConfig.getInstance().getMapSectionSize()-playerStartMapX) * GameDataConfig.getInstance().getRenderedTileSize() + player.getTranslX();
+        return (player.getMapX()+player.getMapIndex()*GameDataConfig.getInstance().getMapSectionSize()-playerStartMapX) * renderedTileSize + player.getTranslX();
     }
 
     public void setImmortal(boolean b) {
