@@ -26,4 +26,13 @@ public interface IGameEngine {
     void updateAnimationData(AnimationData value,int entityID);
 
     void setResources();
+
+    //debug purpose
+    void switchImmortality();
+
+    void switchWallCollision();
+
+    void switchEntityCollision();
+
+    void switchInfiniteBullets();
 }

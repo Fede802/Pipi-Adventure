@@ -28,14 +28,8 @@ public class Player extends GameEntity implements IPlayer{
     }
 
     @Override
-    public void updateAnimationData(AnimationData animationData) {
-        super.updateAnimationData(animationData);
-        opacity = animationData.getOpacity();
-    }
-
-    @Override
     public void setDeathAnimation() {
-        currentAnimation = commons.AnimationData.DEATH_ANIMATION_RIGHT;
+        currentAnimation = AnimationData.DEATH_ANIMATION_RIGHT;
     }
 
     @Override
@@ -101,18 +95,21 @@ public class Player extends GameEntity implements IPlayer{
 
     @Override
     public void setJumping(boolean isJumping) {
-        currentAnimation = commons.AnimationData.JUMPING_ANIMATION;
-        if(isJumping)
+
+        if(isJumping){
+            currentAnimation = AnimationData.JUMPING_ANIMATION;
+            System.out.println("JUMP");
             currentAnimationStep = 0;
+        }
     }
 
     @Override
     public void setFalling(boolean isFalling) {
         if(isFalling){
-            currentAnimation = commons.AnimationData.JUMPING_ANIMATION;
+            currentAnimation = AnimationData.JUMPING_ANIMATION;
             currentAnimationStep = AnimationData.LAST_FRAME;
         }else{
-            currentAnimation = commons.AnimationData.WALK_ANIMATION_RIGHT;
+            currentAnimation = AnimationData.WALK_ANIMATION_RIGHT;
             currentAnimationStep =0;
         }
     }
@@ -167,5 +164,9 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void updateBulletAnimationData(int entityID, AnimationData animation) {
         bullets.get(entityID).updateAnimationData(animation);
+    }
+    @Override
+    public void updateAnimationOpacity(float opacity) {
+        this.opacity = opacity;
     }
 }

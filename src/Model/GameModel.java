@@ -113,6 +113,11 @@ public class GameModel implements IGameModel{
     }
 
     @Override
+    public void updateAnimationOpacity(float opacity) {
+        PLAYER.updateAnimationOpacity(opacity);
+    }
+
+    @Override
     public int getEntityCount(EntityType entityType) {
         int count = 0;
         switch(entityType){

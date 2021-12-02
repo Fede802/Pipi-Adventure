@@ -66,7 +66,6 @@ public class PlayerHandler extends EntityHandler{
     private int currentImmortalityStep;
 
     public void updateImmortalityStep(){
-
         if(currentImmortalityStep == IMMORTALITY_STEP){
             immortal = false;
             currentImmortalityStep = 0;
@@ -143,7 +142,6 @@ public class PlayerHandler extends EntityHandler{
                 currentJumpStep = 0;
                 isJumping = false;
                 isFalling = true;
-                GameModel.getInstance().setPlayerJumping(false);
             }
         }else if(!bottomCollision()){
             if(!isFalling){
@@ -166,4 +164,5 @@ public class PlayerHandler extends EntityHandler{
     public void setImmortal(boolean b) {
         immortal = b;
     }
+
 }

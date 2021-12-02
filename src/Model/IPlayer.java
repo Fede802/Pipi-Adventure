@@ -16,4 +16,5 @@ public interface IPlayer {
     int bulletCount();
     boolean isBulletDead(int entityID);
     void updateBulletAnimationData(int entityID, AnimationData animation);
+    void updateAnimationOpacity(float opacity);
 }

@@ -15,13 +15,35 @@ public class GameBar {
     private final JPanel panel;
     private int score,coinCollected,life,bullets;
     private final Font  font = new Font("04b", Font.PLAIN, 20 );
+    private final Font  debugFont = new Font("04b", Font.PLAIN, 15);
     private final int padding = 10;
     private final Rectangle2D.Double button = new Rectangle2D.Double();
 
+
+
     //debug purpose
-    private boolean wallCollision;
-    private boolean infiniteBullets;
-    private boolean entityCollision;
+    private boolean wallCollision = true;
+    private boolean infiniteBullets = false;
+    private boolean entityCollision = true;
+
+    public void switchWallCollision() {
+        wallCollision = !wallCollision;
+    }
+    public void switchInfiniteBullets() {
+        infiniteBullets = !infiniteBullets;
+    }
+    public void switchEntityCollision() {
+        entityCollision = !entityCollision;
+    }
+    public void switchImmortality(){
+        if(!wallCollision && !entityCollision){
+            wallCollision = true;
+            entityCollision = true;
+        }else{
+            wallCollision = false;
+            entityCollision = false;
+        }
+    }
 
     public GameBar(JPanel panel){
         this.panel = panel;
@@ -61,7 +83,21 @@ public class GameBar {
         StringDrawer.drawString(g2d,"x"+bullets,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,paddingTop,2*padding+fontHeight,panel,StringDrawer.PADDING);
         StringDrawer.drawString(g2d,"x"+coinCollected,font,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.YELLOW,paddingTop,paddingLeft,panel,StringDrawer.PADDING);
         g2d.drawImage(coin,(int)(paddingLeft-fontHeight/5-fontHeight),paddingTop,(int)(fontHeight),(int)(fontHeight),null);
-
+        paddingTop = (int)(3*padding+2*fontHeight);
+        paddingLeft = 0;
+        int debugint = 0;
+        if(infiniteBullets){
+            StringDrawer.drawString(g2d,"B",debugFont,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.CYAN,paddingTop,padding,panel,StringDrawer.PADDING);
+            debugint++;
+            paddingLeft = (int)(StringDrawer.getStringWidth(g2d,"B",debugFont));
+        }
+        if(!wallCollision && !entityCollision){
+            StringDrawer.drawString(g2d,"I",debugFont,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.RED,paddingTop,(1+debugint)*padding+paddingLeft,panel,StringDrawer.PADDING);
+        }else if(!wallCollision){
+            StringDrawer.drawString(g2d,"W",debugFont,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.ORANGE,paddingTop,(1+debugint)*padding+paddingLeft,panel,StringDrawer.PADDING);
+        }else if(!entityCollision){
+            StringDrawer.drawString(g2d,"E",debugFont,Color.DARK_GRAY,StringDrawer.DEFAULT_STROKE,Color.GREEN,paddingTop,(1+debugint)*padding+paddingLeft,panel,StringDrawer.PADDING);
+        }
     }
 
     public Rectangle2D.Double getPauseButton() {

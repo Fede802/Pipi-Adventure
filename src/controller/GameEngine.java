@@ -23,6 +23,11 @@ public class GameEngine implements IGameEngine{
     private final SoundManager BULLET = new SoundManager("res/audio/bullet.wav", SoundManager.MUSIC);
 
 
+    //debug purpose
+    boolean wallCollision = true;
+    boolean entityCollision = true;
+    boolean infiniteBullets = false;
+
     private GameEngine(){}
     public static GameEngine getInstance() {
         if (instance == null)
@@ -100,14 +105,16 @@ public class GameEngine implements IGameEngine{
 
     private void checkEntityCollision() {
         if(!playerHandler.isImmortal() && !playerHandler.isDying())
-            playerHandler.checkEntityCollision(enemyHandler);
+            if(entityCollision)
+                playerHandler.checkEntityCollision(enemyHandler);
         playerHandler.checkEntityCollision(coinHandler);
         bulletsHandler.checkEntityCollision(enemyHandler);
     }
 
     private void checkMapCollision() {
         if(!playerHandler.isJumping() && !playerHandler.isFalling() && !playerHandler.isImmortal())
-            playerHandler.rightCollision();
+            if(wallCollision)
+                playerHandler.rightCollision();
         bulletsHandler.rightCollision();
     }
 
@@ -128,8 +135,9 @@ public class GameEngine implements IGameEngine{
                     animationData.hasToUpdate(updateAnimation);
             }
             if(updateAnimation && type.getKey() == EntityType.PLAYER && playerHandler.isImmortal()) {
-                animationData.switchOpacity();
                 playerHandler.updateImmortalityStep();
+                animationData.switchOpacity();
+                GameModel.getInstance().updateAnimationOpacity(animationData.getOpacity());
             }
         renderingPair.updateValue(animationData);
         return renderingPair;
@@ -159,9 +167,10 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public void shoot() {
-        if(GameData.getInstance().getCurrentBullets() > 0){
+        if(GameData.getInstance().getCurrentBullets() > 0 || infiniteBullets){
             GameModel.getInstance().shoot();
-            GameData.getInstance().updateCurrentBullets(-1);
+            if(!infiniteBullets)
+                GameData.getInstance().updateCurrentBullets(-1);
             BULLET.playOnce();
         }
 
@@ -183,12 +192,11 @@ public class GameEngine implements IGameEngine{
 
     @Override
     public void notifySizeChanged(int renderedTileSize) {
-        int currentTileSize = renderedTileSize;
         EntityCoordinates.setDefaultDimension(renderedTileSize);
         CollisionHandler.setRenderedTileSize(renderedTileSize);
         PlayerHandler.setRenderedTileSize(renderedTileSize);
-        GameView.getInstance().notifySizeChanged(currentTileSize);
-        GameModel.getInstance().changeCoordinate(currentTileSize);
+        GameView.getInstance().notifySizeChanged(renderedTileSize);
+        GameModel.getInstance().changeCoordinate(renderedTileSize);
     }
 
 
@@ -221,6 +229,32 @@ public class GameEngine implements IGameEngine{
     @Override
     public void setResources() {
         GameView.getInstance().getResources();
+    }
+
+    @Override
+    public void switchImmortality() {
+        if(!wallCollision && !entityCollision){
+            wallCollision = true;
+            entityCollision = true;
+        }else{
+            wallCollision = false;
+            entityCollision = false;
+        }
+    }
+
+    @Override
+    public void switchWallCollision() {
+        wallCollision = !wallCollision;
+    }
+
+    @Override
+    public void switchEntityCollision() {
+        entityCollision = !entityCollision;
+    }
+
+    @Override
+    public void switchInfiniteBullets() {
+        infiniteBullets = !infiniteBullets;
     }
 
     @Override

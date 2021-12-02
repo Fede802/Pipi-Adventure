@@ -82,6 +82,22 @@ public class GamePanel extends ApplicationPanel{
             GameStateHandler.getInstance().pause();
         if(e.getKeyCode() == KeyEvent.VK_Q)
             GameEngine.getInstance().shoot();
+        if(e.getKeyCode() == KeyEvent.VK_I) {
+            gameBar.switchImmortality();
+            GameEngine.getInstance().switchImmortality();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            gameBar.switchWallCollision();
+            GameEngine.getInstance().switchWallCollision();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_E){
+            gameBar.switchEntityCollision();
+            GameEngine.getInstance().switchEntityCollision();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_B){
+            gameBar.switchInfiniteBullets();
+            GameEngine.getInstance().switchInfiniteBullets();
+        }
     }
 
     @Override

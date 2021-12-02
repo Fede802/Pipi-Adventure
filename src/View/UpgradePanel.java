@@ -47,6 +47,8 @@ public class UpgradePanel extends ApplicationPanel{
 
     private int totalCoin;
 
+    //debug purpose
+    private boolean freeUpgrade;
 
     public UpgradePanel(){
         super();
@@ -144,13 +146,16 @@ public class UpgradePanel extends ApplicationPanel{
         boolean bought = false;
         if(price < totalCoin){
             totalCoin-=price;
-            GameEngine.getInstance().updateTotalCoin(price);
+            if(!freeUpgrade)
+                GameEngine.getInstance().updateTotalCoin(price);
             bought = true;
         }
         return  bought;
     }
     private int calculatePrice(int step){
         int price = (int)(50*(1+Math.pow(step,2)));
+        if(freeUpgrade)
+            price = 0;
         return price;
     }
 
@@ -252,6 +257,14 @@ public class UpgradePanel extends ApplicationPanel{
             if(currentChoice == BUTTONS.size()) {
                 currentChoice = 0;
             }
+        }
+        if(e.getKeyCode() == KeyEvent.VK_C){
+            freeUpgrade = !freeUpgrade;
+            if(currentLife < MAX_LIFE)
+                lifePrice = String.valueOf(calculatePrice(currentLife));
+            if(currentBullet <MAX_BULLET)
+                bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+            
         }
     }
 
