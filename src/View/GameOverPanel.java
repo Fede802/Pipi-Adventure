@@ -15,7 +15,11 @@ import java.util.ArrayList;
 
 public class GameOverPanel extends SlidableApplicationPanel {
 
-    private final int DX = 1;
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
+    private final int BG_DX = 1;
     private final String TITLE = "Game Over";
     private final Color DEFAULT_COLOR = Color.RED;
     private final Font TITLE_FONT = new Font(FontLoader.GAME_FONT, Font.BOLD, 50);
@@ -41,6 +45,10 @@ public class GameOverPanel extends SlidableApplicationPanel {
     private BackgroundDrawer background;
     private int currentChoice = 0;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public GameOverPanel(ComponentContainer componentContainer) {
         super(componentContainer);
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/GameOverTheme.wav",SoundManager.SOUND));
@@ -48,25 +56,14 @@ public class GameOverPanel extends SlidableApplicationPanel {
         AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public void setData(int currentScore, int recordScore, int currentCoin) {
         GAME_DATA_VALUES[0]=String.valueOf(currentScore);
         GAME_DATA_VALUES[1]=String.valueOf(recordScore);
         GAME_DATA_VALUES[2]=String.valueOf(currentCoin);
-    }
-
-    private void select() {
-        if(currentChoice == 0) {
-            GameStateHandler.getInstance().startGame();
-        }
-        if(currentChoice == 1) {
-            GameStateHandler.getInstance().openControlView();
-        }
-        if(currentChoice == 2) {
-            GameStateHandler.getInstance().menu();
-        }
-        GameEngine.getInstance().saveDataConfig();
-        //todo sout
-        System.out.println("datasaved");
     }
 
     @Override
@@ -77,7 +74,7 @@ public class GameOverPanel extends SlidableApplicationPanel {
 
     @Override
     public void loadResources() {
-        background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this,DX);
+        background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\gameOver\\GameOver_BG.png"), this, BG_DX);
         bed = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\gameOver\\GameOver.gif").get(0);
         frame = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\PictureFrame.png").get(0);
     }
@@ -155,6 +152,21 @@ public class GameOverPanel extends SlidableApplicationPanel {
                 }
             }
         }
+    }
+
+    private void select() {
+        if(currentChoice == 0) {
+            GameStateHandler.getInstance().startGame();
+        }
+        if(currentChoice == 1) {
+            GameStateHandler.getInstance().openHelpPanel();
+        }
+        if(currentChoice == 2) {
+            GameStateHandler.getInstance().openMenuPanel();
+        }
+        GameEngine.getInstance().saveDataConfig();
+        //todo sout
+        System.out.println("datasaved");
     }
 
 }

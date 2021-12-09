@@ -6,9 +6,27 @@ import utils.GameDataConfig;
 
 public class CollisionHandler {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
+
     private static final int EMPTY_TILE_CODE = GameDataConfig.getInstance().getEmptyTileCode();
     private static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
     private static int renderedTileSize;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    private CollisionHandler(){}
+
+    //    --------------------------------------------------------
+    //                      STATIC METHODS
+    //    --------------------------------------------------------
+
+    public static void setRenderedTileSize(int renderedTileSize) {
+        CollisionHandler.renderedTileSize = renderedTileSize;
+    }
 
     public static boolean collide(EntityCoordinates entity1, EntityCoordinates entity2) {
         double entity1X = (entity1.getMapIndex()* SECTION_SIZE +entity1.getMapX())*renderedTileSize+entity1.getTraslX();
@@ -36,31 +54,24 @@ public class CollisionHandler {
         }
         return isColliding;
     }
-//todo comment
+
     public static boolean rightCollision(EntityCoordinates next) {
         boolean isColliding = false;
-//        if(next.getTranslX() == 0){
-            int frontMapX = next.getMapX()+1;
-            int frontMapIndex = next.getMapIndex();
-            if(frontMapX == GameDataConfig.getInstance().getMapSectionSize()){
-                frontMapX = 0;
-                frontMapIndex++;
-            }
-            if(GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()) != EMPTY_TILE_CODE){
-                isColliding = true;
-            }
-            double translY = next.getTraslY();
-            if(translY > 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()+1) != EMPTY_TILE_CODE)
-                isColliding = true;
-            if(translY < 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()-1) != EMPTY_TILE_CODE)
-                isColliding = true;
-
-//        }
+        int frontMapX = next.getMapX()+1;
+        int frontMapIndex = next.getMapIndex();
+        if(frontMapX == GameDataConfig.getInstance().getMapSectionSize()){
+            frontMapX = 0;
+            frontMapIndex++;
+        }
+        if(GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()) != EMPTY_TILE_CODE){
+            isColliding = true;
+        }
+        double translY = next.getTraslY();
+        if(translY > 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()+1) != EMPTY_TILE_CODE)
+            isColliding = true;
+        if(translY < 0 && GameModel.getInstance().getTileData(frontMapIndex, frontMapX, next.getMapY()-1) != EMPTY_TILE_CODE)
+            isColliding = true;
         return isColliding;
-    }
-
-    public static void setRenderedTileSize(int renderedTileSize) {
-        CollisionHandler.renderedTileSize = renderedTileSize;
     }
 
 }

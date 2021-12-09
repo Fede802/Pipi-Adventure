@@ -6,6 +6,10 @@ import view.GameView;
 
 public class GameStateHandler implements IGameStateHandler {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
     public final static int PAUSE_STATE = 2;
@@ -16,13 +20,36 @@ public class GameStateHandler implements IGameStateHandler {
 
     private static GameStateHandler instance = null;
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private int currentState = LOADING_STATE;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private GameStateHandler() {}
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public int getCurrentState() {
         return currentState;
+    }
+
+    @Override
+    public void startApplication() {
+        currentState = MENU_STATE;
+        GameView.getInstance().startApplication();
+    }
+
+    @Override
+    public void loadResources() {
+        GameView.getInstance().loadResources();
     }
 
     @Override
@@ -33,7 +60,7 @@ public class GameStateHandler implements IGameStateHandler {
     }
 
     @Override
-    public void menu() {
+    public void openMenuPanel() {
         currentState = MENU_STATE;
         GameView.getInstance().openWindow();
     }
@@ -50,19 +77,19 @@ public class GameStateHandler implements IGameStateHandler {
     }
 
     @Override
-    public void openControlView() {
+    public void openHelpPanel() {
         currentState = HELP_STATE;
         GameView.getInstance().openWindow();
     }
 
     @Override
-    public void gameOver() {
+    public void openGameOverPanel() {
         currentState = GAME_OVER_STATE;
         GameView.getInstance().openWindow();
     }
 
     @Override
-    public void pause() {
+    public void openPausePanel() {
         currentState = PAUSE_STATE;
         GameView.getInstance().openWindow();
     }
@@ -78,16 +105,9 @@ public class GameStateHandler implements IGameStateHandler {
         GameEngine.getInstance().setupGame();
     }
 
-    @Override
-    public void startApplication() {
-        currentState = MENU_STATE;
-        GameView.getInstance().startApplication();
-    }
-
-    @Override
-    public void loadResources() {
-        GameView.getInstance().loadResources();
-    }
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static GameStateHandler getInstance() {
         if (instance == null)

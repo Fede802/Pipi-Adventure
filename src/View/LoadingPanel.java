@@ -17,6 +17,10 @@ import java.util.ArrayList;
 
 public class LoadingPanel extends ApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final String TITLE = "Pipi Adventure";
     private final int BG_DX = 1;
     private final String IMG_RES_PATH = "res/images";
@@ -43,16 +47,22 @@ public class LoadingPanel extends ApplicationPanel {
     private int currentFileLoaded;
     private boolean transition = false;
 
+    //title transition vars
     private int titlePaddingTop = 2*this.getHeight()/5;
     private int finalTitlePaddingTop;
     private double shiftTitleLength;
     private int shiftTitleVelY;
     private int currentTitleStep;
 
+    //bar transition vars
     private int barPaddingTop = 3*this.getHeight()/5-12;
     private double shiftBarLength;
     private int shiftBarVelY;
     private int currentBarStep;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public LoadingPanel(int titlePaddingTop){
         super();
@@ -74,6 +84,10 @@ public class LoadingPanel extends ApplicationPanel {
         ImageLoader.getInstance().loadImages(IMG_RES_PATH, BAR_UPDATE);
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public int getBgTransl() {
         return BACKGROUND.getX();
     }
@@ -84,11 +98,6 @@ public class LoadingPanel extends ApplicationPanel {
 
     public int getCurrentTitlePaddingTop() {
         return titlePaddingTop-currentTitleStep*shiftTitleVelY;
-    }
-
-    private void load(){
-        GameEngine.getInstance().setResources();
-        transition = true;
     }
 
     @Override
@@ -152,6 +161,11 @@ public class LoadingPanel extends ApplicationPanel {
     @Override
     public void mouseMoved(MouseEvent e) {
         //nothing to do
+    }
+
+    private void load(){
+        GameEngine.getInstance().setResources();
+        transition = true;
     }
 
 }

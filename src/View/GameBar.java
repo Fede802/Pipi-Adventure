@@ -1,7 +1,6 @@
 package view;
 
 import utils.FontLoader;
-import utils.GameConfig;
 import utils.GameDataConfig;
 import utils.ImageLoader;
 
@@ -11,7 +10,11 @@ import java.awt.geom.Rectangle2D;
 
 public class GameBar {
 
-    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLife();
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
+    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLives();
     private final JPanel PARENT_PANEL;
     private final int DEFAULT_PADDING = 10;
     private final Color DEFAULT_COLOR = Color.YELLOW;
@@ -29,9 +32,17 @@ public class GameBar {
     private boolean infiniteBullets = false;
     private boolean entityCollision = true;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public GameBar(JPanel PARENT_PANEL){
         this.PARENT_PANEL = PARENT_PANEL;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void setupBar(int currentLife, int currentMaxLife, int currentBullets) {
         coinCollected = 0;

@@ -6,6 +6,10 @@ import commons.RenderingType;
 
 public abstract class Enemy extends GameEntity {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public Enemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(EntityType.ENEMY, R_ID, entityCoordinates);
         TILE_STEP = 10.0;

@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 public class UpgradePanel extends ApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final String TITLE = "Upgrade";
     private final Color DEFAULT_COLOR = Color.MAGENTA;
     private final Font TITLE_FONT = new Font(FontLoader.GAME_FONT, Font.BOLD, 40);
@@ -21,9 +25,9 @@ public class UpgradePanel extends ApplicationPanel {
     private final Font ERROR_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 16);
     private final Font PRICE_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 12);
     private final Font BAR_PLACEHOLDER_FONT = new Font("Arial", Font.PLAIN, 12);
-    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLife();
-    private final int MAX_BULLET = GameDataConfig.getInstance().getMaxBullet();
-    private final int MIN_BULLET = GameDataConfig.getInstance().getMinBullet();
+    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLives();
+    private final int MAX_BULLET = GameDataConfig.getInstance().getMaxBullets();
+    private final int MIN_BULLET = GameDataConfig.getInstance().getMinBullets();
     private final int DISSOLUTION_STEP = GameConfig.getInstance().getDissolutionStep();
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{
         add(new Rectangle2D.Double());
@@ -53,6 +57,10 @@ public class UpgradePanel extends ApplicationPanel {
     //debug purpose
     private boolean freeUpgrade;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public UpgradePanel() {
         super();
         AUDIO.put(MUSIC_THEME, new SoundManager("res/audio/Upgrade_Theme.wav",SoundManager.SOUND));
@@ -61,6 +69,10 @@ public class UpgradePanel extends ApplicationPanel {
         AUDIO.put(ERROR_THEME,new SoundManager("res/audio/NoCoin.wav",SoundManager.MUSIC));
         AUDIO.put(SUCCESS_THEME,new SoundManager("res/audio/LevelUp.wav",SoundManager.MUSIC));
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void setup(int currentLife,int currentBullets,int totalCoin) {
         this.totalCoin = totalCoin;
@@ -71,80 +83,6 @@ public class UpgradePanel extends ApplicationPanel {
         if(currentBullet <MAX_BULLET)
             bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
 
-    }
-
-    private void select() {
-        if(currentChoice == 0) {
-            if(currentLife < MAX_LIFE)
-                if(buy(calculatePrice(currentLife))){
-                    AUDIO.get(SUCCESS_THEME).playOnce();
-                    currentLife++;
-                    pipi.resetAnimation();
-                    pedestal.resetAnimation();
-                    upgrading = true;
-                    if(currentLife < MAX_LIFE)
-                        lifePrice = String.valueOf(calculatePrice(currentLife));
-                    else
-                        lifePrice = "MAX";
-                    GameEngine.getInstance().updateCurrentLife();
-                }else{
-                    resetLowBudgetAnimation();
-                    lowbudget = true;
-                    AUDIO.get(ERROR_THEME).playOnce();
-                }
-        }
-        if(currentChoice == 1) {
-            if(currentBullet <MAX_BULLET)
-                if(buy(calculatePrice(currentBullet-MIN_BULLET))){
-                    AUDIO.get(SUCCESS_THEME).playOnce();
-                    currentBullet++;
-                    pipi.resetAnimation();
-                    pedestal.resetAnimation();
-                    upgrading = true;
-                    if(currentBullet <MAX_BULLET)
-                        bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
-                    else
-                        bulletPrice = "MAX";
-                    GameEngine.getInstance().updateCurrentBullets();
-                }else{
-                    resetLowBudgetAnimation();
-                    lowbudget = true;
-                    AUDIO.get(ERROR_THEME).playOnce();
-                }
-        }
-        if(currentChoice == 2){
-            GameEngine.getInstance().saveDataConfig();
-            GameStateHandler.getInstance().menu();
-        }
-        if(currentChoice == 3) {
-            GameEngine.getInstance().saveDataConfig();
-            GameStateHandler.getInstance().startGame();
-        }
-    }
-
-    private boolean buy(int price) {
-        boolean bought = false;
-        if(price < totalCoin){
-            totalCoin-=price;
-            //todo non serve
-            if(!freeUpgrade)
-                GameEngine.getInstance().updateTotalCoin(price);
-            bought = true;
-        }
-        return  bought;
-    }
-
-    private int calculatePrice(int step) {
-        int price = (int)(50*(1+Math.pow(step,2)));
-        if(freeUpgrade)
-            price = 0;
-        return price;
-    }
-
-    private void resetLowBudgetAnimation()  {
-        dissolutionGrade = 1f;
-        currentDissolutionStep = 0;
-        lowbudget = false;
     }
 
     @Override
@@ -308,6 +246,80 @@ public class UpgradePanel extends ApplicationPanel {
                 }
             }
         }
+    }
+
+    private void select() {
+        if(currentChoice == 0) {
+            if(currentLife < MAX_LIFE)
+                if(buy(calculatePrice(currentLife))){
+                    AUDIO.get(SUCCESS_THEME).playOnce();
+                    currentLife++;
+                    pipi.resetAnimation();
+                    pedestal.resetAnimation();
+                    upgrading = true;
+                    if(currentLife < MAX_LIFE)
+                        lifePrice = String.valueOf(calculatePrice(currentLife));
+                    else
+                        lifePrice = "MAX";
+                    GameEngine.getInstance().updateCurrentLife();
+                }else{
+                    resetLowBudgetAnimation();
+                    lowbudget = true;
+                    AUDIO.get(ERROR_THEME).playOnce();
+                }
+        }
+        if(currentChoice == 1) {
+            if(currentBullet <MAX_BULLET)
+                if(buy(calculatePrice(currentBullet-MIN_BULLET))){
+                    AUDIO.get(SUCCESS_THEME).playOnce();
+                    currentBullet++;
+                    pipi.resetAnimation();
+                    pedestal.resetAnimation();
+                    upgrading = true;
+                    if(currentBullet <MAX_BULLET)
+                        bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+                    else
+                        bulletPrice = "MAX";
+                    GameEngine.getInstance().updateCurrentBullets();
+                }else{
+                    resetLowBudgetAnimation();
+                    lowbudget = true;
+                    AUDIO.get(ERROR_THEME).playOnce();
+                }
+        }
+        if(currentChoice == 2){
+            GameEngine.getInstance().saveDataConfig();
+            GameStateHandler.getInstance().openMenuPanel();
+        }
+        if(currentChoice == 3) {
+            GameEngine.getInstance().saveDataConfig();
+            GameStateHandler.getInstance().startGame();
+        }
+    }
+
+    private boolean buy(int price) {
+        boolean bought = false;
+        if(price < totalCoin){
+            totalCoin-=price;
+            //todo useless if but semplify methods stack
+            if(!freeUpgrade)
+                GameEngine.getInstance().updateTotalCoin(price);
+            bought = true;
+        }
+        return  bought;
+    }
+
+    private int calculatePrice(int step) {
+        int price = (int)(50*(1+Math.pow(step,2)));
+        if(freeUpgrade)
+            price = 0;
+        return price;
+    }
+
+    private void resetLowBudgetAnimation()  {
+        dissolutionGrade = 1f;
+        currentDissolutionStep = 0;
+        lowbudget = false;
     }
 
 }

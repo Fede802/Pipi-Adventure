@@ -8,21 +8,40 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class MapSection {
+
     //TODO ADD SPAWNER CLASS TO SPAWN ENTITIES
+
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     public static final int DAY = 0;
     public static final int NIGHT = 1;
     public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
+    private final Random RANDOM = new Random();
 
     protected final ArrayList<GameEntity> MAP_ENTITIES = new ArrayList<>();
     protected final int Y_SPAWN_GAP = 2;
 
     protected int[][] map;
 
-    private Random random = new Random();
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
-    public MapSection(){
+    protected MapSection(){
+        //eventually load map from file
         map = new int[SECTION_SIZE][SECTION_SIZE];
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public int getCell(final int mapX,final int mapY){
         return map[mapY][mapX];
@@ -36,8 +55,8 @@ public abstract class MapSection {
 
     public GameEntity spawnFlyingEnemy(int daytime) {
         GameEntity temp = null;
-        if (random.nextInt(10) == 0) {
-            int step = random.nextInt(2);
+        if (RANDOM.nextInt(10) == 0) {
+            int step = RANDOM.nextInt(2);
             if (daytime == DAY) {
                 temp = new FlyingEnemy(RenderingType.BEE,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());
             }else {
@@ -47,5 +66,10 @@ public abstract class MapSection {
         return temp;
     }
 
+    //    --------------------------------------------------------
+    //                      ABSTRACT METHOD
+    //    --------------------------------------------------------
+
     protected abstract void spawnEntities(int daytime);
+
 }

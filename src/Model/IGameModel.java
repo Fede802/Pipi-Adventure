@@ -3,12 +3,12 @@ package model;
 import commons.*;
 
 public interface IGameModel {
+
     void updateMap();
     int getTileData(int mapIndex,int mapX,int mapY);
     void changeDaytime();
 
     void moveEntities();
-    void updateEntitiesStatus(EntityType entityType, int entityID);
 
     void setPlayerJumping(boolean isPlayerJumping);
     void playerJump();
@@ -16,16 +16,15 @@ public interface IGameModel {
     void playerFall();
     void shoot();
 
+    int getEntityCount(EntityType entityType);
+    void updateEntityStatus(EntityType entityType, int entityID);
     EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus);
     AnimationData getEntityAnimationData(EntityType entityType, int entityID);
-    void updateAnimationData(EntityType entityType, int entityID, AnimationData animation);
-    void updateAnimationOpacity(float opacity);
-    int getEntityCount(EntityType entityType);
-    boolean isDead(EntityType entityType, int entityID);
+    void updateEntityAnimationData(EntityType entityType, int entityID, AnimationData animation);
+    void updatePlayerAnimationOpacity(float opacity);
+    boolean isEntityDead(EntityType entityType, int entityID);
 
-    void changeCoordinate(int renderedTileSize);
+    void changeEntitiesCoordinates(int renderedTileSize);
     void setup();
-
-
 
 }

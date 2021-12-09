@@ -9,6 +9,10 @@ import java.util.Properties;
 
 public class Config {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private final String URL;
     private final SwingWorker WORKER = new SwingWorker<Void,Void>() {
         //todo sout
@@ -30,6 +34,10 @@ public class Config {
 
     protected final Properties PROPERTIES = new Properties();
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public Config(String URL) {
         this.URL = URL;
         BufferedReader reader = null;
@@ -47,6 +55,10 @@ public class Config {
             }
         }
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void saveData() {
         WORKER.execute();

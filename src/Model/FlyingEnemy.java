@@ -4,10 +4,18 @@ import commons.*;
 
 public class FlyingEnemy extends Enemy {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public FlyingEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(R_ID, entityCoordinates);
         currentAnimation = commons.AnimationData.WALK_ANIMATION_LEFT;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {

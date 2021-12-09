@@ -22,6 +22,7 @@ public abstract class GameEntity implements IGameEntity {
 
     protected final EntityType ID;
     protected final RenderingType R_ID;
+
     protected EntityStatus entityStatus = EntityStatus.ALIVE;
     protected EntityCoordinates entityCoordinates;
     protected int deathLoop = DEFAULT_DEATH_LOOP;
@@ -75,30 +76,6 @@ public abstract class GameEntity implements IGameEntity {
         return (entityStatus == EntityStatus.DYING && currentDeathLoop == deathLoop);
     }
 
-    protected void defaultWalkMovement(int movingDirection) {
-        if(movingDirection == RIGHT_DIR){
-            entityCoordinates.updateTraslX(VEL_X);
-            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-            }
-            if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
-                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
-                entityCoordinates.setMapX(0);
-            }
-        }else{
-            entityCoordinates.updateTraslX(-VEL_X);
-            if(Math.abs(entityCoordinates.getTraslX()) >= RENDERED_TILE_SIZE) {
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX() + RENDERED_TILE_SIZE);
-                entityCoordinates.setMapX(entityCoordinates.getMapX() - 1);
-            }
-            if(entityCoordinates.getMapX() == -1){
-                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
-                entityCoordinates.setMapX(GameDataConfig.getInstance().getMapSectionSize()-1);
-            }
-        }
-    }
-
     @Override
     public EntityCoordinates getEntityCoordinates() {
         return entityCoordinates;
@@ -127,6 +104,30 @@ public abstract class GameEntity implements IGameEntity {
         entityCoordinates.setTraslX(entityCoordinates.getTraslX()/VEL_X*(renderedTileSize/TILE_STEP));
         entityCoordinates.setTraslY(entityCoordinates.getTraslY()/VEL_Y*(renderedTileSize/TILE_STEP));
         VEL_Y = VEL_X = renderedTileSize/TILE_STEP;
+    }
+
+    protected void defaultWalkMovement(int movingDirection) {
+        if(movingDirection == RIGHT_DIR){
+            entityCoordinates.updateTraslX(VEL_X);
+            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
+                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
+                entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
+            }
+            if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
+                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()+1);
+                entityCoordinates.setMapX(0);
+            }
+        }else{
+            entityCoordinates.updateTraslX(-VEL_X);
+            if(Math.abs(entityCoordinates.getTraslX()) >= RENDERED_TILE_SIZE) {
+                entityCoordinates.setTraslX(entityCoordinates.getTraslX() + RENDERED_TILE_SIZE);
+                entityCoordinates.setMapX(entityCoordinates.getMapX() - 1);
+            }
+            if(entityCoordinates.getMapX() == -1){
+                entityCoordinates.setMapIndex(entityCoordinates.getMapIndex()-1);
+                entityCoordinates.setMapX(GameDataConfig.getInstance().getMapSectionSize()-1);
+            }
+        }
     }
 
 }

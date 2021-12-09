@@ -9,9 +9,17 @@ import java.util.ArrayList;
 
 public class MapDrawer extends AbstractMapDrawer {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public MapDrawer(JPanel PARENT_PANEL) {
         super(PARENT_PANEL);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void drawMap(final Graphics2D g2d){

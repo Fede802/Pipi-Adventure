@@ -7,12 +7,20 @@ import java.util.ArrayList;
 
 public class Animation {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final ArrayList<Image> ANIMATION_TILES;
     private final int ANIMATION_STEP;
 
     private int currentAnimationStep;
     private float opacity = 1f;
     private boolean finish;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTORS
+    //    --------------------------------------------------------
 
     public Animation(String path) {
         ANIMATION_TILES = ImageLoader.getInstance().getImages(path);
@@ -23,6 +31,10 @@ public class Animation {
         ANIMATION_TILES = img;
         ANIMATION_STEP = ANIMATION_TILES.size();
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public Image getFrame(){
         return ANIMATION_TILES.get(currentAnimationStep);

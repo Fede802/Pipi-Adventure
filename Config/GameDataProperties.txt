@@ -7,7 +7,7 @@ minTileToRender=20
 playerStartMapX=5
 playerStartMapY=12
 emptyTileCode=34
-maxLife=3
+maxLives=3
 maxBullets=10
 minBullets=4
 

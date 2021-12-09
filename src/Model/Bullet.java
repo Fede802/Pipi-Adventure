@@ -5,6 +5,10 @@ import utils.GameDataConfig;
 
 public class Bullet extends GameEntity {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public Bullet(EntityCoordinates entityCoordinates) {
         super(EntityType.BULLET, RenderingType.BULLET, entityCoordinates);
         TILE_STEP = 2.5;
@@ -12,6 +16,10 @@ public class Bullet extends GameEntity {
         VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
 
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {

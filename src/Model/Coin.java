@@ -4,10 +4,18 @@ import commons.*;
 
 public class Coin extends GameEntity {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public Coin(EntityCoordinates entityCoordinates) {
         super(EntityType.COIN, RenderingType.COIN,entityCoordinates);
         deathLoop = 5;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {

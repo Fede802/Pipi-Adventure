@@ -7,11 +7,23 @@ import java.util.ArrayList;
 
 public class FontLoader {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static final String FONT_PATH = "res/font/04B_30__.TTF";
     public static final String GAME_FONT = "04b";
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private FontLoader(){}
-    //todo sout
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
+
     public static void loadFonts(){
         GraphicsEnvironment ge;
         try{

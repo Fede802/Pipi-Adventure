@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class BackgroundDrawer {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final int UPDATE_TICK_DELAY = GameConfig.getInstance().getUpdateTickDelay();
     private final ArrayList<Image> IMAGES;
     private final JPanel PARENT_PANEL;
@@ -23,6 +27,10 @@ public class BackgroundDrawer {
     private boolean descending;
     private boolean loop = false;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTORS
+    //    --------------------------------------------------------
+
     public BackgroundDrawer(ArrayList<Image> background, JPanel PARENT_PANEL, final int DX) {
         this.PARENT_PANEL = PARENT_PANEL;
         this.DX = DX;
@@ -33,6 +41,10 @@ public class BackgroundDrawer {
         this(background, PARENT_PANEL, DX);
         this.paddingBottom = paddingBottom;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public int getX() {
         return x;

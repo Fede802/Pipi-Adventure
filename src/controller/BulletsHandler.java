@@ -5,14 +5,22 @@ import model.GameModel;
 
 public class BulletsHandler extends EntitiesHandler {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public BulletsHandler() {
         super(EntityType.BULLET);
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
-        GameModel.getInstance().updateEntitiesStatus(EntityType.ENEMY,outerCurrentEntity);
-        GameModel.getInstance().updateEntitiesStatus(EntityType.BULLET,currentEntity);
+        GameModel.getInstance().updateEntityStatus(EntityType.ENEMY,outerCurrentEntity);
+        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,currentEntity);
     }
 
     @Override
@@ -22,7 +30,7 @@ public class BulletsHandler extends EntitiesHandler {
 
     @Override
     protected void wallCollision(int currentEntity) {
-        GameModel.getInstance().updateEntitiesStatus(EntityType.BULLET,currentEntity);
+        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,currentEntity);
     }
 
 }

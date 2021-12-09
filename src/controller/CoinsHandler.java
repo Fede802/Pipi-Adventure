@@ -4,9 +4,17 @@ import commons.EntityType;
 
 public class CoinsHandler extends EntitiesHandler {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public CoinsHandler() {
         super(EntityType.COIN);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHOD
+    //    --------------------------------------------------------
 
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {

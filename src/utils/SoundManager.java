@@ -6,14 +6,26 @@ import java.io.IOException;
 
 public class SoundManager {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     public static final int SOUND = 0;
     public static final int MUSIC = 1;
 
     private static boolean isSoundActive = SoundConfig.getInstance().isSoundActive();
     private static boolean isMusicActive = SoundConfig.getInstance().isMusicActive();
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private Clip clip;
     private int audioType;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public SoundManager(String s,int audioType) {
         this.audioType = audioType;
@@ -57,6 +69,10 @@ public class SoundManager {
         }
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public void playOnce() {
         if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive) {
             this.clip.stop();
@@ -75,6 +91,10 @@ public class SoundManager {
     public  void stopLoop(){
         this.clip.stop();
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHODS
+    //    --------------------------------------------------------
 
     public static boolean isSoundActive() {
         return isSoundActive;

@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 public class MenuPanel extends ApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final String TITLE = "Pipi Adventure";
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{
         add(new Rectangle2D.Double());add(new Rectangle2D.Double());
@@ -58,12 +62,20 @@ public class MenuPanel extends ApplicationPanel {
     private int shiftOptionsVelY;
     private int currentStep = 20;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public MenuPanel() {
         super();
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/Title_Theme.wav",SoundManager.SOUND));
         AUDIO.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void setup(int bgTransl, int animationFrame, int currentTitlePaddingTop) {
         this.currentTitlePadding = currentTitlePaddingTop;
@@ -82,39 +94,6 @@ public class MenuPanel extends ApplicationPanel {
 
     public int getTitlePadding() {
         return titlePadding;
-    }
-
-    private void select() {
-        if(currentChoice == 0) {
-            GameStateHandler.getInstance().startGame();
-        }
-        if(currentChoice == 1) {
-            GameStateHandler.getInstance().openUpgradePanel();
-        }
-        if(currentChoice == 2){
-            GameStateHandler.getInstance().openControlView();
-        }
-        if(currentChoice == 3) {
-            System.exit(0);
-        }
-        if (currentChoice == 4){
-            SoundManager.switchMusicConfig();
-            if(music == musicOFF){
-                music = musicON;
-            }else{
-                music = musicOFF;
-            }
-        }
-        if (currentChoice == 5){
-            SoundManager.switchSoundConfig();
-            if(sound == soundOFF){
-                sound = soundON;
-                AUDIO.get(MUSIC_THEME).startLoop();
-            }else{
-                sound = soundOFF;
-                AUDIO.get(MUSIC_THEME).stopLoop();
-            }
-        }
     }
 
     @Override
@@ -236,6 +215,39 @@ public class MenuPanel extends ApplicationPanel {
                     currentChoice = i;
                     AUDIO.get(SCROLL_THEME).playOnce();
                 }
+            }
+        }
+    }
+
+    private void select() {
+        if(currentChoice == 0) {
+            GameStateHandler.getInstance().startGame();
+        }
+        if(currentChoice == 1) {
+            GameStateHandler.getInstance().openUpgradePanel();
+        }
+        if(currentChoice == 2){
+            GameStateHandler.getInstance().openHelpPanel();
+        }
+        if(currentChoice == 3) {
+            System.exit(0);
+        }
+        if (currentChoice == 4){
+            SoundManager.switchMusicConfig();
+            if(music == musicOFF){
+                music = musicON;
+            }else{
+                music = musicOFF;
+            }
+        }
+        if (currentChoice == 5){
+            SoundManager.switchSoundConfig();
+            if(sound == soundOFF){
+                sound = soundON;
+                AUDIO.get(MUSIC_THEME).startLoop();
+            }else{
+                sound = soundOFF;
+                AUDIO.get(MUSIC_THEME).stopLoop();
             }
         }
     }

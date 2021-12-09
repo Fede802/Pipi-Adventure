@@ -5,7 +5,15 @@ import utils.GameDataConfig;
 
 public class GameModel implements IGameModel {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static GameModel instance = null;
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
 
     private final MapGenerator MAP_GENERATOR = new MapGenerator();
     private final Player PLAYER = new Player(
@@ -15,7 +23,15 @@ public class GameModel implements IGameModel {
                     .build()
             );
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private GameModel(){}
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void updateMap() {
@@ -38,15 +54,6 @@ public class GameModel implements IGameModel {
         PLAYER.move();
         PLAYER.moveBullets();
         MAP_GENERATOR.moveEntities();
-    }
-
-    @Override
-    public void updateEntitiesStatus(EntityType entityType, int entityID) {
-        switch(entityType){
-            case PLAYER -> PLAYER.updateEntityStatus();
-            case COIN, ENEMY -> MAP_GENERATOR.updateEntitiesStatus(entityType,entityID);
-            case BULLET -> PLAYER.updateBulletStatus(entityID);
-        }
     }
 
     @Override
@@ -74,6 +81,25 @@ public class GameModel implements IGameModel {
         PLAYER.shoot();
     }
 
+    @Override
+    public int getEntityCount(EntityType entityType) {
+        int count = 0;
+        switch(entityType){
+            case PLAYER -> count = 1;
+            case COIN, ENEMY -> count = MAP_GENERATOR.entityCount(entityType);
+            case BULLET -> count = PLAYER.bulletCount();
+        }
+        return count;
+    }
+
+    @Override
+    public void updateEntityStatus(EntityType entityType, int entityID) {
+        switch(entityType){
+            case PLAYER -> PLAYER.updateEntityStatus();
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntityStatus(entityType,entityID);
+            case BULLET -> PLAYER.updateBulletStatus(entityID);
+        }
+    }
 
     @Override
     public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus) {
@@ -98,45 +124,34 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public void updateAnimationData(EntityType entityType, int entityID, AnimationData animation) {
+    public void updateEntityAnimationData(EntityType entityType, int entityID, AnimationData animation) {
         switch(entityType){
             case PLAYER -> PLAYER.updateAnimationData(animation);
-            case COIN, ENEMY -> MAP_GENERATOR.updateAnimationData(entityType,entityID,animation);
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntityAnimationData(entityType,entityID,animation);
             case BULLET ->  PLAYER.updateBulletAnimationData(entityID,animation);
         }
     }
 
     @Override
-    public void updateAnimationOpacity(float opacity) {
+    public void updatePlayerAnimationOpacity(float opacity) {
         PLAYER.updateAnimationOpacity(opacity);
     }
 
     @Override
-    public int getEntityCount(EntityType entityType) {
-        int count = 0;
-        switch(entityType){
-            case PLAYER -> count = 1;
-            case COIN, ENEMY -> count = MAP_GENERATOR.entityCount(entityType);
-            case BULLET -> count = PLAYER.bulletCount();
-        }
-        return count;
-    }
-
-    @Override
-    public boolean isDead(EntityType entityType, int entityID) {
+    public boolean isEntityDead(EntityType entityType, int entityID) {
         boolean dead = false;
         switch(entityType){
             case PLAYER -> dead = PLAYER.isDead();
-            case COIN, ENEMY -> dead = MAP_GENERATOR.isDead(entityType,entityID);
+            case COIN, ENEMY -> dead = MAP_GENERATOR.isEntityDead(entityType,entityID);
             case BULLET -> dead = PLAYER.isBulletDead(entityID);
         }
         return dead;
     }
 
     @Override
-    public void changeCoordinate(int renderedTileSize) {
+    public void changeEntitiesCoordinates(int renderedTileSize) {
         PLAYER.changeCoordinate(renderedTileSize);
-        MAP_GENERATOR.changeCoordinate(renderedTileSize);
+        MAP_GENERATOR.changeEntitiesCoordinates(renderedTileSize);
     }
 
     @Override
@@ -144,6 +159,10 @@ public class GameModel implements IGameModel {
         MAP_GENERATOR.generateMap();
         PLAYER.resetEntity();
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static IGameModel getInstance() {
         if (instance == null){

@@ -7,18 +7,26 @@ import model.GameModel;
 
 public abstract class EntitiesHandler {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     protected EntityType entityType;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public EntitiesHandler(EntityType entityType){
         this.entityType = entityType;
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public int getEntityCount(){
         return GameModel.getInstance().getEntityCount(entityType);
-    }
-
-    protected EntityCoordinates getEntity(int entityNum, EntityStatus entityStatus) {
-        return GameModel.getInstance().getEntityCoordinates(entityType,entityNum,entityStatus);
     }
 
     public void checkEntityCollision(EntitiesHandler entitiesHandler) {
@@ -41,14 +49,6 @@ public abstract class EntitiesHandler {
         }
     }
 
-    protected void collideWithPlayer(int currentEntity, int outerCurrentEntity) {
-        //nothing to do
-    }
-
-    protected void collideWithBullet(int currentEntity, int outerCurrentEntity) {
-        //nothing to do
-    }
-
     public void rightCollision() {
         for (int i = getEntityCount() - 1; i >= 0; i--) {
             EntityCoordinates curr = getEntity(i, EntityStatus.ALIVE);
@@ -57,6 +57,22 @@ public abstract class EntitiesHandler {
 
         }
     }
+
+    protected EntityCoordinates getEntity(int entityNum, EntityStatus entityStatus) {
+        return GameModel.getInstance().getEntityCoordinates(entityType,entityNum,entityStatus);
+    }
+
+    protected void collideWithPlayer(int currentEntity, int outerCurrentEntity) {
+        //nothing to do
+    }
+
+    protected void collideWithBullet(int currentEntity, int outerCurrentEntity) {
+        //nothing to do
+    }
+
+    //    --------------------------------------------------------
+    //                      ABSTRACT METHODS
+    //    --------------------------------------------------------
 
     protected abstract void wallCollision(int currentEntity);
 

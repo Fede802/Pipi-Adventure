@@ -4,9 +4,17 @@ import commons.EntityType;
 
 public class EnemiesHandler extends EntitiesHandler {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public EnemiesHandler() {
         super(EntityType.ENEMY);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {

@@ -2,6 +2,10 @@ package commons;
 
 public class AnimationData {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
+
     public static final int WALK_ANIMATION_RIGHT = 0;
     public static final int WALK_ANIMATION_LEFT = 1;
     public static final int DEATH_ANIMATION_RIGHT = 2;
@@ -9,12 +13,20 @@ public class AnimationData {
     public static final int JUMPING_ANIMATION = 4;
     public static final int LAST_FRAME = -1;
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private RenderingType renderingType;
     private int animationType;
     private int currentAnimationStep;
     private int currentNumLoop;
     private float opacity = 1f;
     private boolean hasToUpdate;
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void setupAnimation(int currentAnimationStep, int animationType, RenderingType renderingType){
         this.currentAnimationStep = currentAnimationStep;

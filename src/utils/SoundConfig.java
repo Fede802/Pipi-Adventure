@@ -2,12 +2,24 @@ package utils;
 
 public class SoundConfig extends Config {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static final String SOUND_PROPERTIES_URL = "Config/SoundProperties.txt";
     private static SoundConfig instance = null;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     private SoundConfig(){
         super(SOUND_PROPERTIES_URL);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public boolean isSoundActive(){
         return PROPERTIES.getProperty("isSoundActive").equals("true");
@@ -26,6 +38,10 @@ public class SoundConfig extends Config {
         PROPERTIES.setProperty("isMusicActive",String.valueOf(isMusicActive));
         saveData();
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static SoundConfig getInstance() {
         if (instance == null)

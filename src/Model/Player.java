@@ -7,12 +7,25 @@ import java.util.ArrayList;
 
 public class Player extends GameEntity implements IPlayer {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private final ArrayList<Bullet> BULLETS = new ArrayList<>();
+
     private float opacity = 1f;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public Player(EntityCoordinates entityCoordinates) {
         super(EntityType.PLAYER,RenderingType.PLAYER,entityCoordinates);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {
@@ -162,6 +175,7 @@ public class Player extends GameEntity implements IPlayer {
     public void updateBulletAnimationData(int entityID, AnimationData animation) {
         BULLETS.get(entityID).updateAnimationData(animation);
     }
+
     @Override
     public void updateAnimationOpacity(float opacity) {
         this.opacity = opacity;

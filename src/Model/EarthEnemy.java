@@ -4,9 +4,17 @@ import commons.*;
 
 public class EarthEnemy extends Enemy {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public EarthEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(R_ID, entityCoordinates);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {

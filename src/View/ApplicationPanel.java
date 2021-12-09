@@ -11,11 +11,19 @@ import java.util.Map;
 
 public abstract class ApplicationPanel extends JPanel implements IApplicationPanel, KeyListener, MouseInputListener {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final Timer TIMER = new Timer(TIMER_TICK, this::timerActionEvent);
 
     protected final Map<Integer, SoundManager> AUDIO = new HashMap<>();
 
     protected int minSize;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public ApplicationPanel() {
         this.setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
@@ -24,6 +32,10 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void start() {
@@ -78,6 +90,10 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
     public void mouseDragged(MouseEvent e) {
         //nothing to do
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     protected abstract void timerActionEvent(ActionEvent e);
 

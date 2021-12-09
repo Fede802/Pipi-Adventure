@@ -8,6 +8,10 @@ import java.util.Random;
 
 public class MapGenerator implements IMapGenerator {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private final int MAP_LENGTH = GameDataConfig.getInstance().getMapLength();
     private final ArrayList<MapSection> SECTION_LIST = new ArrayList<>();
     private final ArrayList<GameEntity> COINS = new ArrayList<>();
@@ -17,6 +21,10 @@ public class MapGenerator implements IMapGenerator {
 
     private boolean mapGenerated;
     private boolean dayTime = true;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public MapGenerator() {
         SECTION_LIST.add(new PlainSection1());
@@ -28,6 +36,10 @@ public class MapGenerator implements IMapGenerator {
         SECTION_LIST.add(new PlainStartSection());
         generateMap();
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void generateMap() {
@@ -107,7 +119,7 @@ public class MapGenerator implements IMapGenerator {
     }
 
     @Override
-    public void updateAnimationData(EntityType entityType, int entityID, AnimationData animation) {
+    public void updateEntityAnimationData(EntityType entityType, int entityID, AnimationData animation) {
         ArrayList<GameEntity> temp = ENEMY;
         if(entityType == EntityType.COIN)
             temp = COINS;
@@ -115,12 +127,12 @@ public class MapGenerator implements IMapGenerator {
     }
 
     @Override
-    public void updateEntitiesStatus(EntityType entityType,final int entityID) {
+    public void updateEntityStatus(EntityType entityType, final int entityID) {
         getEntity(entityType,entityID, EntityStatus.ALL).updateEntityStatus();
     }
 
     @Override
-    public boolean isDead(EntityType entityType, int entityID) {
+    public boolean isEntityDead(EntityType entityType, int entityID) {
         ArrayList<GameEntity> temp = ENEMY;
         if(entityType == EntityType.COIN)
             temp = COINS;
@@ -128,7 +140,7 @@ public class MapGenerator implements IMapGenerator {
     }
 
     @Override
-    public void changeCoordinate(int renderedTileSize) {
+    public void changeEntitiesCoordinates(int renderedTileSize) {
         for(int i = 0; i < COINS.size(); i++){
             COINS.get(i).changeCoordinate(renderedTileSize);
         }

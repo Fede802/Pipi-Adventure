@@ -12,6 +12,10 @@ import java.util.HashMap;
 
 public class EntitiesDrawer {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
     private final JPanel PARENT_PANEL;
 
@@ -19,9 +23,17 @@ public class EntitiesDrawer {
     private Image gun;
     private int renderedTileSize;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public EntitiesDrawer(JPanel PARENT_PANEL){
         this.PARENT_PANEL = PARENT_PANEL;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void drawEntities(Graphics2D g2d) {
         int entityNum = GameEngine.getInstance().getTotalEntity();

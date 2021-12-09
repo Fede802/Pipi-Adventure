@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public abstract class AbstractMapDrawer {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final int UPDATE_TICK_DELAY = GameConfig.getInstance().getUpdateTickDelay();
 
     protected final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
@@ -17,15 +21,24 @@ public abstract class AbstractMapDrawer {
 
     protected ArrayList<ArrayList<Image>> tileSetsArray;
     protected int renderedTileSize;
-    protected int currentTileset = 0;
+    protected int currentTileset;
+
     private boolean transition;
     private int currentTick;
     //maps order when transition
     private boolean descending;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public AbstractMapDrawer(final JPanel PARENT_PANEL){
         this.PARENT_PANEL = PARENT_PANEL;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void updateRenderedTileSize(final int renderedTileSize){
         this.renderedTileSize = renderedTileSize;
@@ -58,6 +71,10 @@ public abstract class AbstractMapDrawer {
         currentTileset=0;
         descending=false;
     }
+
+    //    --------------------------------------------------------
+    //                      ABSTRACT METHODS
+    //    --------------------------------------------------------
 
     public abstract void drawMap(final Graphics2D g2d);
 

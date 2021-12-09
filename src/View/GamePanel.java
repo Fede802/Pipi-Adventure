@@ -13,6 +13,10 @@ import java.awt.geom.Rectangle2D;
 
 public class GamePanel extends ApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final MapDrawer MAP_DRAWER = new MapDrawer(this);
     private final GameBar GAME_BAR = new GameBar(this);
     private final EntitiesDrawer ENTITIES_DRAWER = new EntitiesDrawer(this);
@@ -27,11 +31,19 @@ public class GamePanel extends ApplicationPanel {
     private BackgroundDrawer backgroundLayer_4;
     private BackgroundDrawer backgroundLayer_5;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public GamePanel() {
         super();
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/Level1.wav",SoundManager.SOUND));
         PAUSE_BUTTON = GAME_BAR.getPauseButton();
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
         GAME_BAR.setupBar(currentLife,currentMaxLife,currentBullets);
@@ -123,7 +135,7 @@ public class GamePanel extends ApplicationPanel {
             GameEngine.getInstance().jump();
         }
         if(e.getKeyCode() == KeyEvent.VK_P)
-            GameStateHandler.getInstance().pause();
+            GameStateHandler.getInstance().openPausePanel();
         if(e.getKeyCode() == KeyEvent.VK_Q)
             GameEngine.getInstance().shoot();
         if(e.getKeyCode() == KeyEvent.VK_I) {
@@ -151,7 +163,7 @@ public class GamePanel extends ApplicationPanel {
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1){
             if (GameStateHandler.PAUSE_STATE != GameStateHandler.getInstance().getCurrentState() && this.PAUSE_BUTTON.contains(e.getX(),e.getY())){
-                GameStateHandler.getInstance().pause();
+                GameStateHandler.getInstance().openPausePanel();
             }
         }
     }

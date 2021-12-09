@@ -11,7 +11,15 @@ import java.util.Map;
 
 public class ImageLoader {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static ImageLoader instance = null;
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
 
     private final int NUM_ROWS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumRowsOfTileset();
     private final int NUM_COLUMNS_OF_TILESET = GameDataConfig.getInstance().getDefaultNumColumnsOfTileset();
@@ -21,6 +29,16 @@ public class ImageLoader {
     private final Map<String, ArrayList<Image>> TILESETS = new HashMap<>();
 
     private int numFile;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    private ImageLoader(){}
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public int getNumFiles(String dirPath) {
         //todo sout
@@ -148,6 +166,10 @@ public class ImageLoader {
         }
         TILESETS.put(f.getPath(),tempArray);
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static ImageLoader getInstance() {
         if (instance == null)

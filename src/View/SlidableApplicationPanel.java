@@ -6,17 +6,29 @@ import java.awt.event.ActionEvent;
 
 public abstract class SlidableApplicationPanel extends ApplicationPanel implements Slidable {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final ComponentContainer componentContainer;
 
     protected int currentSlidingStep;
     protected boolean isSliding = false;
     protected boolean isOnScreen = false;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public SlidableApplicationPanel(ComponentContainer componentContainer) {
         super();
         this.componentContainer = componentContainer;
         setPreferredSize(new Dimension(Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT));
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     protected void timerActionEvent(ActionEvent e) {

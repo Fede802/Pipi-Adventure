@@ -14,6 +14,10 @@ import java.util.HashMap;
 
 public class ComponentContainer extends JLayeredPane implements ComponentListener {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final HashMap<Integer, Component> COMPONENTS = new HashMap<>();
     private final int CLOSING_STEP = 40;
     private final Rectangle2D.Double TEMP_RECT = new Rectangle2D.Double();
@@ -24,10 +28,18 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
     private boolean isClosing = true,transition = false,notifyChangingScreen=false;
     private int transitionRectWidth, transitionRectHeight;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public ComponentContainer() {
         super();
         this.addComponentListener(this);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public void add(Integer key, Component component) {
         component.setVisible(false);
@@ -86,21 +98,6 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
 
     public void hasToNotifyChangingScreen(boolean notify) {
         notifyChangingScreen = notify;
-    }
-
-    private void openCurrentState() {
-        prev.setVisible(false);
-        curr.setVisible(true);
-        setLayer(prev,DEFAULT_LAYER);
-        setLayer(curr,DRAG_LAYER);
-    }
-
-    private void setupState() {
-        prev = curr;
-        curr = null;
-        int currentState = GameStateHandler.getInstance().getCurrentState();
-        if(COMPONENTS.containsKey(currentState))
-            curr = COMPONENTS.get(currentState);
     }
 
     @Override
@@ -168,6 +165,21 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
                 }
             }
         }
+    }
+
+    private void openCurrentState() {
+        prev.setVisible(false);
+        curr.setVisible(true);
+        setLayer(prev,DEFAULT_LAYER);
+        setLayer(curr,DRAG_LAYER);
+    }
+
+    private void setupState() {
+        prev = curr;
+        curr = null;
+        int currentState = GameStateHandler.getInstance().getCurrentState();
+        if(COMPONENTS.containsKey(currentState))
+            curr = COMPONENTS.get(currentState);
     }
 
 }

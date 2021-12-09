@@ -8,12 +8,24 @@ import java.awt.geom.AffineTransform;
 
 public class StringDrawer {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
+
     public static final int CENTER = 0;
     public static final int PADDING = 1;
     public static final int TITLE_STROKE=10;
     public static final int DEFAULT_STROKE=4;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private StringDrawer(){}
+
+    //    --------------------------------------------------------
+    //                      STATIC METHODS
+    //    --------------------------------------------------------
 
     public static double getStringWidth(final Graphics2D g2d, final String text, final Font textFont) {
         return g2d.getFontMetrics(textFont).stringWidth(text);

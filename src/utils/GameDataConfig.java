@@ -2,31 +2,43 @@ package utils;
 
 public class GameDataConfig extends Config {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static final String GAME_DATA_PROPERTIES_URL = "Config/GameDataProperties.txt";
     private static GameDataConfig instance = null;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     private GameDataConfig(){
         super(GAME_DATA_PROPERTIES_URL);
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public int getMapSectionSize(){
-        return Integer.valueOf(PROPERTIES.getProperty("mapSectionSize"));
+        return Integer.parseInt(PROPERTIES.getProperty("mapSectionSize"));
     }
 
     public int getMapLength(){
-        return Integer.valueOf(PROPERTIES.getProperty("mapLength"));
+        return Integer.parseInt(PROPERTIES.getProperty("mapLength"));
     }
 
-    public int getDefaultTilesetTileSize(){
-        return Integer.valueOf(PROPERTIES.getProperty("defaultTilesetTileSize"));
+    public int getDefaultTilesetTileSize() {
+        return Integer.parseInt(PROPERTIES.getProperty("defaultTilesetTileSize"));
     }
 
     public int getDefaultNumRowsOfTileset() {
-        return Integer.valueOf(PROPERTIES.getProperty("defaultNumRowsOfTileset"));
+        return Integer.parseInt(PROPERTIES.getProperty("defaultNumRowsOfTileset"));
     }
 
     public int getDefaultNumColumnsOfTileset() {
-        return Integer.valueOf(PROPERTIES.getProperty("defaultNumColumnsOfTileset"));
+        return Integer.parseInt(PROPERTIES.getProperty("defaultNumColumnsOfTileset"));
     }
 
     public int getMinTileToRender(){
@@ -45,17 +57,21 @@ public class GameDataConfig extends Config {
         return Integer.parseInt(PROPERTIES.getProperty("emptyTileCode"));
     }
 
-    public int getMaxLife(){
-        return Integer.valueOf(PROPERTIES.getProperty("maxLife"));
+    public int getMaxLives(){
+        return Integer.parseInt(PROPERTIES.getProperty("maxLives"));
     }
 
-    public int getMaxBullet(){
-        return Integer.valueOf(PROPERTIES.getProperty("maxBullets"));
+    public int getMaxBullets(){
+        return Integer.parseInt(PROPERTIES.getProperty("maxBullets"));
     }
 
-    public int getMinBullet(){
-        return Integer.valueOf(PROPERTIES.getProperty("minBullets"));
+    public int getMinBullets(){
+        return Integer.parseInt(PROPERTIES.getProperty("minBullets"));
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static GameDataConfig getInstance() {
         if (instance == null)

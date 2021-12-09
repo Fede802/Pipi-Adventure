@@ -1,27 +1,26 @@
 package view;
 
 public interface IGameView {
+
+    void loadResources();
+    void startApplication();
     void openWindow();
     void resumeWindow();
+
+    void setupGameBar(int currentLife, int currentMaxLife, int currentBullets);
     void updateGameBar(int score, int coin, int life, int bullet);
-    void notifySizeChanged(int renderedTileSize);
-    void hasToNotifyChangingScreen(boolean notify);
-
-    void startApplication();
-
-    void isGameRunning(boolean running);
 
     void setGameOverData(int currentScore, int recordScore, int currentCoin);
 
-    void updateDayTime();
-
-    void setupDaytime();
-
     void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin);
 
-    void setupGameBar(int currentLife, int currentMaxLife, int currentBullets);
+    void setupDaytime();
+    void updateDayTime();
 
-    void loadResources();
+    void setGameRunning(boolean running);
 
     void getResources();
+    void notifySizeChanged(int renderedTileSize);
+    void hasToNotifyChangingScreen(boolean notify);
+
 }

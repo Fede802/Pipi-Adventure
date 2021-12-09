@@ -7,9 +7,17 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
+
     private static final Dimension MINIMUM_SIZE = new Dimension(IApplicationPanel.DEFAULT_WIDTH,IApplicationPanel.DEFAULT_HEIGHT);
     private static final String FRAME_TITLE = "Pipi Adventure";
     private static final ImageIcon LOGO = new ImageIcon("res/images/gameImages/Logo.png");
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
 
     private final ComponentContainer APPLICATION_SCREEN = new ComponentContainer();
     private final MenuPanel MAIN_MENU = new MenuPanel();
@@ -19,6 +27,10 @@ public class MainFrame extends JFrame {
     private final HelpPanel HELP = new HelpPanel();
     private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
     private final LoadingPanel LOADING_PANEL = new LoadingPanel(MAIN_MENU.getTitlePadding());
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public MainFrame() {
         super(FRAME_TITLE);
@@ -39,44 +51,40 @@ public class MainFrame extends JFrame {
         //this.pack();
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public ComponentContainer getComponentContainer(){
         return APPLICATION_SCREEN;
     }
 
-    public void updateGameBar(int score, int coin, int life, int bullet) {
-        GAME_PANEL.updateGameBar(score,coin,life,bullet);
+    public void setupMenu() {
+        MAIN_MENU.setup(LOADING_PANEL.getBgTransl(),LOADING_PANEL.getBgAnimationCurrentFrame(),LOADING_PANEL.getCurrentTitlePaddingTop());
     }
 
     public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
         GAME_PANEL.setupGameBar(currentLife,currentMaxLife,currentBullets);
     }
 
-    public void notifySizeChanged(int renderedTileSize) {
-        GAME_PANEL.updateTileSize(renderedTileSize);
-    }
-
-    public void setGameRunning(boolean running) {
-        GAME_PANEL.setGameRunning(running);
+    public void updateGameBar(int score, int coin, int life, int bullet) {
+        GAME_PANEL.updateGameBar(score,coin,life,bullet);
     }
 
     public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
         GAME_OVER.setData(currentScore,recordScore,currentCoin);
     }
 
-    public void updateDayTime() {
-        GAME_PANEL.updateDayTime();
+    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
+        UPGRADE_PANEL.setup(currentLife, currentBullets, totalCoin);
     }
 
     public void setupDaytime() {
         GAME_PANEL.setupDayTime();
     }
 
-    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
-        UPGRADE_PANEL.setup(currentLife, currentBullets, totalCoin);
-    }
-
-    public void setupMenu() {
-        MAIN_MENU.setup(LOADING_PANEL.getBgTransl(),LOADING_PANEL.getBgAnimationCurrentFrame(),LOADING_PANEL.getCurrentTitlePaddingTop());
+    public void updateDayTime() {
+        GAME_PANEL.updateDayTime();
     }
 
     public void getResources() {
@@ -86,6 +94,14 @@ public class MainFrame extends JFrame {
         GAME_OVER.loadResources();
         HELP.loadResources();
         UPGRADE_PANEL.loadResources();
+    }
+
+    public void setGameRunning(boolean running) {
+        GAME_PANEL.setGameRunning(running);
+    }
+
+    public void notifySizeChanged(int renderedTileSize) {
+        GAME_PANEL.updateTileSize(renderedTileSize);
     }
 
 }

@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 public class HelpPanel extends ApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final String TITLE = "Controls";
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>() {{
         add(new Rectangle2D.Double());add(new Rectangle2D.Double());
@@ -35,6 +39,10 @@ public class HelpPanel extends ApplicationPanel {
     private Image[] firstLineImages;
     private Image[] secondLineImages;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public HelpPanel() {
         super();
         AUDIO.put(MUSIC_THEME, new SoundManager("res/audio/Help_Theme.wav",SoundManager.SOUND));
@@ -42,14 +50,9 @@ public class HelpPanel extends ApplicationPanel {
         AUDIO.put(CONFIRM_THEME, new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
-    private void select() {
-        if(currentChoice == 0) {
-            GameStateHandler.getInstance().menu();
-        }
-        if(currentChoice == 1) {
-            GameStateHandler.getInstance().startGame();
-        }
-    }
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
@@ -137,6 +140,15 @@ public class HelpPanel extends ApplicationPanel {
                     AUDIO.get(SCROLL_THEME).playOnce();
                 }
             }
+        }
+    }
+
+    private void select() {
+        if(currentChoice == 0) {
+            GameStateHandler.getInstance().openMenuPanel();
+        }
+        if(currentChoice == 1) {
+            GameStateHandler.getInstance().startGame();
         }
     }
 

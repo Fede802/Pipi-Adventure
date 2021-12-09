@@ -2,6 +2,10 @@ package model;
 
 public class PlainStartSection extends MapSection {
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public PlainStartSection(){
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -22,6 +26,11 @@ public class PlainStartSection extends MapSection {
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
 
     @Override
     protected void spawnEntities(int daytime) {

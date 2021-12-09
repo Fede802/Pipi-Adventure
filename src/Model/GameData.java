@@ -5,19 +5,48 @@ import utils.GameDataConfig;
 
 public class GameData implements IGameData {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
     private static IGameData instance = null;
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
     private final int SCORE_INCREMENT = GameConfig.getInstance().getScoreIncrement();
+
     private int currentMaxLife = GameConfig.getInstance().getCurrentMaxLife();
-    private int currentLife = currentMaxLife;
+    private int currentLife;
     private int currentMaxBullets = GameConfig.getInstance().getCurrentMaxBullet();
-    private int currentBullets = currentMaxBullets;
+    private int currentBullets;
     private int totalCoin = GameConfig.getInstance().getTotalCoin();
     private int currentCoin;
     private int recordScore = GameConfig.getInstance().getRecordScore();
     private int currentScore;
 
-    private GameData(){}
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    private GameData(){
+        int temp = GameDataConfig.getInstance().getMinBullets();
+        if(currentMaxBullets < temp)
+            currentMaxBullets = temp;
+        temp = GameDataConfig.getInstance().getMaxBullets();
+        if(currentMaxBullets > temp)
+            currentMaxBullets = temp;
+        currentBullets = currentMaxBullets;
+        temp = GameDataConfig.getInstance().getMaxLives();
+        if(currentMaxLife > temp)
+            currentMaxLife = temp;
+        currentLife = currentMaxLife;
+    }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public int getCurrentMaxLife() {
@@ -38,7 +67,6 @@ public class GameData implements IGameData {
     public void setCurrentLife(int currentLife) {
         if(currentLife > currentMaxLife)
             currentLife = currentMaxLife;
-        //TODO add control when negative
         this.currentLife = currentLife;
     }
 
@@ -52,9 +80,7 @@ public class GameData implements IGameData {
         this.currentLife+=lifeVariation;
         if(currentLife > currentMaxLife)
             currentLife = currentMaxLife;
-        //TODO add control when negative
     }
-
 
     @Override
     public int getCurrentMaxBullets() {
@@ -75,7 +101,6 @@ public class GameData implements IGameData {
     public void setCurrentBullets(int currentBullets) {
         if(currentBullets > currentMaxBullets)
             currentBullets = currentMaxBullets;
-        //TODO add control when negative
         this.currentBullets = currentBullets;
     }
 
@@ -89,7 +114,6 @@ public class GameData implements IGameData {
         this.currentBullets += bulletsVariation;
         if(currentBullets > currentMaxBullets)
             currentBullets = currentMaxBullets;
-       //TODO add control when negative
     }
 
     @Override
@@ -116,8 +140,10 @@ public class GameData implements IGameData {
 
     @Override
     public void updateCurrentCoin() {
-        currentCoin++;
-        totalCoin++;
+        if(currentCoin != Integer.MAX_VALUE)
+            currentCoin++;
+        if(totalCoin != Integer.MAX_VALUE)
+            totalCoin++;
     }
 
     @Override
@@ -145,7 +171,10 @@ public class GameData implements IGameData {
 
     @Override
     public void updateCurrentScore() {
-        this.currentScore+=SCORE_INCREMENT;
+        if(Integer.MAX_VALUE-SCORE_INCREMENT > currentScore)
+            this.currentScore+=SCORE_INCREMENT;
+        else
+            currentScore = Integer.MAX_VALUE;
     }
 
     @Override
@@ -171,6 +200,10 @@ public class GameData implements IGameData {
         System.out.println("Saving game data");
         GameConfig.getInstance().saveData();
     }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
 
     public static IGameData getInstance() {
         if (instance == null){

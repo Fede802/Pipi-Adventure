@@ -2,10 +2,17 @@ package commons;
 
 public class EntityCoordinates {
 
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
+
     //variable uses to fix approximation error due to double sum
     private static final int SCALE = (int) Math.pow(10, 4);
-
     private static int defaultDimension;
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
 
     private int mapX;
     private int mapY;
@@ -18,15 +25,19 @@ public class EntityCoordinates {
     private double traslX;
     private double traslY;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private EntityCoordinates(final int mapIndex, final int mapX, final int mapY) {
         this.mapIndex = mapIndex;
         this.mapX = mapX;
         this.mapY = mapY;
     }
 
-    public static void setDefaultDimension(int defaultDimension) {
-        EntityCoordinates.defaultDimension = defaultDimension;
-    }
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     public int getMapX() {
         return mapX;
@@ -92,6 +103,18 @@ public class EntityCoordinates {
         this.traslY = (double) Math.round((this.traslY +traslYVariation) * SCALE) / SCALE;
     }
 
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
+
+    public static void setDefaultDimension(int defaultDimension) {
+        EntityCoordinates.defaultDimension = defaultDimension;
+    }
+
+    //    --------------------------------------------------------
+    //                      BUILDER CLASS
+    //    --------------------------------------------------------
+
     public static class Builder {
 
         private final int START_MAP_X;
@@ -105,9 +128,9 @@ public class EntityCoordinates {
         private double traslX;
         private double traslY;
 
-        public Builder(final int START_MAP_X, final int START_MAP_Y) {
-            this.START_MAP_X = START_MAP_X;
-            this.START_MAP_Y = START_MAP_Y;
+        public Builder(int startMapX, int startMapY) {
+            this.START_MAP_X = startMapX;
+            this.START_MAP_Y = startMapY;
             this.mapIndex = 0;
             this.width = defaultDimension;
             this.height = defaultDimension;

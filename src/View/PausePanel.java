@@ -19,6 +19,10 @@ import java.util.ArrayList;
 
 public class PausePanel extends SlidableApplicationPanel {
 
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
+
     private final String TITLE = "Pause";
     private final Color DEFAULT_COLOR = Color.WHITE;
     private final Color DEFAULT_BOUND_COLOR = Color.BLACK;
@@ -36,6 +40,10 @@ public class PausePanel extends SlidableApplicationPanel {
     private BackgroundDrawer BG_DRAWER;
     private int currentChoice = 1;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public PausePanel(ComponentContainer componentContainer) {
         super(componentContainer);
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav",SoundManager.SOUND));
@@ -43,19 +51,9 @@ public class PausePanel extends SlidableApplicationPanel {
         AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
-    private void select() {
-        if(currentChoice == 0) {
-            GameEngine.getInstance().saveDataConfig();
-            GameStateHandler.getInstance().startGame();
-        }
-        if(currentChoice == 1) {
-            GameStateHandler.getInstance().resumeGame();
-        }
-        if(currentChoice == 2) {
-            GameEngine.getInstance().saveDataConfig();
-            GameStateHandler.getInstance().menu();
-        }
-    }
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
@@ -134,6 +132,20 @@ public class PausePanel extends SlidableApplicationPanel {
                     AUDIO.get(SCROLL_THEME).playOnce();
                 }
             }
+        }
+    }
+
+    private void select() {
+        if(currentChoice == 0) {
+            GameEngine.getInstance().saveDataConfig();
+            GameStateHandler.getInstance().startGame();
+        }
+        if(currentChoice == 1) {
+            GameStateHandler.getInstance().resumeGame();
+        }
+        if(currentChoice == 2) {
+            GameEngine.getInstance().saveDataConfig();
+            GameStateHandler.getInstance().openMenuPanel();
         }
     }
 

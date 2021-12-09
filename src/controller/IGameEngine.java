@@ -5,37 +5,36 @@ import commons.EntityCoordinates;
 import commons.Pair;
 
 public interface IGameEngine {
+
     void updateGameStatus();
-    Pair<EntityCoordinates, AnimationData> getEntityForRendering(int entityID);
+
     int getTileData(int mapIndex,int mapX,int mapY);
-    void jump();
     double getMapTranslX();
-    void shoot();
-    void setupGame();
-    void notifySizeChanged(int renderedTileSize);
+
     int getTotalEntity();
-
-    void updateTotalCoin(int price);
-
-    void updateCurrentLife();
-
-    void updateCurrentBullets();
-
-    void saveDataConfig();
-
+    Pair<EntityCoordinates, AnimationData> getEntityForRendering(int entityID);
     void updateAnimationData(AnimationData value,int entityID);
 
+    void jump();
+    void shoot();
+
+    void updateTotalCoin(int price);
+    void updateCurrentLife();
+    void updateCurrentBullets();
+    void saveDataConfig();
+
     void setResources();
+    void setupGame();
+    void notifySizeChanged(int renderedTileSize);
+
+
 
     //debug purpose
     void switchImmortality();
-
     //debug purpose
     void switchWallCollision();
-
     //debug purpose
     void switchEntityCollision();
-
     //debug purpose
     void switchInfiniteBullets();
 }
