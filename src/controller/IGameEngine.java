@@ -30,9 +30,12 @@ public interface IGameEngine {
     //debug purpose
     void switchImmortality();
 
+    //debug purpose
     void switchWallCollision();
 
+    //debug purpose
     void switchEntityCollision();
 
+    //debug purpose
     void switchInfiniteBullets();
 }

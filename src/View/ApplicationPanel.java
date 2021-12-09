@@ -11,15 +11,13 @@ import java.util.Map;
 
 public abstract class ApplicationPanel extends JPanel implements IApplicationPanel, KeyListener, MouseInputListener {
 
-    protected Timer timer;
-    protected Map<Integer, SoundManager> audio;
+    private final Timer TIMER = new Timer(TIMER_TICK, this::timerActionEvent);
+
+    protected final Map<Integer, SoundManager> AUDIO = new HashMap<>();
+
     protected int minSize;
 
-    public ApplicationPanel(){
-        timer = new Timer(TIMER_TICK, e -> {
-            timerActionEvent(e);
-        });
-        audio = new HashMap<>();
+    public ApplicationPanel() {
         this.setPreferredSize(new Dimension(DEFAULT_WIDTH,DEFAULT_HEIGHT));
         this.setFocusable(true);
         this.addKeyListener(this);
@@ -27,20 +25,18 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
         this.addMouseMotionListener(this);
     }
 
-    protected abstract void timerActionEvent(ActionEvent e);
-
     @Override
     public void start() {
-        timer.start();
-        if(audio.containsKey(MUSIC_THEME))
-            audio.get(MUSIC_THEME).startLoop();
+        TIMER.start();
+        if(AUDIO.containsKey(MUSIC_THEME))
+            AUDIO.get(MUSIC_THEME).startLoop();
     }
 
     @Override
     public void stop() {
-        timer.stop();
-        if(audio.containsKey(MUSIC_THEME))
-            audio.get(MUSIC_THEME).stopLoop();
+        TIMER.stop();
+        if(AUDIO.containsKey(MUSIC_THEME))
+            AUDIO.get(MUSIC_THEME).stopLoop();
     }
 
     @Override
@@ -82,5 +78,7 @@ public abstract class ApplicationPanel extends JPanel implements IApplicationPan
     public void mouseDragged(MouseEvent e) {
         //nothing to do
     }
+
+    protected abstract void timerActionEvent(ActionEvent e);
 
 }

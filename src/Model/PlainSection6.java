@@ -3,10 +3,9 @@ package model;
 import commons.EntityCoordinates;
 import commons.RenderingType;
 
-public class PlainSection6 extends MapSection{
+public class PlainSection6 extends MapSection {
 
     public PlainSection6(){
-        //super();
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -30,9 +29,10 @@ public class PlainSection6 extends MapSection{
     @Override
     protected void spawnEntities(int daytime) {
         if (daytime == DAY) {
-            mapEntities.add(new EarthEnemy(RenderingType.SNAIL,new EntityCoordinates.Builder(11,12).build()));
+            MAP_ENTITIES.add(new EarthEnemy(RenderingType.SNAIL,new EntityCoordinates.Builder(11,12).build()));
         }else {
-            mapEntities.add(new EarthEnemy(RenderingType.SLIME,new EntityCoordinates.Builder(11,12).build()));
+            MAP_ENTITIES.add(new EarthEnemy(RenderingType.SLIME,new EntityCoordinates.Builder(11,12).build()));
         }
     }
+
 }

@@ -3,7 +3,7 @@ package model;
 import commons.*;
 import utils.GameDataConfig;
 
-public class Bullet extends GameEntity{
+public class Bullet extends GameEntity {
 
     public Bullet(EntityCoordinates entityCoordinates) {
         super(EntityType.BULLET, RenderingType.BULLET, entityCoordinates);
@@ -30,6 +30,7 @@ public class Bullet extends GameEntity{
 
     @Override
     public void resetEntity() {
-
+        //nothing to do
     }
+
 }

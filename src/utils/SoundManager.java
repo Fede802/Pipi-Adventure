@@ -6,12 +6,11 @@ import java.io.IOException;
 
 public class SoundManager {
 
+    public static final int SOUND = 0;
+    public static final int MUSIC = 1;
 
     private static boolean isSoundActive = SoundConfig.getInstance().isSoundActive();
     private static boolean isMusicActive = SoundConfig.getInstance().isMusicActive();
-
-    public static final int SOUND = 0;
-    public static final int MUSIC = 1;
 
     private Clip clip;
     private int audioType;
@@ -28,7 +27,6 @@ public class SoundManager {
         assert aff != null;
         AudioFormat af = aff.getFormat();
         AudioInputStream ais = null;
-
         try {
             ais = AudioSystem.getAudioInputStream(audio);
         } catch (UnsupportedAudioFileException | IOException e) {
@@ -52,7 +50,6 @@ public class SoundManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             ais.close();
         } catch (IOException e) {
@@ -61,17 +58,14 @@ public class SoundManager {
     }
 
     public void playOnce() {
-
         if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive) {
             this.clip.stop();
             this.clip.setMicrosecondPosition(0);
             this.clip.start();
-
         }
     }
 
-    public void startLoop(){
-        System.out.println(isSoundActive);
+    public void startLoop() {
         if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive){
             this.clip.setMicrosecondPosition(0);
             this.clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -82,14 +76,13 @@ public class SoundManager {
         this.clip.stop();
     }
 
+    public static boolean isSoundActive() {
+        return isSoundActive;
+    }
+
     public static void switchSoundConfig() {
         isSoundActive = !isSoundActive;
         SoundConfig.getInstance().setSoundActive(isSoundActive);
-    }
-
-    //TODO refactor name
-    public static boolean isSoundActive() {
-        return isSoundActive;
     }
 
     public static boolean isMusicActive() {
@@ -100,4 +93,5 @@ public class SoundManager {
         isMusicActive = !isMusicActive;
         SoundConfig.getInstance().setMusicActive(isMusicActive);
     }
+
 }

@@ -3,9 +3,10 @@ package model;
 import commons.*;
 import utils.GameDataConfig;
 
-public class GameModel implements IGameModel{
+public class GameModel implements IGameModel {
 
     private static GameModel instance = null;
+
     private final MapGenerator MAP_GENERATOR = new MapGenerator();
     private final Player PLAYER = new Player(
             new EntityCoordinates.Builder(
@@ -15,12 +16,6 @@ public class GameModel implements IGameModel{
             );
 
     private GameModel(){}
-    public static IGameModel getInstance() {
-        if (instance == null){
-            instance = new GameModel();
-        }
-        return instance;
-    }
 
     @Override
     public void updateMap() {
@@ -84,7 +79,6 @@ public class GameModel implements IGameModel{
     public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus) {
         EntityCoordinates entity = null;
         switch(entityType){
-            //todo player when is not alive has to return null as other method?
             case PLAYER -> entity = PLAYER.getEntityCoordinates();
             case COIN, ENEMY -> entity = MAP_GENERATOR.getEntityCoordinates(entityType,entityID,entityStatus);
             case BULLET -> entity = PLAYER.getBulletCoordinate(entityID,entityStatus);
@@ -149,6 +143,13 @@ public class GameModel implements IGameModel{
     public void setup() {
         MAP_GENERATOR.generateMap();
         PLAYER.resetEntity();
+    }
+
+    public static IGameModel getInstance() {
+        if (instance == null){
+            instance = new GameModel();
+        }
+        return instance;
     }
 
 }

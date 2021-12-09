@@ -7,36 +7,37 @@ import java.util.ArrayList;
 
 public class Animation {
 
-    private final ArrayList<Image> animationTile;
-    private final int animationStep;
+    private final ArrayList<Image> ANIMATION_TILES;
+    private final int ANIMATION_STEP;
+
     private int currentAnimationStep;
     private float opacity = 1f;
     private boolean finish;
 
-    public Animation(String path){
-        animationTile = ImageLoader.getInstance().getImages(path);
-        animationStep = animationTile.size();
+    public Animation(String path) {
+        ANIMATION_TILES = ImageLoader.getInstance().getImages(path);
+        ANIMATION_STEP = ANIMATION_TILES.size();
     }
 
-    public Animation(ArrayList<Image> img ){
-        animationTile = img;
-        animationStep = animationTile.size();
+    public Animation(ArrayList<Image> img) {
+        ANIMATION_TILES = img;
+        ANIMATION_STEP = ANIMATION_TILES.size();
     }
 
     public Image getFrame(){
-        return animationTile.get(currentAnimationStep);
+        return ANIMATION_TILES.get(currentAnimationStep);
     }
 
-    public void update(){
+    public void update() {
         currentAnimationStep++;
-        if(currentAnimationStep == animationStep){
+        if(currentAnimationStep == ANIMATION_STEP){
             currentAnimationStep = 0;
             finish = true;
         }
     }
 
-    public int getAnimationStep() {
-        return animationStep;
+    public int getANIMATION_STEP() {
+        return ANIMATION_STEP;
     }
 
     public int getCurrentAnimationStep() {
@@ -70,7 +71,7 @@ public class Animation {
         this.finish = finish;
     }
 
-    public void resetAnimation(){
+    public void resetAnimation() {
         currentAnimationStep = 0;
         finish = false;
         opacity = 1f;

@@ -1,6 +1,7 @@
 package view;
 
-public class GameView implements IGameView{
+public class GameView implements IGameView {
+
     private static GameView instance = null;
     private final MainFrame MAIN_FRAME = new MainFrame();
     private final ComponentContainer CONTAINER = MAIN_FRAME.getComponentContainer();
@@ -83,5 +84,6 @@ public class GameView implements IGameView{
             instance = new GameView();
         return instance;
     }
+
 }
 

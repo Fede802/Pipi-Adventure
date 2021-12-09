@@ -1,6 +1,7 @@
 package commons;
 
 public class Pair<k,v> {
+
     private k key;
     private v value;
 
@@ -12,9 +13,17 @@ public class Pair<k,v> {
     public k getKey() {
         return key;
     }
+
+    public void updateKey(k key) {
+        this.key = key;
+    }
+
     public v getValue() {
         return value;
     }
-    public void updateKey(k key){this.key = key;}
-    public void updateValue(v value){this.value = value;}
+
+    public void updateValue(v value) {
+        this.value = value;
+    }
+
 }

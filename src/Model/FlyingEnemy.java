@@ -2,7 +2,7 @@ package model;
 
 import commons.*;
 
-public class FlyingEnemy extends Enemy{
+public class FlyingEnemy extends Enemy {
 
     public FlyingEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(R_ID, entityCoordinates);
@@ -25,4 +25,5 @@ public class FlyingEnemy extends Enemy{
     public void resetEntity() {
         //nothing to do
     }
+
 }

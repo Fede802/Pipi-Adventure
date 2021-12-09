@@ -12,63 +12,60 @@ import java.util.HashMap;
 
 public class EntitiesDrawer {
 
+    private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
+    private final JPanel PARENT_PANEL;
+
+    private HashMap<RenderingType,HashMap<Integer, ArrayList<Image>>> entityFrames;
     private Image gun;
     private int renderedTileSize;
-    private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
-    private HashMap<RenderingType,HashMap<Integer, ArrayList<Image>>> entityFrames;
-    private final JPanel panel;
 
-    public EntitiesDrawer(JPanel panel){
-        this.panel = panel;
+    public EntitiesDrawer(JPanel PARENT_PANEL){
+        this.PARENT_PANEL = PARENT_PANEL;
     }
 
-    public void drawEntities(Graphics2D g2d){
+    public void drawEntities(Graphics2D g2d) {
         int entityNum = GameEngine.getInstance().getTotalEntity();
         double mapTranslX = GameEngine.getInstance().getMapTranslX();
         for(int i = 0; i < entityNum; i++){
             Pair<EntityCoordinates, AnimationData> temp = GameEngine.getInstance().getEntityForRendering(i);
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, temp.getValue().getOpacity()));
-            ArrayList<Image> frameArray = entityFrames.get(temp.getValue().getRenderingType()).get(temp.getValue().getAnimationType());
-            if(temp.getValue().isHasToUpdate()){
-                temp.getValue().updateCurrentAnimationStep();
-                if(temp.getValue().getCurrentAnimationStep() == frameArray.size()-1 || frameArray.size() == 1){
-                    temp.getValue().updateCurrentNumLoop();
-                    temp.getValue().setCurrentAnimationStep(AnimationData.LAST_FRAME);
-                }
-                if(temp.getValue().getCurrentAnimationStep() == frameArray.size())
-                    temp.getValue().setCurrentAnimationStep(0);
+            EntityCoordinates tempPosition = temp.getKey();
+            AnimationData tempAnimation = temp.getValue();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, tempAnimation.getOpacity()));
+            ArrayList<Image> frameArray = entityFrames.get(tempAnimation.getRenderingType()).get(tempAnimation.getAnimationType());
+            if(tempAnimation.isHasToUpdate()){
+                updateAnimation(tempAnimation,frameArray.size());
                 GameEngine.getInstance().updateAnimationData(temp.getValue(),i);
             }
             Image tempFrame;
-            if(temp.getValue().getCurrentAnimationStep() == AnimationData.LAST_FRAME){
+            if(tempAnimation.getCurrentAnimationStep() == AnimationData.LAST_FRAME){
                 tempFrame = frameArray.get(frameArray.size()-1);
             }else{
                 tempFrame = frameArray.get(temp.getValue().getCurrentAnimationStep());
             }
             g2d.drawImage(tempFrame,
-                    Math.toIntExact(Math.round((temp.getKey().getMapX() + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX + temp.getKey().getTranslX())),
-                    Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
+                    Math.toIntExact(Math.round((tempPosition.getMapX() + SECTION_SIZE * tempPosition.getMapIndex()) * renderedTileSize - mapTranslX + tempPosition.getTraslX())),
+                    Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderedTileSize + tempPosition.getTraslY())),
                     renderedTileSize,
                     renderedTileSize,
                     null
             );
             if(temp.getValue().getRenderingType() == RenderingType.PLAYER && temp.getValue().getAnimationType() != AnimationData.DEATH_ANIMATION_RIGHT)
                 g2d.drawImage(gun,
-                        Math.toIntExact(Math.round((temp.getKey().getMapX()+ 1 + SECTION_SIZE * temp.getKey().getMapIndex()) * renderedTileSize - mapTranslX -(renderedTileSize/10) + temp.getKey().getTranslX())),
-                        Math.toIntExact(Math.round(panel.getHeight() - (SECTION_SIZE - temp.getKey().getMapY()) * renderedTileSize + temp.getKey().getTranslY())),
+                        Math.toIntExact(Math.round((tempPosition.getMapX()+ 1 + SECTION_SIZE * tempPosition.getMapIndex()) * renderedTileSize - mapTranslX -(renderedTileSize/10) + tempPosition.getTraslX())),
+                        Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderedTileSize + tempPosition.getTraslY())),
                         renderedTileSize,
                         renderedTileSize,
                         null
                 );
-            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         }
-
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
+
     public void updateRenderedTileSize(final int renderedTileSize){
         this.renderedTileSize = renderedTileSize;
     }
 
-    public void loadResources(){
+    public void loadResources() {
         gun = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Pistola.png").get(0);
         HashMap<Integer,ArrayList<Image>> player = new HashMap<>(){{
             put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk") );
@@ -114,4 +111,15 @@ public class EntitiesDrawer {
             put(RenderingType.BAT,bat);
         }};
     }
+
+    private void updateAnimation(AnimationData animation, int animationLength){
+        animation.updateCurrentAnimationStep();
+        if(animation.getCurrentAnimationStep() == animationLength-1 || animationLength == 1){
+            animation.updateCurrentNumLoop();
+            animation.setCurrentAnimationStep(AnimationData.LAST_FRAME);
+        }
+        if(animation.getCurrentAnimationStep() == animationLength)
+            animation.setCurrentAnimationStep(0);
+    }
+
 }

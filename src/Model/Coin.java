@@ -2,7 +2,7 @@ package model;
 
 import commons.*;
 
-public class Coin extends GameEntity{
+public class Coin extends GameEntity {
 
     public Coin(EntityCoordinates entityCoordinates) {
         super(EntityType.COIN, RenderingType.COIN,entityCoordinates);
@@ -24,6 +24,5 @@ public class Coin extends GameEntity{
     public void resetEntity() {
         //nothing to do
     }
-
 
 }

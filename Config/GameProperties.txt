@@ -1,7 +1,10 @@
-minBullets=4
-recordScore=2080
-currentMaxBullet=4
-maxBullets=10
-totalCoin=500
-maxLife=3
-currentMaxLife=0
+scoreIncrement=2
+tickToUpdateAnimation=3
+recordScore=3438
+updateTickDelay=40
+currentMaxBullet=7
+changeDaytimeScore=1000
+totalCoin=2147483647
+dissolutionStep=40
+bulletIncrementScore=100
+currentMaxLife=1

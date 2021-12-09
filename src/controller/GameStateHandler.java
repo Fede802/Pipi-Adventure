@@ -4,7 +4,8 @@ import model.GameData;
 import model.GameModel;
 import view.GameView;
 
-public class GameStateHandler implements IGameStateHandler{
+public class GameStateHandler implements IGameStateHandler {
+
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
     public final static int PAUSE_STATE = 2;
@@ -13,9 +14,9 @@ public class GameStateHandler implements IGameStateHandler{
     public final static int HELP_STATE = 5;
     public final static int LOADING_STATE = 6;
 
-    private int currentState = LOADING_STATE;
-
     private static GameStateHandler instance = null;
+
+    private int currentState = LOADING_STATE;
 
     private GameStateHandler() {}
 
@@ -93,4 +94,5 @@ public class GameStateHandler implements IGameStateHandler{
             instance = new GameStateHandler();
         return instance;
     }
+
 }

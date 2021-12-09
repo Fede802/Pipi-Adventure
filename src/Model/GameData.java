@@ -1,12 +1,13 @@
 package model;
 
 import utils.GameConfig;
+import utils.GameDataConfig;
 
-public class GameData implements IGameData{
+public class GameData implements IGameData {
+
     private static IGameData instance = null;
 
-    //todo add to config
-    private final int SCORE_INCREMENT = 2;
+    private final int SCORE_INCREMENT = GameConfig.getInstance().getScoreIncrement();
     private int currentMaxLife = GameConfig.getInstance().getCurrentMaxLife();
     private int currentLife = currentMaxLife;
     private int currentMaxBullets = GameConfig.getInstance().getCurrentMaxBullet();
@@ -16,15 +17,7 @@ public class GameData implements IGameData{
     private int recordScore = GameConfig.getInstance().getRecordScore();
     private int currentScore;
 
-
     private GameData(){}
-
-    public static IGameData getInstance() {
-        if (instance == null){
-            instance = new GameData();
-        }
-        return instance;
-    }
 
     @Override
     public int getCurrentMaxLife() {
@@ -174,7 +167,15 @@ public class GameData implements IGameData{
         GameConfig.getInstance().setCurrentMaxBullet(currentMaxBullets);
         GameConfig.getInstance().setTotalCoin(totalCoin);
         GameConfig.getInstance().setRecordScore(recordScore);
+        //todo sout
         System.out.println("Saving game data");
         GameConfig.getInstance().saveData();
+    }
+
+    public static IGameData getInstance() {
+        if (instance == null){
+            instance = new GameData();
+        }
+        return instance;
     }
 }

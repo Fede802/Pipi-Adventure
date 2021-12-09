@@ -5,14 +5,15 @@ import utils.GameDataConfig;
 
 import java.util.ArrayList;
 
-public class Player extends GameEntity implements IPlayer{
+public class Player extends GameEntity implements IPlayer {
 
-    private final ArrayList<Bullet> bullets = new ArrayList<>();
+    private final ArrayList<Bullet> BULLETS = new ArrayList<>();
     private float opacity = 1f;
 
     public Player(EntityCoordinates entityCoordinates) {
         super(EntityType.PLAYER,RenderingType.PLAYER,entityCoordinates);
     }
+
     @Override
     public void move() {
         if(entityStatus == EntityStatus.ALIVE) {
@@ -42,34 +43,35 @@ public class Player extends GameEntity implements IPlayer{
         entityCoordinates.setMapX(GameDataConfig.getInstance().getPlayerStartMapX());
         entityCoordinates.setMapY(GameDataConfig.getInstance().getPlayerStartMapY());
         entityCoordinates.setMapIndex(0);
-        entityCoordinates.setTranslX(0);
-        entityCoordinates.setTranslY(0);
+        entityCoordinates.setTraslX(0);
+        entityCoordinates.setTraslY(0);
     }
 
     @Override
     public void changeCoordinate(int renderedTileSize){
         super.changeCoordinate(renderedTileSize);
-        for(int i = 0; i < bullets.size();i++){
-            bullets.get(i).changeCoordinate(renderedTileSize);
+        for(int i = 0; i < BULLETS.size(); i++){
+            BULLETS.get(i).changeCoordinate(renderedTileSize);
         }
     }
 
     @Override
     public void moveBullets(){
         //if bullet is dead remove and and if not move it
-        for(int i = bullets.size()-1 ; i >=0; i--) {
-            if (bullets.get(i).getEntityStatus() != EntityStatus.ALIVE)
-                bullets.remove(i);
+        for(int i = BULLETS.size()-1; i >=0; i--) {
+            if (BULLETS.get(i).getEntityStatus() != EntityStatus.ALIVE) {
+                BULLETS.remove(i);
+            }
             else
-                bullets.get(i).move();
+                BULLETS.get(i).move();
         }
     }
 
     @Override
-    public void updateBulletsIndex(){
-        for(int i = 0 ; i < bullets.size(); i++){
-            bullets.get(i).getEntityCoordinates().setMapIndex(
-                    bullets.get(i).getEntityCoordinates().getMapIndex()-1
+    public void updateBulletsIndex() {
+        for(int i = 0; i < BULLETS.size(); i++){
+            BULLETS.get(i).getEntityCoordinates().setMapIndex(
+                    BULLETS.get(i).getEntityCoordinates().getMapIndex()-1
             );
         }
     }
@@ -77,8 +79,8 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void jump() {
         entityCoordinates.updateTraslY(-VEL_Y);
-        if(Math.abs(entityCoordinates.getTranslY()) ==  RENDERED_TILE_SIZE) {
-            entityCoordinates.setTranslY(0);
+        if(Math.abs(entityCoordinates.getTraslY()) ==  RENDERED_TILE_SIZE) {
+            entityCoordinates.setTraslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
         }
     }
@@ -86,19 +88,16 @@ public class Player extends GameEntity implements IPlayer{
     @Override
     public void fall() {
         entityCoordinates.updateTraslY(VEL_Y);
-        if(entityCoordinates.getTranslY() == RENDERED_TILE_SIZE){
-            entityCoordinates.setTranslY(0);
+        if(entityCoordinates.getTraslY() == RENDERED_TILE_SIZE){
+            entityCoordinates.setTraslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
         }
-
     }
 
     @Override
     public void setJumping(boolean isJumping) {
-
         if(isJumping){
             currentAnimation = AnimationData.JUMPING_ANIMATION;
-            System.out.println("JUMP");
             currentAnimationStep = 0;
         }
     }
@@ -122,51 +121,50 @@ public class Player extends GameEntity implements IPlayer{
             mapX = 0;
             mapIndex++;
         }
-        bullets.add(new Bullet(new EntityCoordinates.Builder(mapX,entityCoordinates.getMapY())
+        BULLETS.add(new Bullet(new EntityCoordinates.Builder(mapX,entityCoordinates.getMapY())
                 .setStartMapIndex(mapIndex)
-                .setTranslX(entityCoordinates.getTranslX())
-                .setTranslY(entityCoordinates.getTranslY())
+                .setTraslX(entityCoordinates.getTraslX())
+                .setTraslY(entityCoordinates.getTraslY())
                 .build()));
     }
 
     @Override
-    public void updateBulletStatus(int bulletID){
-        bullets.get(bulletID).updateEntityStatus();
-        //todo maybe bullet could be remove in the next walk movement
-//        bullets.remove(bulletID);
+    public void updateBulletStatus(int bulletID) {
+        BULLETS.get(bulletID).updateEntityStatus();
     }
 
     @Override
-    public EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus){
+    public EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus) {
         EntityCoordinates tempE;
-        if(entityStatus == EntityStatus.ALIVE && bullets.get(bulletID).getEntityStatus() != EntityStatus.ALIVE)
+        if(entityStatus == EntityStatus.ALIVE && BULLETS.get(bulletID).getEntityStatus() != EntityStatus.ALIVE)
             tempE = null;
         else
-            tempE = bullets.get(bulletID).getEntityCoordinates();
+            tempE = BULLETS.get(bulletID).getEntityCoordinates();
        return tempE;
     }
 
     @Override
     public AnimationData getBulletAnimation(int entityID){
-        return bullets.get(entityID).getAnimation();
+        return BULLETS.get(entityID).getAnimation();
     }
 
     @Override
     public int bulletCount() {
-        return bullets.size();
+        return BULLETS.size();
     }
 
     @Override
     public boolean isBulletDead(int entityID) {
-        return bullets.get(entityID).isDead();
+        return BULLETS.get(entityID).getEntityStatus() != EntityStatus.ALIVE;
     }
 
     @Override
     public void updateBulletAnimationData(int entityID, AnimationData animation) {
-        bullets.get(entityID).updateAnimationData(animation);
+        BULLETS.get(entityID).updateAnimationData(animation);
     }
     @Override
     public void updateAnimationOpacity(float opacity) {
         this.opacity = opacity;
     }
+
 }

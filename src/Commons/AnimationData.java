@@ -7,7 +7,6 @@ public class AnimationData {
     public static final int DEATH_ANIMATION_RIGHT = 2;
     public static final int DEATH_ANIMATION_LEFT = 3;
     public static final int JUMPING_ANIMATION = 4;
-
     public static final int LAST_FRAME = -1;
 
     private RenderingType renderingType;
@@ -17,17 +16,13 @@ public class AnimationData {
     private float opacity = 1f;
     private boolean hasToUpdate;
 
-    public void setupAnimation(int currentAnimationStep,int currentNumLoop, int animationType, RenderingType renderingType){
+    public void setupAnimation(int currentAnimationStep, int animationType, RenderingType renderingType){
         this.currentAnimationStep = currentAnimationStep;
         this.animationType = animationType;
         this.renderingType = renderingType;
-        this.currentNumLoop = currentNumLoop;
+        this.currentNumLoop = 0;
         this.opacity = 1f;
-        hasToUpdate = false;
-    }
-
-    public void setupAnimation(int currentAnimationStep, int animationType, RenderingType renderingType){
-        this.setupAnimation(currentAnimationStep,0,animationType,renderingType);
+        this.hasToUpdate = false;
     }
 
     public RenderingType getRenderingType() {
@@ -53,6 +48,7 @@ public class AnimationData {
     public void setCurrentAnimationStep(int currentAnimationStep) {
         this.currentAnimationStep = currentAnimationStep;
     }
+
     public void updateCurrentAnimationStep() {
         currentAnimationStep++;
     }

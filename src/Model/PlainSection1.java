@@ -1,14 +1,10 @@
 package model;
 
 import commons.EntityCoordinates;
-import commons.EntityType;
 
-import javax.swing.text.html.parser.Entity;
-
-public class PlainSection1 extends MapSection{
+public class PlainSection1 extends MapSection {
 
     public PlainSection1(){
-        //super();
         map = new int[][]{
                 //TODO later, in all section refactor tile list
                 /*
@@ -47,10 +43,8 @@ public class PlainSection1 extends MapSection{
 
     @Override
     protected void spawnEntities(int daytime) {
-
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(4,12).build()));
-        mapEntities.add(new Coin(new EntityCoordinates.Builder(11,9).build()));
-
+        MAP_ENTITIES.add(new Coin(new EntityCoordinates.Builder(4,12).build()));
+        MAP_ENTITIES.add(new Coin(new EntityCoordinates.Builder(11,9).build()));
     }
 
 }

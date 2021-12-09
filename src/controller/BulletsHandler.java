@@ -1,17 +1,13 @@
 package controller;
 
-import commons.EntityCoordinates;
-import commons.EntityStatus;
 import commons.EntityType;
-import model.GameData;
 import model.GameModel;
-import utils.GameDataConfig;
 
-public class BulletsHandler extends EntityHandler{
+public class BulletsHandler extends EntitiesHandler {
+
     public BulletsHandler() {
         super(EntityType.BULLET);
     }
-
 
     @Override
     protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
@@ -28,4 +24,5 @@ public class BulletsHandler extends EntityHandler{
     protected void wallCollision(int currentEntity) {
         GameModel.getInstance().updateEntitiesStatus(EntityType.BULLET,currentEntity);
     }
+
 }

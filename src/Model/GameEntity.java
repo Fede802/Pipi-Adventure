@@ -3,12 +3,12 @@ package model;
 import commons.*;
 import utils.GameDataConfig;
 
-public abstract class GameEntity implements IGameEntity{
+public abstract class GameEntity implements IGameEntity {
 
     //    --------------------------------------------------------
     //                       STATIC FIELD
     //    --------------------------------------------------------
-    //todo maybe has not to be static
+
     protected static int RENDERED_TILE_SIZE;
     protected static final int RIGHT_DIR = 0;
     protected static final int LEFT_DIR = 1;
@@ -38,6 +38,7 @@ public abstract class GameEntity implements IGameEntity{
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
+
     public GameEntity(EntityType id,RenderingType R_ID, EntityCoordinates entityCoordinates){
         this.ID = id;
         this.R_ID = R_ID;
@@ -59,7 +60,7 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public void updateEntityStatus(){
+    public void updateEntityStatus() {
         if(entityStatus == EntityStatus.ALIVE){
             entityStatus = EntityStatus.DYING;
             currentAnimationStep = 0;
@@ -77,8 +78,8 @@ public abstract class GameEntity implements IGameEntity{
     protected void defaultWalkMovement(int movingDirection) {
         if(movingDirection == RIGHT_DIR){
             entityCoordinates.updateTraslX(VEL_X);
-            if(entityCoordinates.getTranslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTranslX(entityCoordinates.getTranslX()-RENDERED_TILE_SIZE);
+            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
+                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
                 entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
             }
             if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
@@ -87,8 +88,8 @@ public abstract class GameEntity implements IGameEntity{
             }
         }else{
             entityCoordinates.updateTraslX(-VEL_X);
-            if(Math.abs(entityCoordinates.getTranslX()) >= RENDERED_TILE_SIZE) {
-                entityCoordinates.setTranslX(entityCoordinates.getTranslX() + RENDERED_TILE_SIZE);
+            if(Math.abs(entityCoordinates.getTraslX()) >= RENDERED_TILE_SIZE) {
+                entityCoordinates.setTraslX(entityCoordinates.getTraslX() + RENDERED_TILE_SIZE);
                 entityCoordinates.setMapX(entityCoordinates.getMapX() - 1);
             }
             if(entityCoordinates.getMapX() == -1){
@@ -119,12 +120,12 @@ public abstract class GameEntity implements IGameEntity{
     }
 
     @Override
-    public void changeCoordinate(int renderedTileSize){
+    public void changeCoordinate(int renderedTileSize) {
         RENDERED_TILE_SIZE = renderedTileSize;
         entityCoordinates.setHeight(renderedTileSize);
         entityCoordinates.setWidth(renderedTileSize);
-        entityCoordinates.setTranslX(entityCoordinates.getTranslX()/VEL_X*(renderedTileSize/TILE_STEP));
-        entityCoordinates.setTranslY(entityCoordinates.getTranslY()/VEL_Y*(renderedTileSize/TILE_STEP));
+        entityCoordinates.setTraslX(entityCoordinates.getTraslX()/VEL_X*(renderedTileSize/TILE_STEP));
+        entityCoordinates.setTraslY(entityCoordinates.getTraslY()/VEL_Y*(renderedTileSize/TILE_STEP));
         VEL_Y = VEL_X = renderedTileSize/TILE_STEP;
     }
 

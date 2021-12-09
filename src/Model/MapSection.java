@@ -1,7 +1,6 @@
 package model;
 
 import commons.EntityCoordinates;
-import commons.EntityType;
 import commons.RenderingType;
 import utils.GameDataConfig;
 
@@ -13,8 +12,9 @@ public abstract class MapSection {
     public static final int DAY = 0;
     public static final int NIGHT = 1;
     public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
-    protected ArrayList<GameEntity> mapEntities = new ArrayList<>();
-    protected int yspawngap = 2;
+
+    protected final ArrayList<GameEntity> MAP_ENTITIES = new ArrayList<>();
+    protected final int Y_SPAWN_GAP = 2;
 
     protected int[][] map;
 
@@ -29,23 +29,23 @@ public abstract class MapSection {
     }
 
     public ArrayList<GameEntity> getMapEntities(int daytime){
-        mapEntities.clear();
+        MAP_ENTITIES.clear();
         spawnEntities(daytime);
-        return mapEntities;
+        return MAP_ENTITIES;
     }
-
-    protected abstract void spawnEntities(int daytime);
 
     public GameEntity spawnFlyingEnemy(int daytime) {
         GameEntity temp = null;
         if (random.nextInt(10) == 0) {
             int step = random.nextInt(2);
             if (daytime == DAY) {
-                temp = new FlyingEnemy(RenderingType.BEE,new EntityCoordinates.Builder(6, 10-yspawngap*step).build());
+                temp = new FlyingEnemy(RenderingType.BEE,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());
             }else {
-                temp = new FlyingEnemy(RenderingType.BAT,new EntityCoordinates.Builder(6, 10-yspawngap*step).build());
+                temp = new FlyingEnemy(RenderingType.BAT,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());
             }
         }
         return temp;
     }
+
+    protected abstract void spawnEntities(int daytime);
 }

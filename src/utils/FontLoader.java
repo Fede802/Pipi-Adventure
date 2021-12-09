@@ -6,16 +6,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FontLoader {
+
+    private static final String FONT_PATH = "res/font/04B_30__.TTF";
+    public static final String GAME_FONT = "04b";
+
     private FontLoader(){}
-    public static void loadFonts(String path){
-        //TODO add font file, read and iterate there, or iterate font folder
+    //todo sout
+    public static void loadFonts(){
         GraphicsEnvironment ge;
         try{
             ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(path)));
-        } catch(FontFormatException e){} catch (IOException e){
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)));
+        }catch (FontFormatException | IOException e) {
             System.out.println("Failed loading font");
         }
     }
+
 }
 

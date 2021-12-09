@@ -2,6 +2,7 @@ package view;
 
 import controller.GameEngine;
 import controller.GameStateHandler;
+import utils.FontLoader;
 import utils.ImageLoader;
 import utils.SoundManager;
 
@@ -16,65 +17,30 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
-public class PausePanel extends SlidableApplicationPanel{
+public class PausePanel extends SlidableApplicationPanel {
 
-    private final int DX = 1;
     private final String TITLE = "Pause";
-    private Image pipiRun, frame;
-    private BackgroundDrawer BG_DRAWER;
-    private final Color TITLE_COLOR = Color.WHITE;
-    private final Font TITLE_FONT = new Font("04b", Font.BOLD, 50);
-    private final Font FONT = new Font("04b", Font.PLAIN, 21);
-    private int currentChoice = 1;
+    private final Color DEFAULT_COLOR = Color.WHITE;
+    private final Color DEFAULT_BOUND_COLOR = Color.BLACK;
+    private final Font TITLE_FONT = new Font(FontLoader.GAME_FONT, Font.BOLD, 50);
+    private final Font OPTIONS_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 21);
     private final String[] OPTIONS = {
             "Restart",
             "Resume",
             "Menu"
     };
+    private final int BG_DX = 1;
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
 
-    public PausePanel(ComponentContainer componentContainer){
+    private Image pipiRun, frame;
+    private BackgroundDrawer BG_DRAWER;
+    private int currentChoice = 1;
+
+    public PausePanel(ComponentContainer componentContainer) {
         super(componentContainer);
-        audio.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav",SoundManager.SOUND));
-        audio.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
-        audio.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
-    }
-    @Override
-    protected void timerActionEvent(ActionEvent e) {
-        BG_DRAWER.update();
-        super.timerActionEvent(e);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
-
-
-
-        BG_DRAWER.drawBackground(g2d);
-
-        g2d.drawImage(pipiRun ,0,this.getHeight()/2-this.getHeight()/8,this.getWidth(),this.getHeight()/2,this);
-
-        g2d.drawImage(frame,0 , 0,this.getWidth(),this.getHeight(), this );
-
-
-
-        StringDrawer.drawString(g2d, TITLE, TITLE_FONT, Color.BLACK,StringDrawer.TITLE_STROKE, TITLE_COLOR,this.getWidth()/4, 0, this,StringDrawer.CENTER);
-
-        for(int i = 0; i < OPTIONS.length; i++) {
-            if(i == currentChoice) {
-                g2d.setColor(Color.RED);
-            }
-            else {
-                g2d.setColor(Color.BLACK);
-            }
-            StringDrawer.drawString(g2d, OPTIONS[i], FONT, null,StringDrawer.DEFAULT_STROKE, TITLE_COLOR,this.getHeight()/2 + 50*i, 0 ,this,StringDrawer.CENTER);
-            double strWidth = StringDrawer.getStringWidth(g2d,OPTIONS[i], FONT);
-            double strHeight = StringDrawer.getStringHeight(g2d, FONT);
-            BUTTONS.get(i).setRect((this.getWidth()-strWidth)/2,this.getHeight()/2 + 50*i,strWidth,(strHeight));
-        }
-
+        AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav",SoundManager.SOUND));
+        AUDIO.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
+        AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
     }
 
     private void select() {
@@ -92,20 +58,55 @@ public class PausePanel extends SlidableApplicationPanel{
     }
 
     @Override
+    protected void timerActionEvent(ActionEvent e) {
+        BG_DRAWER.update();
+        super.timerActionEvent(e);
+    }
+
+    @Override
+    public void loadResources() {
+        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BG.png"), this, BG_DX);;
+        pipiRun = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BackGround_GIF.gif").get(0);
+        frame = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\PictureFrame.png").get(0);
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D) g;
+        BG_DRAWER.drawBackground(g2d);
+        g2d.drawImage(pipiRun ,0,this.getHeight()/2-this.getHeight()/8,this.getWidth(),this.getHeight()/2,this);
+        g2d.drawImage(frame,0 , 0,this.getWidth(),this.getHeight(), this );
+        StringDrawer.drawString(g2d, TITLE, TITLE_FONT, DEFAULT_BOUND_COLOR,StringDrawer.TITLE_STROKE, DEFAULT_COLOR,this.getWidth()/4, 0, this,StringDrawer.CENTER);
+        for(int i = 0; i < OPTIONS.length; i++) {
+            Color boundColor;
+            if(i == currentChoice) {
+                boundColor = Color.RED;
+            }else{
+                boundColor = DEFAULT_BOUND_COLOR;
+            }
+            StringDrawer.drawString(g2d, OPTIONS[i], OPTIONS_FONT, boundColor,StringDrawer.DEFAULT_STROKE, DEFAULT_COLOR,this.getHeight()/2 + 50*i, 0 ,this,StringDrawer.CENTER);
+            double strWidth = StringDrawer.getStringWidth(g2d,OPTIONS[i], OPTIONS_FONT);
+            double strHeight = StringDrawer.getStringHeight(g2d, OPTIONS_FONT);
+            BUTTONS.get(i).setRect((this.getWidth()-strWidth)/2,this.getHeight()/2 + 50*i,strWidth,(strHeight));
+        }
+    }
+
+    @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER){
-            audio.get(CONFIRM_THEME).playOnce();
+            AUDIO.get(CONFIRM_THEME).playOnce();
             select();
         }
         if(e.getKeyCode() == KeyEvent.VK_UP) {
-            audio.get(SCROLL_THEME).playOnce();
+            AUDIO.get(SCROLL_THEME).playOnce();
             currentChoice--;
             if(currentChoice == -1) {
                 currentChoice = OPTIONS.length - 1;
             }
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            audio.get(SCROLL_THEME).playOnce();
+            AUDIO.get(SCROLL_THEME).playOnce();
             currentChoice++;
             if(currentChoice == OPTIONS.length) {
                 currentChoice = 0;
@@ -115,7 +116,7 @@ public class PausePanel extends SlidableApplicationPanel{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        audio.get(CONFIRM_THEME).playOnce();
+        AUDIO.get(CONFIRM_THEME).playOnce();
         select();
     }
 
@@ -130,16 +131,10 @@ public class PausePanel extends SlidableApplicationPanel{
             if(BUTTONS.get(i).contains(e.getX(),e.getY())){
                 if(currentChoice != i){
                     currentChoice = i;
-                    audio.get(SCROLL_THEME).playOnce();
+                    AUDIO.get(SCROLL_THEME).playOnce();
                 }
             }
         }
     }
 
-    @Override
-    public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BG.png"), this,DX);;
-        pipiRun = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BackGround_GIF.gif").get(0);
-        frame = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\PictureFrame.png").get(0);
-    }
 }

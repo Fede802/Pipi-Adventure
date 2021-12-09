@@ -1,12 +1,16 @@
 mapSectionSize=16
 mapLength=5
-defaultImageTileSize=120
 defaultTilesetTileSize=160
 defaultNumRowsOfTileset=5
 defaultNumColumnsOfTileset=7
 minTileToRender=20
 playerStartMapX=5
 playerStartMapY=12
+emptyTileCode=34
+maxLife=3
+maxBullets=10
+minBullets=4
+
 
 
 

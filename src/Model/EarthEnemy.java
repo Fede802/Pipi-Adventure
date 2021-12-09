@@ -2,8 +2,7 @@ package model;
 
 import commons.*;
 
-public class EarthEnemy extends Enemy{
-
+public class EarthEnemy extends Enemy {
 
     public EarthEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(R_ID, entityCoordinates);
@@ -27,6 +26,7 @@ public class EarthEnemy extends Enemy{
             }
         }
     }
+
     @Override
     public void setDeathAnimation() {
         if(currentAnimation == commons.AnimationData.WALK_ANIMATION_RIGHT)
@@ -39,4 +39,5 @@ public class EarthEnemy extends Enemy{
     public void resetEntity() {
         //nothing to do
     }
+
 }

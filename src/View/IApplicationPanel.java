@@ -1,6 +1,6 @@
 package view;
 
-public interface IApplicationPanel{
+public interface IApplicationPanel {
 
     int DEFAULT_WIDTH = 600;
     int DEFAULT_HEIGHT = 600;

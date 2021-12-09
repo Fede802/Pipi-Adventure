@@ -1,10 +1,8 @@
 package model;
 
-import commons.EntityCoordinates;
+public class PlainStartSection extends MapSection {
 
-public class PlainStartSection extends MapSection{
     public PlainStartSection(){
-        //super();
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -28,6 +26,6 @@ public class PlainStartSection extends MapSection{
     @Override
     protected void spawnEntities(int daytime) {
         //nothing to spawn
-//        mapEntities.add(new Coin(new EntityCoordinates.Builder(3,12).build()));
     }
+
 }

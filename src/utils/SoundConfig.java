@@ -1,6 +1,6 @@
 package utils;
 
-public class SoundConfig extends Config{
+public class SoundConfig extends Config {
 
     private static final String SOUND_PROPERTIES_URL = "Config/SoundProperties.txt";
     private static SoundConfig instance = null;
@@ -10,17 +10,20 @@ public class SoundConfig extends Config{
     }
 
     public boolean isSoundActive(){
-        return properties.getProperty("isSoundActive").equals("true");
+        return PROPERTIES.getProperty("isSoundActive").equals("true");
     }
-    public void setSoundActive(final boolean isSoundActive){
-        properties.setProperty("isSoundActive",String.valueOf(isSoundActive));
+
+    public void setSoundActive(final boolean isSoundActive) {
+        PROPERTIES.setProperty("isSoundActive",String.valueOf(isSoundActive));
         saveData();
     }
+
     public boolean isMusicActive(){
-        return properties.getProperty("isMusicActive").equals("true");
+        return PROPERTIES.getProperty("isMusicActive").equals("true");
     }
-    public void setMusicActive(final boolean isMusicActive){
-        properties.setProperty("isMusicActive",String.valueOf(isMusicActive));
+
+    public void setMusicActive(final boolean isMusicActive) {
+        PROPERTIES.setProperty("isMusicActive",String.valueOf(isMusicActive));
         saveData();
     }
 
@@ -29,5 +32,6 @@ public class SoundConfig extends Config{
             instance = new SoundConfig();
         return instance;
     }
+
 }
 

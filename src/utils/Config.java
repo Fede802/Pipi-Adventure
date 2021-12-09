@@ -8,13 +8,14 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 public class Config {
-    private final String url;
-    protected final Properties properties = new Properties();
-    private final SwingWorker worker = new SwingWorker<Void,Void>() {
+
+    private final String URL;
+    private final SwingWorker WORKER = new SwingWorker<Void,Void>() {
+        //todo sout
         @Override
-        protected Void doInBackground()  {
+        protected Void doInBackground() {
             try {
-                Files.write(Path.of(url),makeData(properties.toString()).getBytes());
+                Files.write(Path.of(URL),makeData(PROPERTIES.toString()).getBytes());
             } catch (IOException e) {
                 System.out.println("Failed saving properties");
             }
@@ -27,13 +28,16 @@ public class Config {
 
     };
 
-    public Config(String url){
-        this.url = url;
+    protected final Properties PROPERTIES = new Properties();
+
+    public Config(String URL) {
+        this.URL = URL;
         BufferedReader reader = null;
         try {
-            reader = Files.newBufferedReader(Path.of(url));
-            properties.load(reader);
+            reader = Files.newBufferedReader(Path.of(URL));
+            PROPERTIES.load(reader);
         } catch (IOException e) {
+            //todo sout
             System.out.println("Failed loading configuration file");
         }finally {
             try {
@@ -44,11 +48,11 @@ public class Config {
         }
     }
 
-    public void saveData(){
-        worker.execute();
+    public void saveData() {
+        WORKER.execute();
     }
 
-    protected String makeData(String str){
+    private String makeData(String str) {
         String data = "";
         str = str.replace("{","");
         str = str.replace("}","");

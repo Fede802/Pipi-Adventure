@@ -4,18 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public abstract class SlidableApplicationPanel extends ApplicationPanel implements Slidable{
+public abstract class SlidableApplicationPanel extends ApplicationPanel implements Slidable {
+
+    private final ComponentContainer componentContainer;
 
     protected int currentSlidingStep;
     protected boolean isSliding = false;
     protected boolean isOnScreen = false;
-    protected ComponentContainer componentContainer;
 
-    public SlidableApplicationPanel(ComponentContainer componentContainer){
+    public SlidableApplicationPanel(ComponentContainer componentContainer) {
         super();
         this.componentContainer = componentContainer;
         setPreferredSize(new Dimension(Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT));
     }
+
     @Override
     protected void timerActionEvent(ActionEvent e) {
         if(isSliding){
@@ -42,14 +44,6 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     }
 
     @Override
-    public void slide() {
-        isSliding = true;
-        if(!isOnScreen){
-            super.start();
-        }
-    }
-
-    @Override
     public void setSize(Dimension d) {
         super.setSize(d);
         if(isOnScreen)
@@ -61,11 +55,20 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         super.stop();
         currentSlidingStep = 0;
         isSliding = false;
         isOnScreen = false;
         setSize(componentContainer.getSize());
     }
+
+    @Override
+    public void slide() {
+        isSliding = true;
+        if(!isOnScreen){
+            super.start();
+        }
+    }
+
 }
