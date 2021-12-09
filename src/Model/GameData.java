@@ -196,7 +196,7 @@ public class GameData implements IGameData {
         GameConfig.getInstance().setCurrentMaxBullet(currentMaxBullets);
         GameConfig.getInstance().setTotalCoin(totalCoin);
         GameConfig.getInstance().setRecordScore(recordScore);
-        //todo sout
+
         System.out.println("Saving game data");
         GameConfig.getInstance().saveData();
     }

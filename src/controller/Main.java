@@ -8,7 +8,6 @@ import java.util.Random;
 
 
 public class Main {
-//todo reset current choice
 
     //    --------------------------------------------------------
     //                       MAIN METHOD
@@ -18,5 +17,4 @@ public class Main {
         FontLoader.loadFonts();
         SwingUtilities.invokeLater(() -> GameStateHandler.getInstance().loadResources());
     }
-
 }

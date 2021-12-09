@@ -41,9 +41,9 @@ public class ImageLoader {
     //    --------------------------------------------------------
 
     public int getNumFiles(String dirPath) {
-        //todo sout
         File f = new File(dirPath);
         File[] files = f.listFiles();
+        //could be useful to have path printing
         for (int i = 0; i < files.length; i++) {
             System.out.println(files[i].getPath());
         }
@@ -59,7 +59,6 @@ public class ImageLoader {
     }
 
     public void loadImages(String dirPath, Runnable r) {
-        //todo sout
         SwingWorker worker = new SwingWorker<Void,Void>() {
             @Override
             protected Void doInBackground()  {
@@ -68,7 +67,7 @@ public class ImageLoader {
             }
             @Override
             public void done() {
-                System.out.println("finish");
+                System.out.println("finish loading");
             }
         };
         worker.execute();

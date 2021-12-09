@@ -15,7 +15,6 @@ public class Config {
 
     private final String URL;
     private final SwingWorker WORKER = new SwingWorker<Void,Void>() {
-        //todo sout
         @Override
         protected Void doInBackground() {
             try {
@@ -45,7 +44,7 @@ public class Config {
             reader = Files.newBufferedReader(Path.of(URL));
             PROPERTIES.load(reader);
         } catch (IOException e) {
-            //todo sout
+
             System.out.println("Failed loading configuration file");
         }finally {
             try {

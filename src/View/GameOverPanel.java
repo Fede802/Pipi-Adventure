@@ -165,8 +165,6 @@ public class GameOverPanel extends SlidableApplicationPanel {
             GameStateHandler.getInstance().openMenuPanel();
         }
         GameEngine.getInstance().saveDataConfig();
-        //todo sout
-        System.out.println("datasaved");
     }
 
 }
