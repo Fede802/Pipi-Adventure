@@ -6,7 +6,7 @@ public class GameView implements IGameView {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static GameView instance = null;
+    private static IGameView instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELDS
@@ -47,23 +47,23 @@ public class GameView implements IGameView {
     }
 
     @Override
-    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
-        MAIN_FRAME.setupGameBar(currentLife,currentMaxLife,currentBullets);
+    public void setupGameBar(int currentLives, int currentMaxLives, int currentBullets) {
+        MAIN_FRAME.setupGameBar(currentLives,currentMaxLives,currentBullets);
     }
 
     @Override
-    public void updateGameBar(int score, int coin, int life, int bullet) {
-        MAIN_FRAME.updateGameBar(score,coin,life,bullet);
+    public void updateGameBar(int score, int coins, int lives, int bullets) {
+        MAIN_FRAME.updateGameBar(score,coins,lives,bullets);
     }
 
     @Override
-    public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
-        MAIN_FRAME.setGameOverData(currentScore,recordScore,currentCoin);
+    public void setGameOverData(int currentScore, int recordScore, int currentCoins) {
+        MAIN_FRAME.setGameOverData(currentScore,recordScore,currentCoins);
     }
 
     @Override
-    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
-        MAIN_FRAME.setupUpgradePanel(currentLife,currentBullets,totalCoin);
+    public void setupUpgradePanel(int currentLives, int currentBullets, int totalCoins) {
+        MAIN_FRAME.setupUpgradePanel(currentLives,currentBullets,totalCoins);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class GameView implements IGameView {
     }
 
     @Override
-    public void updateDayTime() {
-        MAIN_FRAME.updateDayTime();
+    public void updateDaytime() {
+        MAIN_FRAME.updateDaytime();
     }
 
     @Override
@@ -87,8 +87,8 @@ public class GameView implements IGameView {
     }
 
     @Override
-    public void notifySizeChanged(int renderedTileSize) {
-        MAIN_FRAME.notifySizeChanged(renderedTileSize);
+    public void notifySizeChanged(int renderingTileSize) {
+        MAIN_FRAME.notifySizeChanged(renderingTileSize);
     }
 
     @Override

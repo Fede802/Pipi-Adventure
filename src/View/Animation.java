@@ -12,7 +12,7 @@ public class Animation {
     //    --------------------------------------------------------
 
     private final ArrayList<Image> ANIMATION_TILES;
-    private final int ANIMATION_STEP;
+    private final int ANIMATION_STEPS;
 
     private int currentAnimationStep;
     private float opacity = 1f;
@@ -24,12 +24,12 @@ public class Animation {
 
     public Animation(String path) {
         ANIMATION_TILES = ImageLoader.getInstance().getImages(path);
-        ANIMATION_STEP = ANIMATION_TILES.size();
+        ANIMATION_STEPS = ANIMATION_TILES.size();
     }
 
     public Animation(ArrayList<Image> img) {
         ANIMATION_TILES = img;
-        ANIMATION_STEP = ANIMATION_TILES.size();
+        ANIMATION_STEPS = ANIMATION_TILES.size();
     }
 
     //    --------------------------------------------------------
@@ -42,14 +42,14 @@ public class Animation {
 
     public void update() {
         currentAnimationStep++;
-        if(currentAnimationStep == ANIMATION_STEP){
+        if(currentAnimationStep == ANIMATION_STEPS){
             currentAnimationStep = 0;
             finish = true;
         }
     }
 
-    public int getANIMATION_STEP() {
-        return ANIMATION_STEP;
+    public int getANIMATION_STEPS() {
+        return ANIMATION_STEPS;
     }
 
     public int getCurrentAnimationStep() {

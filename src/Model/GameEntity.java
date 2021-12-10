@@ -9,7 +9,7 @@ public abstract class GameEntity implements IGameEntity {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    protected static int RENDERED_TILE_SIZE;
+    protected static int RENDERING_TILE_SIZE;
     protected static final int RIGHT_DIR = 0;
     protected static final int LEFT_DIR = 1;
     protected static final int DEFAULT_DEATH_LOOP = 1;
@@ -31,17 +31,17 @@ public abstract class GameEntity implements IGameEntity {
     protected int currentWalkingStep;
     protected int currentAnimationStep;
     protected int currentAnimation = AnimationData.WALK_ANIMATION_RIGHT;
-    //change to 4 8 5 10
-    protected double TILE_STEP = 5;
-    protected double VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
-    protected double VEL_Y = RENDERED_TILE_SIZE/TILE_STEP;
+    //it can be changed with numbers that give a finite result in the role of divisors
+    protected double tileStep = 5.0;
+    protected double velX = RENDERING_TILE_SIZE / tileStep;
+    protected double velY = RENDERING_TILE_SIZE / tileStep;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public GameEntity(EntityType id,RenderingType R_ID, EntityCoordinates entityCoordinates){
-        this.ID = id;
+    public GameEntity(EntityType ID,RenderingType R_ID, EntityCoordinates entityCoordinates){
+        this.ID = ID;
         this.R_ID = R_ID;
         this.entityCoordinates = entityCoordinates;
     }
@@ -90,27 +90,27 @@ public abstract class GameEntity implements IGameEntity {
     }
 
     @Override
-    public void updateAnimationData(AnimationData animationData) {
-        currentAnimationStep = animationData.getCurrentAnimationStep();
+    public void updateAnimation(AnimationData animation) {
+        currentAnimationStep = animation.getCurrentAnimationStep();
         if(entityStatus == EntityStatus.DYING)
-            currentDeathLoop = animationData.getCurrentNumLoop();
+            currentDeathLoop = animation.getCurrentNumLoop();
     }
 
     @Override
-    public void changeCoordinate(int renderedTileSize) {
-        RENDERED_TILE_SIZE = renderedTileSize;
-        entityCoordinates.setHeight(renderedTileSize);
-        entityCoordinates.setWidth(renderedTileSize);
-        entityCoordinates.setTraslX(entityCoordinates.getTraslX()/VEL_X*(renderedTileSize/TILE_STEP));
-        entityCoordinates.setTraslY(entityCoordinates.getTraslY()/VEL_Y*(renderedTileSize/TILE_STEP));
-        VEL_Y = VEL_X = renderedTileSize/TILE_STEP;
+    public void changeCoordinate(int renderingTileSize) {
+        RENDERING_TILE_SIZE = renderingTileSize;
+        entityCoordinates.setHeight(renderingTileSize);
+        entityCoordinates.setWidth(renderingTileSize);
+        entityCoordinates.setTranslX(entityCoordinates.getTranslX()/ velX *(renderingTileSize/ tileStep));
+        entityCoordinates.setTranslY(entityCoordinates.getTranslY()/ velY *(renderingTileSize/ tileStep));
+        velY = velX = renderingTileSize/ tileStep;
     }
 
     protected void defaultWalkMovement(int movingDirection) {
         if(movingDirection == RIGHT_DIR){
-            entityCoordinates.updateTraslX(VEL_X);
-            if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
+            entityCoordinates.updateTranslX(velX);
+            if(entityCoordinates.getTranslX() >= RENDERING_TILE_SIZE){
+                entityCoordinates.setTranslX(entityCoordinates.getTranslX()- RENDERING_TILE_SIZE);
                 entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
             }
             if(entityCoordinates.getMapX() == GameDataConfig.getInstance().getMapSectionSize()){
@@ -118,9 +118,9 @@ public abstract class GameEntity implements IGameEntity {
                 entityCoordinates.setMapX(0);
             }
         }else{
-            entityCoordinates.updateTraslX(-VEL_X);
-            if(Math.abs(entityCoordinates.getTraslX()) >= RENDERED_TILE_SIZE) {
-                entityCoordinates.setTraslX(entityCoordinates.getTraslX() + RENDERED_TILE_SIZE);
+            entityCoordinates.updateTranslX(-velX);
+            if(Math.abs(entityCoordinates.getTranslX()) >= RENDERING_TILE_SIZE) {
+                entityCoordinates.setTranslX(entityCoordinates.getTranslX() + RENDERING_TILE_SIZE);
                 entityCoordinates.setMapX(entityCoordinates.getMapX() - 1);
             }
             if(entityCoordinates.getMapX() == -1){

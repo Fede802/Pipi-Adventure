@@ -2,6 +2,7 @@ package model;
 
 import commons.EntityCoordinates;
 import commons.RenderingType;
+import utils.GameConfig;
 import utils.GameDataConfig;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public abstract class MapSection {
     //                      INSTANCE FIELD
     //    --------------------------------------------------------
 
+    private final int SPAWN_RANGE = GameConfig.getInstance().getFlyingSpawnRange();
     private final Random RANDOM = new Random();
 
     protected final ArrayList<GameEntity> MAP_ENTITIES = new ArrayList<>();
@@ -43,7 +45,7 @@ public abstract class MapSection {
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public int getCell(final int mapX,final int mapY){
+    public int getCell(int mapX, int mapY){
         return map[mapY][mapX];
     }
 
@@ -55,7 +57,7 @@ public abstract class MapSection {
 
     public GameEntity spawnFlyingEnemy(int daytime) {
         GameEntity temp = null;
-        if (RANDOM.nextInt(10) == 0) {
+        if (RANDOM.nextInt(SPAWN_RANGE) == 0) {
             int step = RANDOM.nextInt(2);
             if (daytime == DAY) {
                 temp = new FlyingEnemy(RenderingType.BEE,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());

@@ -13,8 +13,8 @@ public class MapDrawer extends AbstractMapDrawer {
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public MapDrawer(JPanel PARENT_PANEL) {
-        super(PARENT_PANEL);
+    public MapDrawer(JPanel parentPanel) {
+        super(parentPanel);
     }
 
     //    --------------------------------------------------------
@@ -27,10 +27,10 @@ public class MapDrawer extends AbstractMapDrawer {
             for (int mapY = SECTION_SIZE-1; mapY > 0; mapY--)
                 for (int mapX = 0; mapX < SECTION_SIZE; mapX++)
                     g2d.drawImage(tileSetsArray.get(currentTileset).get(GameEngine.getInstance().getTileData(mapIndex, mapX, mapY)),
-                        Math.toIntExact(Math.round(renderedTileSize * (mapX + SECTION_SIZE * mapIndex) - GameEngine.getInstance().getMapTranslX())),
-                        PARENT_PANEL.getHeight()-((SECTION_SIZE-mapY) * renderedTileSize),
-                        renderedTileSize,
-                        renderedTileSize,
+                        Math.toIntExact(Math.round(renderingTileSize * (mapX + SECTION_SIZE * mapIndex) - GameEngine.getInstance().getMapTranslX())),
+                        PARENT_PANEL.getHeight()-((SECTION_SIZE-mapY) * renderingTileSize),
+                            renderingTileSize,
+                            renderingTileSize,
                         null
                     );
         }
@@ -38,7 +38,6 @@ public class MapDrawer extends AbstractMapDrawer {
 
     @Override
     public void loadResources() {
-        tileSetsArray = new ArrayList<>();
         tileSetsArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\1.png"));
         tileSetsArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\2.png"));
         tileSetsArray.add(ImageLoader.getInstance().getImages("res\\images\\tilesets\\3.png"));

@@ -58,15 +58,19 @@ public abstract class EntitiesHandler {
         }
     }
 
+    protected boolean bottomCollision(int entityNum){
+        return CollisionHandler.bottomCollision(getEntity(entityNum,EntityStatus.ALIVE));
+    }
+
     protected EntityCoordinates getEntity(int entityNum, EntityStatus entityStatus) {
         return GameModel.getInstance().getEntityCoordinates(entityType,entityNum,entityStatus);
     }
 
-    protected void collideWithPlayer(int currentEntity, int outerCurrentEntity) {
+    protected void collideWithPlayer(int entity, int externalEntity) {
         //nothing to do
     }
 
-    protected void collideWithBullet(int currentEntity, int outerCurrentEntity) {
+    protected void collideWithBullet(int entity, int externalEntity) {
         //nothing to do
     }
 
@@ -74,11 +78,11 @@ public abstract class EntitiesHandler {
     //                      ABSTRACT METHODS
     //    --------------------------------------------------------
 
-    protected abstract void wallCollision(int currentEntity);
+    protected abstract void wallCollision(int entity);
 
-    protected abstract void collideWithCoin(int currentEntity, int outerCurrentEntity);
+    protected abstract void collideWithCoin(int entity, int externalEntity);
 
-    protected abstract void collideWithEnemy(int currentEntity, int outerCurrentEntity);
+    protected abstract void collideWithEnemy(int entity, int externalEntity);
 
 }
 

@@ -14,7 +14,7 @@ public class GameBar {
     //                      INSTANCE FIELDS
     //    --------------------------------------------------------
 
-    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLives();
+    private final int MAX_LIVES = GameDataConfig.getInstance().getMaxLives();
     private final JPanel PARENT_PANEL;
     private final int DEFAULT_PADDING = 10;
     private final Color DEFAULT_COLOR = Color.YELLOW;
@@ -23,9 +23,9 @@ public class GameBar {
     private final Font DEBUG_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 15);
     private final Rectangle2D.Double PAUSE_BUTTON = new Rectangle2D.Double();
 
-    private int currentMaxLife;
+    private int currentMaxLives;
     private Image coin,lifeHeart,lostLifeHeart,missingLifeHeart,pauseButton,bullet;
-    private int score,coinCollected,life,bullets;
+    private int score, coinsCollected, lives,bullets;
 
     //debug purpose
     private boolean wallCollision = true;
@@ -36,36 +36,36 @@ public class GameBar {
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public GameBar(JPanel PARENT_PANEL){
-        this.PARENT_PANEL = PARENT_PANEL;
+    public GameBar(JPanel parentPanel){
+        this.PARENT_PANEL = parentPanel;
     }
 
     //    --------------------------------------------------------
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public void setupBar(int currentLife, int currentMaxLife, int currentBullets) {
-        coinCollected = 0;
+    public void setupBar(int currentLives, int currentMaxLives, int currentBullets) {
+        coinsCollected = 0;
         score = 0;
-        life = currentLife;
+        lives = currentLives;
         bullets = currentBullets;
-        this.currentMaxLife = currentMaxLife;
+        this.currentMaxLives = currentMaxLives;
     }
 
-    public void updateBar(int score,int coinCollected,int life,int bullets) {
-        this.coinCollected = coinCollected;
+    public void updateBar(int score,int coinsCollected,int lives,int bullets) {
+        this.coinsCollected = coinsCollected;
         this.score = score;
-        this.life = life;
+        this.lives = lives;
         this.bullets = bullets;
     }
 
     public void drawBar(Graphics2D g2d) {
         double fontHeight = StringDrawer.getStringHeight(g2d, DEFAULT_FONT);
-        for(int i = 0; i < MAX_LIFE; i++){
+        for(int i = 0; i < MAX_LIVES; i++){
             Image heart;
-            if(i < life){
+            if(i < lives){
                 heart = lifeHeart;
-            }else if(i < currentMaxLife){
+            }else if(i < currentMaxLives){
                 heart = lostLifeHeart;
             }else{
                 heart = missingLifeHeart;
@@ -75,12 +75,13 @@ public class GameBar {
         PAUSE_BUTTON.setRect((PARENT_PANEL.getWidth()-fontHeight)/2, DEFAULT_PADDING,fontHeight*2,fontHeight*2);
         g2d.drawImage(pauseButton,(int)((PARENT_PANEL.getWidth()-fontHeight*2)/2), DEFAULT_PADDING,(int)(fontHeight)*2,(int)(fontHeight)*2,null);
         StringDrawer.drawString(g2d,"Score: "+score, DEFAULT_FONT,DEFAULT_BOUND_COLOR,StringDrawer.DEFAULT_STROKE,DEFAULT_COLOR, DEFAULT_PADDING, PARENT_PANEL.getWidth()-StringDrawer.getStringWidth(g2d,"Score: "+score, DEFAULT_FONT)- DEFAULT_PADDING, PARENT_PANEL,StringDrawer.PADDING);
-        int paddingLeft = (int)(PARENT_PANEL.getWidth()-StringDrawer.getStringWidth(g2d,"x"+coinCollected, DEFAULT_FONT)- DEFAULT_PADDING);
+        int paddingLeft = (int)(PARENT_PANEL.getWidth()-StringDrawer.getStringWidth(g2d,"x"+ coinsCollected, DEFAULT_FONT)- DEFAULT_PADDING);
         int paddingTop = (int)(2* DEFAULT_PADDING +fontHeight);
         g2d.drawImage(bullet, DEFAULT_PADDING,paddingTop,(int)(fontHeight),(int)(fontHeight),null);
         StringDrawer.drawString(g2d,"x"+bullets, DEFAULT_FONT,DEFAULT_BOUND_COLOR,StringDrawer.DEFAULT_STROKE,DEFAULT_COLOR,paddingTop,2* DEFAULT_PADDING +fontHeight, PARENT_PANEL,StringDrawer.PADDING);
-        StringDrawer.drawString(g2d,"x"+coinCollected, DEFAULT_FONT,DEFAULT_BOUND_COLOR,StringDrawer.DEFAULT_STROKE,DEFAULT_COLOR,paddingTop,paddingLeft, PARENT_PANEL,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,"x"+ coinsCollected, DEFAULT_FONT,DEFAULT_BOUND_COLOR,StringDrawer.DEFAULT_STROKE,DEFAULT_COLOR,paddingTop,paddingLeft, PARENT_PANEL,StringDrawer.PADDING);
         g2d.drawImage(coin,(int)(paddingLeft-fontHeight/5-fontHeight),paddingTop,(int)(fontHeight),(int)(fontHeight),null);
+        //debug purpose
         paddingTop = (int)(3* DEFAULT_PADDING +2*fontHeight);
         paddingLeft = 0;
         int debugint = 0;

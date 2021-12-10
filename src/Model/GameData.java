@@ -9,7 +9,7 @@ public class GameData implements IGameData {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static IGameData instance = null;
+    private static IGameData instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELD
@@ -17,12 +17,12 @@ public class GameData implements IGameData {
 
     private final int SCORE_INCREMENT = GameConfig.getInstance().getScoreIncrement();
 
-    private int currentMaxLife = GameConfig.getInstance().getCurrentMaxLife();
-    private int currentLife;
-    private int currentMaxBullets = GameConfig.getInstance().getCurrentMaxBullet();
+    private int currentMaxLives = GameConfig.getInstance().getCurrentMaxLives();
+    private int currentLives;
+    private int currentMaxBullets = GameConfig.getInstance().getCurrentMaxBullets();
     private int currentBullets;
-    private int totalCoin = GameConfig.getInstance().getTotalCoin();
-    private int currentCoin;
+    private int totalCoins = GameConfig.getInstance().getTotalCoins();
+    private int currentCoins;
     private int recordScore = GameConfig.getInstance().getRecordScore();
     private int currentScore;
 
@@ -39,9 +39,9 @@ public class GameData implements IGameData {
             currentMaxBullets = temp;
         currentBullets = currentMaxBullets;
         temp = GameDataConfig.getInstance().getMaxLives();
-        if(currentMaxLife > temp)
-            currentMaxLife = temp;
-        currentLife = currentMaxLife;
+        if(currentMaxLives > temp)
+            currentMaxLives = temp;
+        currentLives = currentMaxLives;
     }
 
     //    --------------------------------------------------------
@@ -49,37 +49,37 @@ public class GameData implements IGameData {
     //    --------------------------------------------------------
 
     @Override
-    public int getCurrentMaxLife() {
-        return currentMaxLife;
+    public int getCurrentMaxLives() {
+        return currentMaxLives;
     }
 
     @Override
-    public void updateCurrentMaxLife() {
-        currentMaxLife++;
+    public void updateCurrentMaxLives() {
+        currentMaxLives++;
     }
 
     @Override
-    public int getCurrentLife() {
-        return currentLife;
+    public int getCurrentLives() {
+        return currentLives;
     }
 
     @Override
-    public void setCurrentLife(int currentLife) {
-        if(currentLife > currentMaxLife)
-            currentLife = currentMaxLife;
-        this.currentLife = currentLife;
+    public void setCurrentLives(int currentLives) {
+        if(currentLives > currentMaxLives)
+            currentLives = currentMaxLives;
+        this.currentLives = currentLives;
     }
 
     @Override
-    public void updateCurrentLife() {
-        currentLife--;
+    public void updateCurrentLives() {
+        currentLives--;
     }
 
     @Override
-    public void updateCurrentLife(int lifeVariation) {
-        this.currentLife+=lifeVariation;
-        if(currentLife > currentMaxLife)
-            currentLife = currentMaxLife;
+    public void updateCurrentLives(int livesVariation) {
+        this.currentLives +=livesVariation;
+        if(currentLives > currentMaxLives)
+            currentLives = currentMaxLives;
     }
 
     @Override
@@ -117,39 +117,39 @@ public class GameData implements IGameData {
     }
 
     @Override
-    public int getTotalCoin() {
-        return totalCoin;
+    public int getTotalCoins() {
+        return totalCoins;
     }
 
     @Override
-    public void updateTotalCoin(int coinVariation) {
-        totalCoin-=coinVariation;
+    public void updateTotalCoins(int coinsVariation) {
+        totalCoins -=coinsVariation;
     }
 
     @Override
-    public int getCurrentCoin() {
-        return currentCoin;
+    public int getCurrentCoins() {
+        return currentCoins;
     }
 
     @Override
-    public void setCurrentCoin(int currentCoin) {
-        totalCoin -= this.currentCoin;
-        this.currentCoin = currentCoin;
-        totalCoin += currentCoin;
+    public void setCurrentCoins(int currentCoins) {
+        totalCoins -= this.currentCoins;
+        this.currentCoins = currentCoins;
+        totalCoins += currentCoins;
     }
 
     @Override
-    public void updateCurrentCoin() {
-        if(currentCoin != Integer.MAX_VALUE)
-            currentCoin++;
-        if(totalCoin != Integer.MAX_VALUE)
-            totalCoin++;
+    public void updateCurrentCoins() {
+        if(currentCoins != Integer.MAX_VALUE)
+            currentCoins++;
+        if(totalCoins != Integer.MAX_VALUE)
+            totalCoins++;
     }
 
     @Override
-    public void updateCurrentCoin(int coinVariation) {
-        currentCoin+=coinVariation;
-        totalCoin+=coinVariation;
+    public void updateCurrentCoins(int coinsVariation) {
+        currentCoins +=coinsVariation;
+        totalCoins +=coinsVariation;
     }
 
     @Override
@@ -185,18 +185,17 @@ public class GameData implements IGameData {
     @Override
     public void resetData() {
         currentScore = 0;
-        currentCoin = 0;
+        currentCoins = 0;
         currentBullets = currentMaxBullets;
-        currentLife = currentMaxLife;
+        currentLives = currentMaxLives;
     }
 
     @Override
     public void saveData() {
-        GameConfig.getInstance().setCurrentMaxLife(currentMaxLife);
-        GameConfig.getInstance().setCurrentMaxBullet(currentMaxBullets);
-        GameConfig.getInstance().setTotalCoin(totalCoin);
+        GameConfig.getInstance().setCurrentMaxLives(currentMaxLives);
+        GameConfig.getInstance().setCurrentMaxBullets(currentMaxBullets);
+        GameConfig.getInstance().setTotalCoins(totalCoins);
         GameConfig.getInstance().setRecordScore(recordScore);
-
         System.out.println("Saving game data");
         GameConfig.getInstance().saveData();
     }

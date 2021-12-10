@@ -7,20 +7,20 @@ public interface IGameView {
     void openWindow();
     void resumeWindow();
 
-    void setupGameBar(int currentLife, int currentMaxLife, int currentBullets);
-    void updateGameBar(int score, int coin, int life, int bullet);
+    void setupGameBar(int currentLives, int currentMaxLives, int currentBullets);
+    void updateGameBar(int score, int coins, int lives, int bullets);
 
-    void setGameOverData(int currentScore, int recordScore, int currentCoin);
+    void setGameOverData(int currentScore, int recordScore, int currentCoins);
 
-    void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin);
+    void setupUpgradePanel(int currentLives, int currentBullets, int totalCoins);
 
     void setupDaytime();
-    void updateDayTime();
+    void updateDaytime();
 
     void setGameRunning(boolean running);
 
     void getResources();
-    void notifySizeChanged(int renderedTileSize);
+    void notifySizeChanged(int renderingTileSize);
     void hasToNotifyChangingScreen(boolean notify);
 
 }

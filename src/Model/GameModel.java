@@ -9,7 +9,7 @@ public class GameModel implements IGameModel {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static GameModel instance = null;
+    private static IGameModel instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELD
@@ -36,17 +36,17 @@ public class GameModel implements IGameModel {
     @Override
     public void updateMap() {
         MAP_GENERATOR.updateMap();
-        PLAYER.updateBulletsIndex();
+        PLAYER.updateBulletsMapIndex();
     }
 
     @Override
-    public int getTileData(final int mapIndex, final int mapX, final int mapY) {
+    public int getTileData(int mapIndex, int mapX, int mapY) {
         return MAP_GENERATOR.getTileData(mapIndex,mapX,mapY);
     }
 
     @Override
     public void changeDaytime() {
-        MAP_GENERATOR.updateDayTime();
+        MAP_GENERATOR.updateDaytime();
     }
 
     @Override
@@ -57,8 +57,8 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public void setPlayerJumping(boolean isPlayerJumping) {
-        PLAYER.setJumping(isPlayerJumping);
+    public void setPlayerJumping(boolean jumping) {
+        PLAYER.setJumping(jumping);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public void setPlayerFalling(boolean isFalling) {
-        PLAYER.setFalling(isFalling);
+    public void setPlayerFalling(boolean falling) {
+        PLAYER.setFalling(falling);
     }
 
     @Override
@@ -87,7 +87,7 @@ public class GameModel implements IGameModel {
         switch(entityType){
             case PLAYER -> count = 1;
             case COIN, ENEMY -> count = MAP_GENERATOR.entityCount(entityType);
-            case BULLET -> count = PLAYER.bulletCount();
+            case BULLET -> count = PLAYER.bulletsCount();
         }
         return count;
     }
@@ -107,13 +107,13 @@ public class GameModel implements IGameModel {
         switch(entityType){
             case PLAYER -> entity = PLAYER.getEntityCoordinates();
             case COIN, ENEMY -> entity = MAP_GENERATOR.getEntityCoordinates(entityType,entityID,entityStatus);
-            case BULLET -> entity = PLAYER.getBulletCoordinate(entityID,entityStatus);
+            case BULLET -> entity = PLAYER.getBulletCoordinates(entityID,entityStatus);
         }
         return entity;
     }
 
     @Override
-    public AnimationData getEntityAnimationData(EntityType entityType, int entityID) {
+    public AnimationData getEntityAnimation(EntityType entityType, int entityID) {
         AnimationData animation= null;
         switch(entityType){
             case PLAYER -> animation = PLAYER.getAnimation();
@@ -124,11 +124,11 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public void updateEntityAnimationData(EntityType entityType, int entityID, AnimationData animation) {
+    public void updateEntityAnimation(EntityType entityType, int entityID, AnimationData animation) {
         switch(entityType){
-            case PLAYER -> PLAYER.updateAnimationData(animation);
-            case COIN, ENEMY -> MAP_GENERATOR.updateEntityAnimationData(entityType,entityID,animation);
-            case BULLET ->  PLAYER.updateBulletAnimationData(entityID,animation);
+            case PLAYER -> PLAYER.updateAnimation(animation);
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntityAnimation(entityType,entityID,animation);
+            case BULLET ->  PLAYER.updateBulletAnimation(entityID,animation);
         }
     }
 
@@ -149,9 +149,9 @@ public class GameModel implements IGameModel {
     }
 
     @Override
-    public void changeEntitiesCoordinates(int renderedTileSize) {
-        PLAYER.changeCoordinate(renderedTileSize);
-        MAP_GENERATOR.changeEntitiesCoordinates(renderedTileSize);
+    public void changeEntitiesCoordinates(int renderingTileSize) {
+        PLAYER.changeCoordinate(renderingTileSize);
+        MAP_GENERATOR.changeEntitiesCoordinates(renderingTileSize);
     }
 
     @Override

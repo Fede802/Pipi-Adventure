@@ -20,12 +20,12 @@ public class Coin extends GameEntity {
     @Override
     public void move() {
         if(entityStatus == EntityStatus.DYING)
-            entityCoordinates.updateTraslY(-VEL_Y);
+            entityCoordinates.updateTranslY(-velY);
     }
 
     @Override
     public void setDeathAnimation() {
-        currentAnimation = commons.AnimationData.DEATH_ANIMATION_RIGHT;
+        currentAnimation = AnimationData.DEATH_ANIMATION_RIGHT;
     }
 
     @Override

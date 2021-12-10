@@ -13,14 +13,14 @@ public class GameEngine implements IGameEngine {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static GameEngine instance = null;
+    private static IGameEngine instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELDS
     //    --------------------------------------------------------
 
     private final int CHANGE_DAYTIME_SCORE = GameConfig.getInstance().getChangeDaytimeScore();
-    private final int BULLET_INCREMENT_SCORE = GameConfig.getInstance().getBulletIncrementScore();
+    private final int BULLETS_INCREMENT_SCORE = GameConfig.getInstance().getBulletsIncrementScore();
     private final int TICK_TO_UPDATE_ANIMATION = GameConfig.getInstance().getTickToUpdateAnimation();
     private final PlayerHandler PLAYER_HANDLER = new PlayerHandler();
     private final EnemiesHandler ENEMIES_HANDLER = new EnemiesHandler();
@@ -31,12 +31,12 @@ public class GameEngine implements IGameEngine {
     private final SoundManager SHOOT_SOUND = new SoundManager("res/audio/bullet.wav", SoundManager.MUSIC);
 
     private int currentTick;
-    private boolean updateAnimation = false;
+    private boolean updateAnimation;
 
     //debug purpose
-    boolean wallCollision = true;
-    boolean entityCollision = true;
-    boolean infiniteBullets = false;
+    private boolean wallCollision = true;
+    private boolean entityCollision = true;
+    private boolean infiniteBullets = false;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
@@ -51,24 +51,24 @@ public class GameEngine implements IGameEngine {
     @Override
     public void updateGameStatus() {
         updateAnimation = false;
-        updateEntity();
+        updateEntities();
         if(!PLAYER_HANDLER.isDying()) {
             GameModel.getInstance().moveEntities();
             PLAYER_HANDLER.jumpAndFall();
             if (PLAYER_HANDLER.mapUpdate())
                 GameModel.getInstance().updateMap();
             GameData.getInstance().updateCurrentScore();
-            if (GameData.getInstance().getCurrentScore() % BULLET_INCREMENT_SCORE == 0)
+            if (GameData.getInstance().getCurrentScore() % BULLETS_INCREMENT_SCORE == 0)
                 GameData.getInstance().updateCurrentBullets();
             if (GameData.getInstance().getCurrentScore() % CHANGE_DAYTIME_SCORE == 0) {
-                GameView.getInstance().updateDayTime();
+                GameView.getInstance().updateDaytime();
                 GameModel.getInstance().changeDaytime();
             }
-            checkMapCollision();
-            checkEntityCollision();
+            checkMapCollisions();
+            checkEntitiesCollisions();
             GameView.getInstance().updateGameBar(GameData.getInstance().getCurrentScore(),
-                    GameData.getInstance().getCurrentCoin(),
-                    GameData.getInstance().getCurrentLife(),
+                    GameData.getInstance().getCurrentCoins(),
+                    GameData.getInstance().getCurrentLives(),
                     GameData.getInstance().getCurrentBullets());
         }
         if(currentTick == TICK_TO_UPDATE_ANIMATION){
@@ -90,7 +90,7 @@ public class GameEngine implements IGameEngine {
     }
 
     @Override
-    public int getTotalEntity() {
+    public int getTotalEntities() {
         return PLAYER_HANDLER.getEntityCount()+ BULLETS_HANDLER.getEntityCount()+ COINS_HANDLER.getEntityCount()+ ENEMIES_HANDLER.getEntityCount();
     }
 
@@ -100,7 +100,7 @@ public class GameEngine implements IGameEngine {
         AnimationData animationData;
         EntityCoordinates entity = GameModel.getInstance().getEntityCoordinates(type.getKey(),type.getValue(), EntityStatus.ALL);
         RENDERING_PAIR.updateKey(entity);
-        animationData = GameModel.getInstance().getEntityAnimationData(type.getKey(),type.getValue());
+        animationData = GameModel.getInstance().getEntityAnimation(type.getKey(),type.getValue());
             if(type.getKey() == EntityType.PLAYER){
                 if(!((PLAYER_HANDLER.isJumping() || PLAYER_HANDLER.isFalling()) && animationData.getCurrentAnimationStep() == AnimationData.LAST_FRAME))
                     animationData.hasToUpdate(updateAnimation);
@@ -117,9 +117,9 @@ public class GameEngine implements IGameEngine {
     }
 
     @Override
-    public void updateAnimationData(AnimationData value,int entityID) {
+    public void updateAnimation(AnimationData animation, int entityID) {
         Pair<EntityType,Integer> type = findEntityType(entityID);
-        GameModel.getInstance().updateEntityAnimationData(type.getKey(),type.getValue(),value);
+        GameModel.getInstance().updateEntityAnimation(type.getKey(),type.getValue(),animation);
     }
 
     @Override
@@ -143,13 +143,13 @@ public class GameEngine implements IGameEngine {
     }
 
     @Override
-    public void updateTotalCoin(int price) {
-        GameData.getInstance().updateTotalCoin(price);
+    public void updateTotalCoins(int variation) {
+        GameData.getInstance().updateTotalCoins(variation);
     }
 
     @Override
-    public void updateCurrentLife() {
-        GameData.getInstance().updateCurrentMaxLife();
+    public void updateCurrentLives() {
+        GameData.getInstance().updateCurrentMaxLives();
     }
 
     @Override
@@ -171,8 +171,8 @@ public class GameEngine implements IGameEngine {
     public void setupGame() {
         GameData.getInstance().resetData();
         GameView.getInstance().setupGameBar(
-                GameData.getInstance().getCurrentLife(),
-                GameData.getInstance().getCurrentMaxLife(),
+                GameData.getInstance().getCurrentLives(),
+                GameData.getInstance().getCurrentMaxLives(),
                 GameData.getInstance().getCurrentBullets()
         );
         GameView.getInstance().setupDaytime();
@@ -182,12 +182,12 @@ public class GameEngine implements IGameEngine {
     }
 
     @Override
-    public void notifySizeChanged(int renderedTileSize) {
-        EntityCoordinates.setDefaultDimension(renderedTileSize);
-        CollisionHandler.setRenderedTileSize(renderedTileSize);
-        PlayerHandler.setRenderedTileSize(renderedTileSize);
-        GameView.getInstance().notifySizeChanged(renderedTileSize);
-        GameModel.getInstance().changeEntitiesCoordinates(renderedTileSize);
+    public void notifySizeChanged(int renderingTileSize) {
+        EntityCoordinates.setDefaultDimension(renderingTileSize);
+        CollisionHandler.setRenderingTileSize(renderingTileSize);
+        PlayerHandler.setRenderingTileSize(renderingTileSize);
+        GameView.getInstance().notifySizeChanged(renderingTileSize);
+        GameModel.getInstance().changeEntitiesCoordinates(renderingTileSize);
     }
 
     //debug purpose
@@ -220,16 +220,16 @@ public class GameEngine implements IGameEngine {
         infiniteBullets = !infiniteBullets;
     }
 
-    private void updateEntity() {
+    private void updateEntities() {
         boolean isDead;
         Pair<EntityType,Integer> type;
-        int totalEntity =getTotalEntity();
+        int totalEntity = getTotalEntities();
         for(int entityID = 0; entityID < totalEntity; entityID++){
             type=findEntityType(entityID);
             isDead = GameModel.getInstance().isEntityDead(type.getKey(),type.getValue());
             if(isDead)
                 if (type.getKey() == EntityType.PLAYER) {
-                    GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoin());
+                    GameView.getInstance().setGameOverData(GameData.getInstance().getCurrentScore(),GameData.getInstance().getRecordScore(),GameData.getInstance().getCurrentCoins());
                     GameStateHandler.getInstance().openGameOverPanel();
                 } else {
                     GameModel.getInstance().updateEntityStatus(type.getKey(), type.getValue());
@@ -237,7 +237,7 @@ public class GameEngine implements IGameEngine {
         }
     }
 
-    private void checkEntityCollision() {
+    private void checkEntitiesCollisions() {
         if(!PLAYER_HANDLER.isImmortal() && !PLAYER_HANDLER.isDying())
             //debug purpose
             if(entityCollision)
@@ -246,7 +246,7 @@ public class GameEngine implements IGameEngine {
         BULLETS_HANDLER.checkEntityCollision(ENEMIES_HANDLER);
     }
 
-    private void checkMapCollision() {
+    private void checkMapCollisions() {
         if(!PLAYER_HANDLER.isJumping() && !PLAYER_HANDLER.isFalling() && !PLAYER_HANDLER.isImmortal())
             //debug purpose
             if(wallCollision)
@@ -255,18 +255,18 @@ public class GameEngine implements IGameEngine {
     }
 
     private Pair<EntityType,Integer> findEntityType(int entityID) {
-        int coinCount = GameModel.getInstance().getEntityCount(EntityType.COIN);
-        int enemyCount = GameModel.getInstance().getEntityCount(EntityType.ENEMY);
+        int coinsCount = GameModel.getInstance().getEntityCount(EntityType.COIN);
+        int enemiesCount = GameModel.getInstance().getEntityCount(EntityType.ENEMY);
         EntityType type;
-        if(entityID < coinCount){
+        if(entityID < coinsCount){
             type = EntityType.COIN;
-        }else if(entityID < coinCount+enemyCount){
-            entityID-=coinCount;
+        }else if(entityID < coinsCount+enemiesCount){
+            entityID-=coinsCount;
             type = EntityType.ENEMY;
-        }else if(entityID == coinCount+enemyCount){
+        }else if(entityID == coinsCount+enemiesCount){
             type = EntityType.PLAYER;
         }else{
-            entityID-=(coinCount+enemyCount+1);
+            entityID-=(coinsCount+enemiesCount+1);
             type = EntityType.BULLET;
         }
         ENTITY.updateKey(type);
@@ -278,7 +278,7 @@ public class GameEngine implements IGameEngine {
     //                      STATIC METHOD
     //    --------------------------------------------------------
 
-    public static GameEngine getInstance() {
+    public static IGameEngine getInstance() {
         if (instance == null)
             instance = new GameEngine();
         return instance;

@@ -19,13 +19,13 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
     //    --------------------------------------------------------
 
     private final HashMap<Integer, Component> COMPONENTS = new HashMap<>();
-    private final int CLOSING_STEP = 40;
+    private final int CLOSING_STEPS = 40;
     private final Rectangle2D.Double TEMP_RECT = new Rectangle2D.Double();
     private final RoundRectangle2D.Double TEMP_ROUND_RECT = new RoundRectangle2D.Double();
     private final Timer TIMER = new Timer(IApplicationPanel.TIMER_TICK, e -> repaint());
 
     private Component prev,curr;
-    private boolean isClosing = true,transition = false,notifyChangingScreen=false;
+    private boolean closing = true,transition,notifyChangingScreen;
     private int transitionRectWidth, transitionRectHeight;
 
     //    --------------------------------------------------------
@@ -138,21 +138,21 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
             TEMP_ROUND_RECT.setRoundRect((this.getWidth()- transitionRectWidth)/2,(this.getHeight()- transitionRectHeight)/2, transitionRectWidth, transitionRectHeight,20,20);
             shape.subtract(new Area(TEMP_ROUND_RECT));
             g2d.fill(shape);
-            if(isClosing){
-                if(transitionRectHeight -CLOSING_STEP < 0 || transitionRectWidth -CLOSING_STEP < 0){
-                    isClosing = false;
+            if(closing){
+                if(transitionRectHeight - CLOSING_STEPS < 0 || transitionRectWidth - CLOSING_STEPS < 0){
+                    closing = false;
                     if(notifyChangingScreen){
                         GameStateHandler.getInstance().notifyChangingScreen();
                         notifyChangingScreen = false;
                     }
                     openCurrentState();
                 }else{
-                    transitionRectWidth -=CLOSING_STEP;
-                    transitionRectHeight -=CLOSING_STEP;
+                    transitionRectWidth -= CLOSING_STEPS;
+                    transitionRectHeight -= CLOSING_STEPS;
                 }
             }else{
-                if(transitionRectHeight +CLOSING_STEP > this.getHeight() || transitionRectWidth +CLOSING_STEP > this.getWidth()){
-                    isClosing = true;
+                if(transitionRectHeight + CLOSING_STEPS > this.getHeight() || transitionRectWidth + CLOSING_STEPS > this.getWidth()){
+                    closing = true;
                     transition = false;
                     curr.requestFocus();
                     TIMER.stop();
@@ -160,8 +160,8 @@ public class ComponentContainer extends JLayeredPane implements ComponentListene
                         ((ApplicationPanel) curr).start();
 
                 }else{
-                    transitionRectWidth +=CLOSING_STEP;
-                    transitionRectHeight +=CLOSING_STEP;
+                    transitionRectWidth += CLOSING_STEPS;
+                    transitionRectHeight += CLOSING_STEPS;
                 }
             }
         }

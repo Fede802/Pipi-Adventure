@@ -13,27 +13,27 @@ public class MapGenerator implements IMapGenerator {
     //    --------------------------------------------------------
 
     private final int MAP_LENGTH = GameDataConfig.getInstance().getMapLength();
-    private final ArrayList<MapSection> SECTION_LIST = new ArrayList<>();
+    private final ArrayList<MapSection> SECTIONS_LIST = new ArrayList<>();
     private final ArrayList<GameEntity> COINS = new ArrayList<>();
-    private final ArrayList<GameEntity> ENEMY = new ArrayList<>();
+    private final ArrayList<GameEntity> ENEMIES = new ArrayList<>();
     private final Random RANDOM = new Random();
     private final ArrayList<MapSection> GENERATED_MAP = new ArrayList<>();
 
     private boolean mapGenerated;
-    private boolean dayTime = true;
+    private boolean daytime = true;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
     public MapGenerator() {
-        SECTION_LIST.add(new PlainSection1());
-        SECTION_LIST.add(new PlainSection2());
-        SECTION_LIST.add(new PlainSection3());
-        SECTION_LIST.add(new PlainSection4());
-        SECTION_LIST.add(new PlainSection5());
-        SECTION_LIST.add(new PlainSection6());
-        SECTION_LIST.add(new PlainStartSection());
+        SECTIONS_LIST.add(new PlainSection1());
+        SECTIONS_LIST.add(new PlainSection2());
+        SECTIONS_LIST.add(new PlainSection3());
+        SECTIONS_LIST.add(new PlainSection4());
+        SECTIONS_LIST.add(new PlainSection5());
+        SECTIONS_LIST.add(new PlainSection6());
+        SECTIONS_LIST.add(new PlainStartSection());
         generateMap();
     }
 
@@ -44,14 +44,14 @@ public class MapGenerator implements IMapGenerator {
     @Override
     public void generateMap() {
         mapGenerated = false;
-        dayTime = true;
+        daytime = true;
         GENERATED_MAP.clear();
         COINS.clear();
-        ENEMY.clear();
-        GENERATED_MAP.add(SECTION_LIST.get(SECTION_LIST.size()-1));
-        addEntities(SECTION_LIST.size()-1,0);
+        ENEMIES.clear();
+        GENERATED_MAP.add(SECTIONS_LIST.get(SECTIONS_LIST.size()-1));
+        addEntities(SECTIONS_LIST.size()-1,0);
         for (int i = 1; i< MAP_LENGTH; i++){
-            GENERATED_MAP.add(SECTION_LIST.get(0));
+            GENERATED_MAP.add(SECTIONS_LIST.get(0));
             addEntities(0,i);
         }
         mapGenerated = true;
@@ -62,19 +62,19 @@ public class MapGenerator implements IMapGenerator {
         updateEntitiesMapIndex();
         GENERATED_MAP.remove(0);
         //-1 because last section is the start section
-        int nextSection = RANDOM.nextInt(SECTION_LIST.size()-1);
-        GENERATED_MAP.add(SECTION_LIST.get(nextSection));
+        int nextSection = RANDOM.nextInt(SECTIONS_LIST.size()-1);
+        GENERATED_MAP.add(SECTIONS_LIST.get(nextSection));
         addEntities(nextSection,MAP_LENGTH-1);
     }
 
     @Override
-    public int getTileData(final int mapIndex,final int mapX,final int mapY) {
+    public int getTileData(int mapIndex, int mapX, int mapY) {
         return GENERATED_MAP.get(mapIndex).getCell(mapX,mapY);
     }
 
     @Override
-    public void updateDayTime() {
-        dayTime = !dayTime;
+    public void updateDaytime() {
+        daytime = !daytime;
     }
 
     @Override
@@ -87,18 +87,18 @@ public class MapGenerator implements IMapGenerator {
                 COINS.get(i).move();
             }
         }
-        for (int i = ENEMY.size()-1; i>=0; i--){
-            if(ENEMY.get(i).getEntityStatus() == EntityStatus.DEAD)
-                ENEMY.remove(i);
+        for (int i = ENEMIES.size()-1; i>=0; i--){
+            if(ENEMIES.get(i).getEntityStatus() == EntityStatus.DEAD)
+                ENEMIES.remove(i);
             else{
-                ENEMY.get(i).move();
+                ENEMIES.get(i).move();
             }
         }
     }
 
     @Override
     public int entityCount(EntityType entityType) {
-        int count = ENEMY.size();
+        int count = ENEMIES.size();
         if(entityType == EntityType.COIN)
             count = COINS.size();
         return count;
@@ -119,47 +119,47 @@ public class MapGenerator implements IMapGenerator {
     }
 
     @Override
-    public void updateEntityAnimationData(EntityType entityType, int entityID, AnimationData animation) {
-        ArrayList<GameEntity> temp = ENEMY;
+    public void updateEntityAnimation(EntityType entityType, int entityID, AnimationData animation) {
+        ArrayList<GameEntity> temp = ENEMIES;
         if(entityType == EntityType.COIN)
             temp = COINS;
-        temp.get(entityID).updateAnimationData(animation);
+        temp.get(entityID).updateAnimation(animation);
     }
 
     @Override
-    public void updateEntityStatus(EntityType entityType, final int entityID) {
+    public void updateEntityStatus(EntityType entityType, int entityID) {
         getEntity(entityType,entityID, EntityStatus.ALL).updateEntityStatus();
     }
 
     @Override
     public boolean isEntityDead(EntityType entityType, int entityID) {
-        ArrayList<GameEntity> temp = ENEMY;
+        ArrayList<GameEntity> temp = ENEMIES;
         if(entityType == EntityType.COIN)
             temp = COINS;
         return temp.get(entityID).isDead();
     }
 
     @Override
-    public void changeEntitiesCoordinates(int renderedTileSize) {
+    public void changeEntitiesCoordinates(int renderingTileSize) {
         for(int i = 0; i < COINS.size(); i++){
-            COINS.get(i).changeCoordinate(renderedTileSize);
+            COINS.get(i).changeCoordinate(renderingTileSize);
         }
-        for(int i = 0; i < ENEMY.size(); i++){
-            ENEMY.get(i).changeCoordinate(renderedTileSize);
+        for(int i = 0; i < ENEMIES.size(); i++){
+            ENEMIES.get(i).changeCoordinate(renderingTileSize);
         }
     }
 
     private void addEntities(int sectionIndex, int mapIndex) {
         ArrayList<GameEntity> temp;
         GameEntity gameEntity = null;
-        if(dayTime) {
-            temp = SECTION_LIST.get(sectionIndex).getMapEntities(MapSection.DAY);
+        if(daytime) {
+            temp = SECTIONS_LIST.get(sectionIndex).getMapEntities(MapSection.DAY);
             if (mapGenerated)
-            gameEntity = SECTION_LIST.get(sectionIndex).spawnFlyingEnemy(MapSection.DAY);
+            gameEntity = SECTIONS_LIST.get(sectionIndex).spawnFlyingEnemy(MapSection.DAY);
         } else {
-            temp = SECTION_LIST.get(sectionIndex).getMapEntities(MapSection.NIGHT);
+            temp = SECTIONS_LIST.get(sectionIndex).getMapEntities(MapSection.NIGHT);
             if (mapGenerated)
-            gameEntity = SECTION_LIST.get(sectionIndex).spawnFlyingEnemy(MapSection.NIGHT);
+            gameEntity = SECTIONS_LIST.get(sectionIndex).spawnFlyingEnemy(MapSection.NIGHT);
         }
         if (gameEntity != null){
             temp.add(gameEntity);
@@ -170,7 +170,7 @@ public class MapGenerator implements IMapGenerator {
             if(tempE.getType() == EntityType.COIN){
                 COINS.add(tempE);
             }else if(tempE.getType() == EntityType.ENEMY){
-                ENEMY.add(tempE);
+                ENEMIES.add(tempE);
             }
         }
     }
@@ -182,17 +182,17 @@ public class MapGenerator implements IMapGenerator {
             if(temp.getMapIndex()<0)
                 COINS.remove(i);
         }
-        for(int i = ENEMY.size()-1; i>=0; i--){
-            EntityCoordinates temp = ENEMY.get(i).getEntityCoordinates();
+        for(int i = ENEMIES.size()-1; i>=0; i--){
+            EntityCoordinates temp = ENEMIES.get(i).getEntityCoordinates();
             temp.setMapIndex(temp.getMapIndex()-1);
             if(temp.getMapIndex()<0)
-                ENEMY.remove(i);
+                ENEMIES.remove(i);
         }
 
     }
 
     private GameEntity getEntity(EntityType entityType, int entityID, EntityStatus entityStatus) {
-        ArrayList<GameEntity> temp = ENEMY;
+        ArrayList<GameEntity> temp = ENEMIES;
         if(entityType == EntityType.COIN)
             temp = COINS;
         GameEntity tempE = temp.get(entityID);

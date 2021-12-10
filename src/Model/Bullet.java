@@ -11,10 +11,9 @@ public class Bullet extends GameEntity {
 
     public Bullet(EntityCoordinates entityCoordinates) {
         super(EntityType.BULLET, RenderingType.BULLET, entityCoordinates);
-        TILE_STEP = 2.5;
-        walkingStep = 2*(int)(GameDataConfig.getInstance().getMapSectionSize()*TILE_STEP);
-        VEL_X = RENDERED_TILE_SIZE/TILE_STEP;
-
+        tileStep = 2.5;
+        walkingStep = 2*(int)(MapSection.SECTION_SIZE* tileStep);
+        velX = RENDERING_TILE_SIZE / tileStep;
     }
 
     //    --------------------------------------------------------
@@ -24,7 +23,7 @@ public class Bullet extends GameEntity {
     @Override
     public void move() {
         if(entityStatus == EntityStatus.ALIVE){
-            defaultWalkMovement(commons.AnimationData.WALK_ANIMATION_RIGHT);
+            defaultWalkMovement(RIGHT_DIR);
             currentWalkingStep++;
             if(currentWalkingStep == walkingStep)
                 updateEntityStatus();

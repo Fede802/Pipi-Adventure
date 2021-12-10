@@ -22,7 +22,7 @@ public class GamePanel extends ApplicationPanel {
     private final EntitiesDrawer ENTITIES_DRAWER = new EntitiesDrawer(this);
     private final Rectangle2D.Double PAUSE_BUTTON;
 
-    private int renderedTileSize;
+    private int renderingTileSize;
     private boolean loadedRes = false;
     private boolean running = true;
     private BackgroundDrawer backgroundLayer_1;
@@ -45,24 +45,24 @@ public class GamePanel extends ApplicationPanel {
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
-        GAME_BAR.setupBar(currentLife,currentMaxLife,currentBullets);
+    public void setupGameBar(int currentLives, int currentMaxLives, int currentBullets) {
+        GAME_BAR.setupBar(currentLives,currentMaxLives,currentBullets);
     }
 
-    public void updateGameBar(int score, int coin, int life, int bullet) {
-        GAME_BAR.updateBar(score,coin,life,bullet);
+    public void updateGameBar(int score, int coins, int lives, int bullets) {
+        GAME_BAR.updateBar(score,coins,lives,bullets);
     }
 
-    public void updateTileSize(int renderedTileSize) {
-        this.renderedTileSize = renderedTileSize;
-        ENTITIES_DRAWER.updateRenderedTileSize(renderedTileSize);
-        MAP_DRAWER.updateRenderedTileSize(renderedTileSize);
+    public void updateRenderingTileSize(int renderingTileSize) {
+        this.renderingTileSize = renderingTileSize;
+        ENTITIES_DRAWER.updateRenderingTileSize(renderingTileSize);
+        MAP_DRAWER.updateRenderingTileSize(renderingTileSize);
         if(loadedRes) {
-            backgroundLayer_1.setPaddingBottom(3 * renderedTileSize);
-            backgroundLayer_2.setPaddingBottom(3 * renderedTileSize);
-            backgroundLayer_3.setPaddingBottom(3 * renderedTileSize);
-            backgroundLayer_4.setPaddingBottom(3 * renderedTileSize);
-            backgroundLayer_5.setPaddingBottom(3 * renderedTileSize);
+            backgroundLayer_1.setPaddingBottom(3 * renderingTileSize);
+            backgroundLayer_2.setPaddingBottom(3 * renderingTileSize);
+            backgroundLayer_3.setPaddingBottom(3 * renderingTileSize);
+            backgroundLayer_4.setPaddingBottom(3 * renderingTileSize);
+            backgroundLayer_5.setPaddingBottom(3 * renderingTileSize);
         }
     }
 
@@ -70,7 +70,7 @@ public class GamePanel extends ApplicationPanel {
         this.running = running;
     }
 
-    public void updateDayTime() {
+    public void updateDaytime() {
         backgroundLayer_1.updateFrames();
         backgroundLayer_2.updateFrames();
         backgroundLayer_3.updateFrames();
@@ -79,7 +79,7 @@ public class GamePanel extends ApplicationPanel {
         MAP_DRAWER.updateTileset();
     }
 
-    public void setupDayTime() {
+    public void setupDaytime() {
         backgroundLayer_1.reset();
         backgroundLayer_2.reset();
         backgroundLayer_3.reset();
@@ -107,11 +107,11 @@ public class GamePanel extends ApplicationPanel {
         MAP_DRAWER.loadResources();
         ENTITIES_DRAWER.loadResources();
         GAME_BAR.loadResources();
-        backgroundLayer_1 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer1"), this, 5,3*renderedTileSize);
-        backgroundLayer_2 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer2"), this, 4,3*renderedTileSize);
-        backgroundLayer_3 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer3"), this, 3,3*renderedTileSize);
-        backgroundLayer_4 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer4"), this, 1,3*renderedTileSize);
-        backgroundLayer_5 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Sky"), this, 2,3*renderedTileSize);
+        backgroundLayer_1 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer1"), this, 5,3* renderingTileSize);
+        backgroundLayer_2 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer2"), this, 4,3* renderingTileSize);
+        backgroundLayer_3 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer3"), this, 3,3* renderingTileSize);
+        backgroundLayer_4 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Layer4"), this, 1,3* renderingTileSize);
+        backgroundLayer_5 = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\game\\Sky"), this, 2,3* renderingTileSize);
         loadedRes = true;
     }
 

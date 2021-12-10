@@ -15,9 +15,9 @@ public class PlayerHandler extends EntitiesHandler {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static int renderedTileSize;
     private static final SoundManager COIN = new SoundManager("res/audio/coinpickup.wav", SoundManager.MUSIC);
     private static final SoundManager JUMP = new SoundManager("res/audio/Jump.wav", SoundManager.MUSIC);
+    private static int renderingTileSize;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELD
@@ -27,10 +27,10 @@ public class PlayerHandler extends EntitiesHandler {
     private final int IMMORTALITY_STEP=13;
     private final int PLAYER_START_MAP_X = GameDataConfig.getInstance().getPlayerStartMapX();
 
-    private boolean isJumping = false;
-    private boolean isFalling = false;
-    private boolean immortal = false;
-    private boolean dying = false;
+    private boolean jumping;
+    private boolean falling;
+    private boolean immortal;
+    private boolean dying;
     private int currentJumpStep;
     private int currentImmortalityStep;
 
@@ -47,22 +47,22 @@ public class PlayerHandler extends EntitiesHandler {
     //    --------------------------------------------------------
 
     public boolean isJumping() {
-        return isJumping;
+        return jumping;
     }
 
     public void setJumping(boolean jumping) {
         //used only with true value
-        isJumping = jumping;
-        if(isJumping)
+        this.jumping = jumping;
+        if(this.jumping)
             JUMP.playOnce();
     }
 
     public boolean isFalling() {
-        return isFalling;
+        return falling;
     }
 
     public void setFalling(boolean falling) {
-        isFalling = falling;
+        this.falling = falling;
     }
 
     public boolean isImmortal() {
@@ -82,22 +82,22 @@ public class PlayerHandler extends EntitiesHandler {
     }
 
     public void jumpAndFall() {
-        if(isJumping){
+        if(jumping){
             GameModel.getInstance().playerJump();
             currentJumpStep++;
             if(currentJumpStep == JUMP_STEP) {
                 currentJumpStep = 0;
-                isJumping = false;
-                isFalling = true;
+                jumping = false;
+                falling = true;
             }
         }else if(!bottomCollision()){
-            if(!isFalling){
-                isFalling = true;
+            if(!falling){
+                falling = true;
                 GameModel.getInstance().setPlayerFalling(true);
             }
             GameModel.getInstance().playerFall();
-        }else if(isFalling && bottomCollision()){
-            isFalling = false;
+        }else if(falling && bottomCollision()){
+            falling = false;
             GameModel.getInstance().setPlayerFalling(false);
         }
     }
@@ -114,13 +114,13 @@ public class PlayerHandler extends EntitiesHandler {
 
     public double playerTotalTranslation(){
         EntityCoordinates player = getEntity();
-        return (player.getMapX()+player.getMapIndex()*GameDataConfig.getInstance().getMapSectionSize()- PLAYER_START_MAP_X) * renderedTileSize + player.getTraslX();
+        return (player.getMapX()+player.getMapIndex()*GameDataConfig.getInstance().getMapSectionSize()- PLAYER_START_MAP_X) * renderingTileSize + player.getTranslX();
     }
 
     public boolean mapUpdate() {
         boolean mapUpdate = false;
         EntityCoordinates current = getEntity();
-        if(current.getMapX() == PLAYER_START_MAP_X && current.getTraslX() == 0){
+        if(current.getMapX() == PLAYER_START_MAP_X && current.getTranslX() == 0){
             current.setMapIndex(0);
             mapUpdate = true;
         }
@@ -134,54 +134,53 @@ public class PlayerHandler extends EntitiesHandler {
     public void setup() {
         this.currentJumpStep = 0;
         this.currentImmortalityStep = 0;
-        this.isJumping = false;
-        this.isFalling = false;
+        this.jumping = false;
+        this.falling = false;
         this.dying = false;
         this.immortal = false;
     }
 
     @Override
-    protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
-        if(GameData.getInstance().getCurrentLife() == 0) {
-            GameModel.getInstance().updateEntityStatus(EntityType.PLAYER, currentEntity);
+    protected void collideWithEnemy(int entity, int externalEntity) {
+        if(GameData.getInstance().getCurrentLives() == 0) {
+            GameModel.getInstance().updateEntityStatus(EntityType.PLAYER, entity);
             GameView.getInstance().setGameRunning(false);
             dying = true;
         }else{
-            GameData.getInstance().updateCurrentLife();
-
+            GameData.getInstance().updateCurrentLives();
             immortal = true;
         }
     }
 
     @Override
-    protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
-        GameModel.getInstance().updateEntityStatus(EntityType.COIN,outerCurrentEntity);
-        GameData.getInstance().updateCurrentCoin();
+    protected void collideWithCoin(int entity, int externalEntity) {
+        GameModel.getInstance().updateEntityStatus(EntityType.COIN, externalEntity);
+        GameData.getInstance().updateCurrentCoins();
         COIN.playOnce();
     }
 
     @Override
-    protected void wallCollision(int currentEntity) {
-        if(GameData.getInstance().getCurrentLife() == 0) {
-            GameModel.getInstance().updateEntityStatus(EntityType.PLAYER, currentEntity);
+    protected void wallCollision(int entity) {
+        if(GameData.getInstance().getCurrentLives() == 0) {
+            GameModel.getInstance().updateEntityStatus(EntityType.PLAYER, entity);
             GameView.getInstance().setGameRunning(false);
             dying = true;
         }else{
-            GameData.getInstance().updateCurrentLife();
+            GameData.getInstance().updateCurrentLives();
             immortal = true;
         }
     }
 
     private boolean bottomCollision(){
-        return CollisionHandler.bottomCollision(getEntity());
+        return super.bottomCollision(0);
     }
 
     //    --------------------------------------------------------
     //                      STATIC METHOD
     //    --------------------------------------------------------
 
-    public static void setRenderedTileSize(int renderedTileSize) {
-        PlayerHandler.renderedTileSize = renderedTileSize;
+    public static void setRenderingTileSize(int renderingTileSize) {
+        PlayerHandler.renderingTileSize = renderingTileSize;
     }
 
 }

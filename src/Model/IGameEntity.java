@@ -14,9 +14,9 @@ public interface IGameEntity {
     void move();
     EntityCoordinates getEntityCoordinates();
     AnimationData getAnimation();
-    void updateAnimationData(AnimationData animationData);
+    void updateAnimation(AnimationData animation);
     void setDeathAnimation();
     void resetEntity();
-    void changeCoordinate(int renderedTileSize);
+    void changeCoordinate(int renderingTileSize);
 
 }

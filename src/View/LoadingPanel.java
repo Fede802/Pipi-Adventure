@@ -37,14 +37,14 @@ public class LoadingPanel extends ApplicationPanel {
     private final Runnable BAR_UPDATE = new Runnable() {
         @Override
         public void run() {
-            currentFileLoaded++;
-            if(currentFileLoaded == TOTAL_IMG_FILES){
+            currentFilesLoaded++;
+            if(currentFilesLoaded == TOTAL_IMG_FILES){
                 load();
             }
         }
     };
 
-    private int currentFileLoaded;
+    private int currentFilesLoaded;
     private boolean transition = false;
 
     //title transition vars
@@ -138,7 +138,7 @@ public class LoadingPanel extends ApplicationPanel {
         g2d.setStroke(BAR_STROKE);
         g2d.drawRoundRect((this.getWidth()- LOADING_BAR_WIDTH)/2-1,barPaddingTop+shiftBarVelY*currentBarStep, LOADING_BAR_WIDTH +2,24,20,20);
         g2d.setColor(Color.MAGENTA);
-        g2d.fillRoundRect((this.getWidth()- LOADING_BAR_WIDTH)/2,barPaddingTop+2+shiftBarVelY*currentBarStep,(int)(BAR_STEP *currentFileLoaded),20,20,20);
+        g2d.fillRoundRect((this.getWidth()- LOADING_BAR_WIDTH)/2,barPaddingTop+2+shiftBarVelY*currentBarStep,(int)(BAR_STEP * currentFilesLoaded),20,20,20);
 
         BACKGROUND_ANIMATION.drawBackground(g2d);
     }

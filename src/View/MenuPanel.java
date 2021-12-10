@@ -42,7 +42,7 @@ public class MenuPanel extends ApplicationPanel {
     private final int BG_DX = 1;
 
     private Image soundON,soundOFF,musicON,musicOFF,music,sound;
-    private BackgroundDrawer menuGIF;
+    private BackgroundDrawer menuAnimation;
     private BackgroundDrawer background;
     private int currentChoice = 0;
 
@@ -80,8 +80,8 @@ public class MenuPanel extends ApplicationPanel {
     public void setup(int bgTransl, int animationFrame, int currentTitlePaddingTop) {
         this.currentTitlePadding = currentTitlePaddingTop;
         background.setX(bgTransl);
-        menuGIF.setCurrentFrame(animationFrame);
-        menuGIF.updateFrames(true);
+        menuAnimation.setCurrentFrame(animationFrame);
+        menuAnimation.updateFrames(true);
         if(SoundManager.isMusicActive())
             music = musicON;
         else
@@ -99,7 +99,7 @@ public class MenuPanel extends ApplicationPanel {
     @Override
     protected void timerActionEvent(ActionEvent e) {
         background.update();
-        menuGIF.update();
+        menuAnimation.update();
         if(firstOpen && transition){
             currentStep--;
             if(currentStep%2 == 0)
@@ -115,7 +115,7 @@ public class MenuPanel extends ApplicationPanel {
     @Override
     public void loadResources() {
         background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\menu\\menubg.png"), this, BG_DX);
-        menuGIF = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\menu\\Animation"),this,0);
+        menuAnimation = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\menu\\Animation"),this,0);
         musicON = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Music_Button1.png").get(0);
         musicOFF = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Music_Button2.png").get(0);
         soundON = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Sound_Button1.png").get(0);
@@ -148,7 +148,7 @@ public class MenuPanel extends ApplicationPanel {
             else
                 boundColor = DEFAULT_BOUND_COLOR;
            if (i == 4)
-               menuGIF.drawBackground(g2d);
+               menuAnimation.drawBackground(g2d);
             switch (i) {
                 case 4 -> {
                     g2d.drawImage(music, this.getWidth() / 10 - 50, this.getHeight() - (this.getHeight() / 10) + 5 + shiftOptionsVelY * currentStep, 50 * minSize / DEFAULT_WIDTH, 50 * minSize / DEFAULT_WIDTH, null);

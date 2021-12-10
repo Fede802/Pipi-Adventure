@@ -56,15 +56,15 @@ public class Player extends GameEntity implements IPlayer {
         entityCoordinates.setMapX(GameDataConfig.getInstance().getPlayerStartMapX());
         entityCoordinates.setMapY(GameDataConfig.getInstance().getPlayerStartMapY());
         entityCoordinates.setMapIndex(0);
-        entityCoordinates.setTraslX(0);
-        entityCoordinates.setTraslY(0);
+        entityCoordinates.setTranslX(0);
+        entityCoordinates.setTranslY(0);
     }
 
     @Override
-    public void changeCoordinate(int renderedTileSize){
-        super.changeCoordinate(renderedTileSize);
+    public void changeCoordinate(int renderingTileSize){
+        super.changeCoordinate(renderingTileSize);
         for(int i = 0; i < BULLETS.size(); i++){
-            BULLETS.get(i).changeCoordinate(renderedTileSize);
+            BULLETS.get(i).changeCoordinate(renderingTileSize);
         }
     }
 
@@ -81,7 +81,7 @@ public class Player extends GameEntity implements IPlayer {
     }
 
     @Override
-    public void updateBulletsIndex() {
+    public void updateBulletsMapIndex() {
         for(int i = 0; i < BULLETS.size(); i++){
             BULLETS.get(i).getEntityCoordinates().setMapIndex(
                     BULLETS.get(i).getEntityCoordinates().getMapIndex()-1
@@ -91,33 +91,33 @@ public class Player extends GameEntity implements IPlayer {
 
     @Override
     public void jump() {
-        entityCoordinates.updateTraslY(-VEL_Y);
-        if(Math.abs(entityCoordinates.getTraslY()) ==  RENDERED_TILE_SIZE) {
-            entityCoordinates.setTraslY(0);
+        entityCoordinates.updateTranslY(-velY);
+        if(Math.abs(entityCoordinates.getTranslY()) == RENDERING_TILE_SIZE) {
+            entityCoordinates.setTranslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()-1);
         }
     }
 
     @Override
     public void fall() {
-        entityCoordinates.updateTraslY(VEL_Y);
-        if(entityCoordinates.getTraslY() == RENDERED_TILE_SIZE){
-            entityCoordinates.setTraslY(0);
+        entityCoordinates.updateTranslY(velY);
+        if(entityCoordinates.getTranslY() == RENDERING_TILE_SIZE){
+            entityCoordinates.setTranslY(0);
             entityCoordinates.setMapY(entityCoordinates.getMapY()+1);
         }
     }
 
     @Override
-    public void setJumping(boolean isJumping) {
-        if(isJumping){
+    public void setJumping(boolean jumping) {
+        if(jumping){
             currentAnimation = AnimationData.JUMPING_ANIMATION;
             currentAnimationStep = 0;
         }
     }
 
     @Override
-    public void setFalling(boolean isFalling) {
-        if(isFalling){
+    public void setFalling(boolean falling) {
+        if(falling){
             currentAnimation = AnimationData.JUMPING_ANIMATION;
             currentAnimationStep = AnimationData.LAST_FRAME;
         }else{
@@ -136,8 +136,8 @@ public class Player extends GameEntity implements IPlayer {
         }
         BULLETS.add(new Bullet(new EntityCoordinates.Builder(mapX,entityCoordinates.getMapY())
                 .setStartMapIndex(mapIndex)
-                .setTraslX(entityCoordinates.getTraslX())
-                .setTraslY(entityCoordinates.getTraslY())
+                .setTranslX(entityCoordinates.getTranslX())
+                .setTranslY(entityCoordinates.getTranslY())
                 .build()));
     }
 
@@ -147,7 +147,7 @@ public class Player extends GameEntity implements IPlayer {
     }
 
     @Override
-    public EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus) {
+    public EntityCoordinates getBulletCoordinates(int bulletID, EntityStatus entityStatus) {
         EntityCoordinates tempE;
         if(entityStatus == EntityStatus.ALIVE && BULLETS.get(bulletID).getEntityStatus() != EntityStatus.ALIVE)
             tempE = null;
@@ -162,7 +162,7 @@ public class Player extends GameEntity implements IPlayer {
     }
 
     @Override
-    public int bulletCount() {
+    public int bulletsCount() {
         return BULLETS.size();
     }
 
@@ -172,8 +172,8 @@ public class Player extends GameEntity implements IPlayer {
     }
 
     @Override
-    public void updateBulletAnimationData(int entityID, AnimationData animation) {
-        BULLETS.get(entityID).updateAnimationData(animation);
+    public void updateBulletAnimation(int entityID, AnimationData animation) {
+        BULLETS.get(entityID).updateAnimation(animation);
     }
 
     @Override

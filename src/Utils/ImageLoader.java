@@ -15,7 +15,7 @@ public class ImageLoader {
     //                       STATIC FIELD
     //    --------------------------------------------------------
 
-    private static ImageLoader instance = null;
+    private static ImageLoader instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELD

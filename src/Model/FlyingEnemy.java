@@ -10,7 +10,7 @@ public class FlyingEnemy extends Enemy {
 
     public FlyingEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
         super(R_ID, entityCoordinates);
-        currentAnimation = commons.AnimationData.WALK_ANIMATION_LEFT;
+        currentAnimation = AnimationData.WALK_ANIMATION_LEFT;
     }
 
     //    --------------------------------------------------------
@@ -26,7 +26,7 @@ public class FlyingEnemy extends Enemy {
 
     @Override
     public void setDeathAnimation() {
-        currentAnimation = commons.AnimationData.DEATH_ANIMATION_LEFT;
+        currentAnimation = AnimationData.DEATH_ANIMATION_LEFT;
     }
 
     @Override

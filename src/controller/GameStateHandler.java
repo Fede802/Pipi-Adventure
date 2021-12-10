@@ -1,7 +1,6 @@
 package controller;
 
 import model.GameData;
-import model.GameModel;
 import view.GameView;
 
 public class GameStateHandler implements IGameStateHandler {
@@ -18,7 +17,7 @@ public class GameStateHandler implements IGameStateHandler {
     public final static int HELP_STATE = 5;
     public final static int LOADING_STATE = 6;
 
-    private static GameStateHandler instance = null;
+    private static IGameStateHandler instance;
 
     //    --------------------------------------------------------
     //                      INSTANCE FIELD
@@ -69,9 +68,9 @@ public class GameStateHandler implements IGameStateHandler {
     public void openUpgradePanel() {
         currentState = UPGRADE_STATE;
         GameView.getInstance().setupUpgradePanel(
-                GameData.getInstance().getCurrentMaxLife(),
+                GameData.getInstance().getCurrentMaxLives(),
                 GameData.getInstance().getCurrentMaxBullets(),
-                GameData.getInstance().getTotalCoin()
+                GameData.getInstance().getTotalCoins()
                 );
         GameView.getInstance().openWindow();
     }
@@ -109,7 +108,7 @@ public class GameStateHandler implements IGameStateHandler {
     //                      STATIC METHOD
     //    --------------------------------------------------------
 
-    public static GameStateHandler getInstance() {
+    public static IGameStateHandler getInstance() {
         if (instance == null)
             instance = new GameStateHandler();
         return instance;

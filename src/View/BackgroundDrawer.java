@@ -31,14 +31,14 @@ public class BackgroundDrawer {
     //                       CONSTRUCTORS
     //    --------------------------------------------------------
 
-    public BackgroundDrawer(ArrayList<Image> background, JPanel PARENT_PANEL, final int DX) {
-        this.PARENT_PANEL = PARENT_PANEL;
-        this.DX = DX;
+    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, final int dx) {
+        this.PARENT_PANEL = parentPanel;
+        this.DX = dx;
         IMAGES = background;
     }
 
-    public BackgroundDrawer(ArrayList<Image> background, JPanel PARENT_PANEL, final int DX, final int paddingBottom) {
-        this(background, PARENT_PANEL, DX);
+    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, final int dx, final int paddingBottom) {
+        this(background, parentPanel, dx);
         this.paddingBottom = paddingBottom;
     }
 

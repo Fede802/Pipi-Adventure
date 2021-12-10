@@ -7,7 +7,7 @@ public class GameDataConfig extends Config {
     //    --------------------------------------------------------
 
     private static final String GAME_DATA_PROPERTIES_URL = "Config/GameDataProperties.txt";
-    private static GameDataConfig instance = null;
+    private static GameDataConfig instance;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR

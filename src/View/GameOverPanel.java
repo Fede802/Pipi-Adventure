@@ -32,7 +32,7 @@ public class GameOverPanel extends SlidableApplicationPanel {
     private final String[] GAME_DATA_STRINGS = {
             "Score : ",
             "Record : ",
-            "Coin : "
+            "Coins : "
     };
     private final String RECORD_STRING = "NEW RECORD";
     private final String[] GAME_DATA_VALUES = new String[3];
@@ -60,10 +60,10 @@ public class GameOverPanel extends SlidableApplicationPanel {
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public void setData(int currentScore, int recordScore, int currentCoin) {
+    public void setData(int currentScore, int recordScore, int currentCoins) {
         GAME_DATA_VALUES[0]=String.valueOf(currentScore);
         GAME_DATA_VALUES[1]=String.valueOf(recordScore);
-        GAME_DATA_VALUES[2]=String.valueOf(currentCoin);
+        GAME_DATA_VALUES[2]=String.valueOf(currentCoins);
     }
 
     @Override

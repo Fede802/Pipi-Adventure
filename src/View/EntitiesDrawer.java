@@ -21,14 +21,14 @@ public class EntitiesDrawer {
 
     private HashMap<RenderingType,HashMap<Integer, ArrayList<Image>>> entityFrames;
     private Image gun;
-    private int renderedTileSize;
+    private int renderingTileSize;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public EntitiesDrawer(JPanel PARENT_PANEL){
-        this.PARENT_PANEL = PARENT_PANEL;
+    public EntitiesDrawer(JPanel parentPanel){
+        this.PARENT_PANEL = parentPanel;
     }
 
     //    --------------------------------------------------------
@@ -36,7 +36,7 @@ public class EntitiesDrawer {
     //    --------------------------------------------------------
 
     public void drawEntities(Graphics2D g2d) {
-        int entityNum = GameEngine.getInstance().getTotalEntity();
+        int entityNum = GameEngine.getInstance().getTotalEntities();
         double mapTranslX = GameEngine.getInstance().getMapTranslX();
         for(int i = 0; i < entityNum; i++){
             Pair<EntityCoordinates, AnimationData> temp = GameEngine.getInstance().getEntityForRendering(i);
@@ -46,7 +46,7 @@ public class EntitiesDrawer {
             ArrayList<Image> frameArray = entityFrames.get(tempAnimation.getRenderingType()).get(tempAnimation.getAnimationType());
             if(tempAnimation.isHasToUpdate()){
                 updateAnimation(tempAnimation,frameArray.size());
-                GameEngine.getInstance().updateAnimationData(temp.getValue(),i);
+                GameEngine.getInstance().updateAnimation(temp.getValue(),i);
             }
             Image tempFrame;
             if(tempAnimation.getCurrentAnimationStep() == AnimationData.LAST_FRAME){
@@ -55,26 +55,26 @@ public class EntitiesDrawer {
                 tempFrame = frameArray.get(temp.getValue().getCurrentAnimationStep());
             }
             g2d.drawImage(tempFrame,
-                    Math.toIntExact(Math.round((tempPosition.getMapX() + SECTION_SIZE * tempPosition.getMapIndex()) * renderedTileSize - mapTranslX + tempPosition.getTraslX())),
-                    Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderedTileSize + tempPosition.getTraslY())),
-                    renderedTileSize,
-                    renderedTileSize,
+                    Math.toIntExact(Math.round((tempPosition.getMapX() + SECTION_SIZE * tempPosition.getMapIndex()) * renderingTileSize - mapTranslX + tempPosition.getTranslX())),
+                    Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderingTileSize + tempPosition.getTranslY())),
+                    renderingTileSize,
+                    renderingTileSize,
                     null
             );
             if(temp.getValue().getRenderingType() == RenderingType.PLAYER && temp.getValue().getAnimationType() != AnimationData.DEATH_ANIMATION_RIGHT)
                 g2d.drawImage(gun,
-                        Math.toIntExact(Math.round((tempPosition.getMapX()+ 1 + SECTION_SIZE * tempPosition.getMapIndex()) * renderedTileSize - mapTranslX -(renderedTileSize/10) + tempPosition.getTraslX())),
-                        Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderedTileSize + tempPosition.getTraslY())),
-                        renderedTileSize,
-                        renderedTileSize,
+                        Math.toIntExact(Math.round((tempPosition.getMapX()+ 1 + SECTION_SIZE * tempPosition.getMapIndex()) * renderingTileSize - mapTranslX -(renderingTileSize /10) + tempPosition.getTranslX())),
+                        Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderingTileSize + tempPosition.getTranslY())),
+                        renderingTileSize,
+                        renderingTileSize,
                         null
                 );
         }
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
     }
 
-    public void updateRenderedTileSize(final int renderedTileSize){
-        this.renderedTileSize = renderedTileSize;
+    public void updateRenderingTileSize(int renderingTileSize){
+        this.renderingTileSize = renderingTileSize;
     }
 
     public void loadResources() {

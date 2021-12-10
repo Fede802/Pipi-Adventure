@@ -2,13 +2,13 @@ package model;
 
 public interface IGameData {
 
-    int getCurrentMaxLife();
-    void updateCurrentMaxLife();
+    int getCurrentMaxLives();
+    void updateCurrentMaxLives();
 
-    int getCurrentLife();
-    void setCurrentLife(int currentLife);
-    void updateCurrentLife();
-    void updateCurrentLife(int lifeVariation);
+    int getCurrentLives();
+    void setCurrentLives(int currentLives);
+    void updateCurrentLives();
+    void updateCurrentLives(int livesVariation);
 
     int getCurrentMaxBullets();
     void updateCurrentMaxBullets();
@@ -18,13 +18,13 @@ public interface IGameData {
     void updateCurrentBullets();
     void updateCurrentBullets(int bulletsVariation);
 
-    int getTotalCoin();
-    void updateTotalCoin(int coinVariation);
+    int getTotalCoins();
+    void updateTotalCoins(int coinsVariation);
 
-    int getCurrentCoin();
-    void setCurrentCoin(int currentCoin);
-    void updateCurrentCoin();
-    void updateCurrentCoin(int coinVariation);
+    int getCurrentCoins();
+    void setCurrentCoins(int currentCoins);
+    void updateCurrentCoins();
+    void updateCurrentCoins(int coinVariation);
 
     int getRecordScore();
 

@@ -22,14 +22,14 @@ public class EntityCoordinates {
     private double width;
     private double height;
 
-    private double traslX;
-    private double traslY;
+    private double translX;
+    private double translY;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    private EntityCoordinates(final int mapIndex, final int mapX, final int mapY) {
+    private EntityCoordinates(int mapIndex,int mapX, int mapY) {
         this.mapIndex = mapIndex;
         this.mapX = mapX;
         this.mapY = mapY;
@@ -71,16 +71,16 @@ public class EntityCoordinates {
         this.width = width;
     }
 
-    public double getTraslX() {
-        return traslX;
+    public double getTranslX() {
+        return translX;
     }
 
-    public void setTraslX(double traslX) {
-        this.traslX = traslX;
+    public void setTranslX(double translX) {
+        this.translX = translX;
     }
 
-    public void updateTraslX(double traslXVariation) {
-        this.traslX = (double) Math.round((this.traslX +traslXVariation) * SCALE) / SCALE;
+    public void updateTranslX(double translXVariation) {
+        this.translX = (double) Math.round((this.translX +translXVariation) * SCALE) / SCALE;
     }
 
     public double getHeight() {
@@ -91,16 +91,16 @@ public class EntityCoordinates {
         this.height = height;
     }
 
-    public double getTraslY() {
-        return traslY;
+    public double getTranslY() {
+        return translY;
     }
 
-    public void setTraslY(double traslY) {
-        this.traslY = traslY;
+    public void setTranslY(double translY) {
+        this.translY = translY;
     }
 
-    public void updateTraslY(double traslYVariation){
-        this.traslY = (double) Math.round((this.traslY +traslYVariation) * SCALE) / SCALE;
+    public void updateTranslY(double translYVariation){
+        this.translY = (double) Math.round((this.translY +translYVariation) * SCALE) / SCALE;
     }
 
     //    --------------------------------------------------------
@@ -125,8 +125,8 @@ public class EntityCoordinates {
         private double width;
         private double height;
 
-        private double traslX;
-        private double traslY;
+        private double translX;
+        private double translY;
 
         public Builder(int startMapX, int startMapY) {
             this.START_MAP_X = startMapX;
@@ -134,16 +134,16 @@ public class EntityCoordinates {
             this.mapIndex = 0;
             this.width = defaultDimension;
             this.height = defaultDimension;
-            this.traslX = 0.0;
-            this.traslY = 0.0;
+            this.translX = 0.0;
+            this.translY = 0.0;
         }
 
         public EntityCoordinates build() {
             EntityCoordinates entityCoordinates = new EntityCoordinates(mapIndex,START_MAP_X,START_MAP_Y);
             entityCoordinates.width = width;
             entityCoordinates.height = height;
-            entityCoordinates.traslX = traslX;
-            entityCoordinates.traslY = traslY;
+            entityCoordinates.translX = translX;
+            entityCoordinates.translY = translY;
             return entityCoordinates;
         }
 
@@ -152,13 +152,13 @@ public class EntityCoordinates {
             return this;
         }
 
-        public Builder setTraslX(double traslX) {
-            this.traslX = traslX;
+        public Builder setTranslX(double translX) {
+            this.translX = translX;
             return this;
         }
 
-        public Builder setTraslY(double traslY) {
-            this.traslY = traslY;
+        public Builder setTranslY(double translY) {
+            this.translY = translY;
             return this;
         }
 

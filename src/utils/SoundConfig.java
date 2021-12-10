@@ -7,7 +7,7 @@ public class SoundConfig extends Config {
     //    --------------------------------------------------------
 
     private static final String SOUND_PROPERTIES_URL = "Config/SoundProperties.txt";
-    private static SoundConfig instance = null;
+    private static SoundConfig instance;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR

@@ -19,11 +19,11 @@ public class MainFrame extends JFrame {
     //                      INSTANCE FIELDS
     //    --------------------------------------------------------
 
-    private final ComponentContainer APPLICATION_SCREEN = new ComponentContainer();
+    private final ComponentContainer APPLICATION_CONTAINER = new ComponentContainer();
     private final MenuPanel MAIN_MENU = new MenuPanel();
     private final GamePanel GAME_PANEL = new GamePanel();
-    private final PausePanel PAUSE = new PausePanel(APPLICATION_SCREEN);
-    private final GameOverPanel GAME_OVER = new GameOverPanel(APPLICATION_SCREEN);
+    private final PausePanel PAUSE = new PausePanel(APPLICATION_CONTAINER);
+    private final GameOverPanel GAME_OVER = new GameOverPanel(APPLICATION_CONTAINER);
     private final HelpPanel HELP = new HelpPanel();
     private final UpgradePanel UPGRADE_PANEL = new UpgradePanel();
     private final LoadingPanel LOADING_PANEL = new LoadingPanel(MAIN_MENU.getTitlePadding());
@@ -34,14 +34,14 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         super(FRAME_TITLE);
-        APPLICATION_SCREEN.add(GameStateHandler.LOADING_STATE,LOADING_PANEL);
-        APPLICATION_SCREEN.add(GameStateHandler.MENU_STATE,MAIN_MENU);
-        APPLICATION_SCREEN.add(GameStateHandler.GAME_STATE,GAME_PANEL);
-        APPLICATION_SCREEN.add(GameStateHandler.PAUSE_STATE,PAUSE);
-        APPLICATION_SCREEN.add(GameStateHandler.GAME_OVER_STATE,GAME_OVER);
-        APPLICATION_SCREEN.add(GameStateHandler.HELP_STATE,HELP);
-        APPLICATION_SCREEN.add(GameStateHandler.UPGRADE_STATE,UPGRADE_PANEL);
-        this.add(APPLICATION_SCREEN);
+        APPLICATION_CONTAINER.add(GameStateHandler.LOADING_STATE,LOADING_PANEL);
+        APPLICATION_CONTAINER.add(GameStateHandler.MENU_STATE,MAIN_MENU);
+        APPLICATION_CONTAINER.add(GameStateHandler.GAME_STATE,GAME_PANEL);
+        APPLICATION_CONTAINER.add(GameStateHandler.PAUSE_STATE,PAUSE);
+        APPLICATION_CONTAINER.add(GameStateHandler.GAME_OVER_STATE,GAME_OVER);
+        APPLICATION_CONTAINER.add(GameStateHandler.HELP_STATE,HELP);
+        APPLICATION_CONTAINER.add(GameStateHandler.UPGRADE_STATE,UPGRADE_PANEL);
+        this.add(APPLICATION_CONTAINER);
         this.setMinimumSize(MINIMUM_SIZE);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setIconImage(LOGO.getImage());
@@ -56,35 +56,35 @@ public class MainFrame extends JFrame {
     //    --------------------------------------------------------
 
     public ComponentContainer getComponentContainer(){
-        return APPLICATION_SCREEN;
+        return APPLICATION_CONTAINER;
     }
 
     public void setupMenu() {
         MAIN_MENU.setup(LOADING_PANEL.getBgTransl(),LOADING_PANEL.getBgAnimationCurrentFrame(),LOADING_PANEL.getCurrentTitlePaddingTop());
     }
 
-    public void setupGameBar(int currentLife, int currentMaxLife, int currentBullets) {
-        GAME_PANEL.setupGameBar(currentLife,currentMaxLife,currentBullets);
+    public void setupGameBar(int currentLives, int currentMaxLives, int currentBullets) {
+        GAME_PANEL.setupGameBar(currentLives,currentMaxLives,currentBullets);
     }
 
-    public void updateGameBar(int score, int coin, int life, int bullet) {
-        GAME_PANEL.updateGameBar(score,coin,life,bullet);
+    public void updateGameBar(int score, int coins, int lives, int bullets) {
+        GAME_PANEL.updateGameBar(score,coins,lives,bullets);
     }
 
-    public void setGameOverData(int currentScore, int recordScore, int currentCoin) {
-        GAME_OVER.setData(currentScore,recordScore,currentCoin);
+    public void setGameOverData(int currentScore, int recordScore, int currentCoins) {
+        GAME_OVER.setData(currentScore,recordScore,currentCoins);
     }
 
-    public void setupUpgradePanel(int currentLife, int currentBullets, int totalCoin) {
-        UPGRADE_PANEL.setup(currentLife, currentBullets, totalCoin);
+    public void setupUpgradePanel(int currentLives, int currentBullets, int totalCoins) {
+        UPGRADE_PANEL.setup(currentLives, currentBullets, totalCoins);
     }
 
     public void setupDaytime() {
-        GAME_PANEL.setupDayTime();
+        GAME_PANEL.setupDaytime();
     }
 
-    public void updateDayTime() {
-        GAME_PANEL.updateDayTime();
+    public void updateDaytime() {
+        GAME_PANEL.updateDaytime();
     }
 
     public void getResources() {
@@ -100,8 +100,8 @@ public class MainFrame extends JFrame {
         GAME_PANEL.setGameRunning(running);
     }
 
-    public void notifySizeChanged(int renderedTileSize) {
-        GAME_PANEL.updateTileSize(renderedTileSize);
+    public void notifySizeChanged(int renderingTileSize) {
+        GAME_PANEL.updateRenderingTileSize(renderingTileSize);
     }
 
 }

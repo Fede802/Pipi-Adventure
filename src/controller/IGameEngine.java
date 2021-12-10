@@ -11,21 +11,21 @@ public interface IGameEngine {
     int getTileData(int mapIndex,int mapX,int mapY);
     double getMapTranslX();
 
-    int getTotalEntity();
+    int getTotalEntities();
     Pair<EntityCoordinates, AnimationData> getEntityForRendering(int entityID);
-    void updateAnimationData(AnimationData value,int entityID);
+    void updateAnimation(AnimationData animation, int entityID);
 
     void jump();
     void shoot();
 
-    void updateTotalCoin(int price);
-    void updateCurrentLife();
+    void updateTotalCoins(int variation);
+    void updateCurrentLives();
     void updateCurrentBullets();
     void saveDataConfig();
 
     void setResources();
     void setupGame();
-    void notifySizeChanged(int renderedTileSize);
+    void notifySizeChanged(int renderingTileSize);
 
 
 

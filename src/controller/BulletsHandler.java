@@ -18,19 +18,19 @@ public class BulletsHandler extends EntitiesHandler {
     //    --------------------------------------------------------
 
     @Override
-    protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
-        GameModel.getInstance().updateEntityStatus(EntityType.ENEMY,outerCurrentEntity);
-        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,currentEntity);
+    protected void collideWithEnemy(int entity, int externalEntity) {
+        GameModel.getInstance().updateEntityStatus(EntityType.ENEMY,externalEntity);
+        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,entity);
     }
 
     @Override
-    protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
+    protected void collideWithCoin(int entity, int externalEntity) {
         //nothing to do
     }
 
     @Override
-    protected void wallCollision(int currentEntity) {
-        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,currentEntity);
+    protected void wallCollision(int entity) {
+        GameModel.getInstance().updateEntityStatus(EntityType.BULLET,entity);
     }
 
 }

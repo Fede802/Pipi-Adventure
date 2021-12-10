@@ -20,7 +20,7 @@ public class HelpPanel extends ApplicationPanel {
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>() {{
         add(new Rectangle2D.Double());add(new Rectangle2D.Double());
     }};
-    private final String[] CONTROL_STRINGS = {
+    private final String[] ACTIONS_STRINGS = {
             "Jump",
             "Shoot",
             "Pause",
@@ -79,10 +79,10 @@ public class HelpPanel extends ApplicationPanel {
         Graphics2D g2d = (Graphics2D) g;
         background.drawBackground(g2d);
         StringDrawer.drawString(g2d, TITLE, TITLE_FONT, null, StringDrawer.TITLE_STROKE, DEFAULT_COLOR, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
-        for(int i = -1; i< CONTROL_STRINGS.length-1; i++){
-            StringDrawer.drawString(g2d, CONTROL_STRINGS[i+1], INFO_FONT, null, StringDrawer.DEFAULT_STROKE, DEFAULT_COLOR,this.getHeight() / 6, 7*this.getWidth()/24*i,this,StringDrawer.CENTER);
+        for(int i = -1; i< ACTIONS_STRINGS.length-1; i++){
+            StringDrawer.drawString(g2d, ACTIONS_STRINGS[i+1], INFO_FONT, null, StringDrawer.DEFAULT_STROKE, DEFAULT_COLOR,this.getHeight() / 6, 7*this.getWidth()/24*i,this,StringDrawer.CENTER);
             g2d.drawImage(firstLineImages[i+1],this.getWidth()/2+7*this.getWidth()/24*i-this.getHeight()/14,this.getHeight()/4,this.getHeight()/7,this.getHeight()/7,null);
-            StringDrawer.drawString(g2d, CONTROL_STRINGS[i+1], INFO_FONT, null, StringDrawer.DEFAULT_STROKE, DEFAULT_COLOR,this.getHeight() / 2, 7*this.getWidth()/24*i,this,StringDrawer.CENTER);
+            StringDrawer.drawString(g2d, ACTIONS_STRINGS[i+1], INFO_FONT, null, StringDrawer.DEFAULT_STROKE, DEFAULT_COLOR,this.getHeight() / 2, 7*this.getWidth()/24*i,this,StringDrawer.CENTER);
             g2d.drawImage(secondLineImages[i+1],this.getWidth()/2+7*this.getWidth()/24*i-this.getHeight()/14,7*this.getHeight()/12,this.getHeight()/7,this.getHeight()/7,null);
         }
         for (int i = 0; i < OPTIONS.length; i++) {

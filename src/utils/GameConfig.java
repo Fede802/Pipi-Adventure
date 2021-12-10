@@ -7,7 +7,7 @@ public class GameConfig extends Config {
     //    --------------------------------------------------------
 
     private static final String GAME_PROPERTIES_URL = "Config/GameProperties.txt";
-    private static GameConfig instance = null;
+    private static GameConfig instance;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
@@ -41,8 +41,8 @@ public class GameConfig extends Config {
         return inputChecker(1000,"changeDaytimeScore");
     }
 
-    public int getBulletIncrementScore() {
-        return inputChecker(100,"bulletIncrementScore");
+    public int getBulletsIncrementScore() {
+        return inputChecker(100,"bulletsIncrementScore");
     }
 
     public int getRecordScore() {
@@ -53,28 +53,32 @@ public class GameConfig extends Config {
         PROPERTIES.setProperty("recordScore",String.valueOf(recordScore));
     }
 
-    public int getTotalCoin() {
-        return inputChecker(0,"totalCoin");
+    public int getTotalCoins() {
+        return inputChecker(0,"totalCoins");
     }
 
-    public void setTotalCoin(int totalCoin){
-        PROPERTIES.setProperty("totalCoin",String.valueOf(totalCoin));
+    public void setTotalCoins(int totalCoin){
+        PROPERTIES.setProperty("totalCoins",String.valueOf(totalCoin));
     }
 
-    public int getCurrentMaxBullet() {
-        return inputChecker(0,"currentMaxBullet");
+    public int getCurrentMaxBullets() {
+        return inputChecker(0,"currentMaxBullets");
     }
 
-    public void setCurrentMaxBullet(int currentMaxBullet) {
-        PROPERTIES.setProperty("currentMaxBullet",String.valueOf(currentMaxBullet));
+    public void setCurrentMaxBullets(int currentMaxBullet) {
+        PROPERTIES.setProperty("currentMaxBullets",String.valueOf(currentMaxBullet));
     }
 
-    public int getCurrentMaxLife() {
-        return inputChecker(0,"currentMaxLife");
+    public int getCurrentMaxLives() {
+        return inputChecker(0,"currentMaxLives");
     }
 
-    public void setCurrentMaxLife(int currentMaxLife) {
-        PROPERTIES.setProperty("currentMaxLife",String.valueOf(currentMaxLife));
+    public void setCurrentMaxLives(int currentMaxLives) {
+        PROPERTIES.setProperty("currentMaxLives",String.valueOf(currentMaxLives));
+    }
+
+    public int getFlyingSpawnRange() {
+        return inputChecker(10,"flyingSpawnRange");
     }
 
     private int inputChecker(int defaultValue, String varName) {

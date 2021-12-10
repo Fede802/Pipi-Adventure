@@ -25,9 +25,9 @@ public class UpgradePanel extends ApplicationPanel {
     private final Font ERROR_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 16);
     private final Font PRICE_FONT = new Font(FontLoader.GAME_FONT, Font.PLAIN, 12);
     private final Font BAR_PLACEHOLDER_FONT = new Font("Arial", Font.PLAIN, 12);
-    private final int MAX_LIFE = GameDataConfig.getInstance().getMaxLives();
-    private final int MAX_BULLET = GameDataConfig.getInstance().getMaxBullets();
-    private final int MIN_BULLET = GameDataConfig.getInstance().getMinBullets();
+    private final int MAX_LIVES = GameDataConfig.getInstance().getMaxLives();
+    private final int MAX_BULLETS = GameDataConfig.getInstance().getMaxBullets();
+    private final int MIN_BULLETS = GameDataConfig.getInstance().getMinBullets();
     private final int DISSOLUTION_STEP = GameConfig.getInstance().getDissolutionStep();
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{
         add(new Rectangle2D.Double());
@@ -35,24 +35,24 @@ public class UpgradePanel extends ApplicationPanel {
         add(new Rectangle2D.Double());
         add(new Rectangle2D.Double());
     }};
+    private final Stroke BOX_STROKE = new BasicStroke(4);
 
     private float dissolutionGrade = 1f;
     private int currentDissolutionStep;
-    private int currentLife;
-    private int currentBullet;
+    private int currentLives;
+    private int currentBullets;
     private int currentChoice = 0;
     private Image heart;
     private Image bullet;
     private Image coin;
     private String lifePrice = "MAX";
     private String bulletPrice = lifePrice;
-    private boolean lowbudget = false;
-    private BackgroundDrawer BG_DRAWER;
+    private boolean lowBudget = false;
+    private BackgroundDrawer background;
     private boolean upgrading = false;
     private Animation pipi;
     private Animation pedestal;
-    private int totalCoin;
-    private final Stroke BOX_STROKE = new BasicStroke(4);
+    private int totalCoins;
 
     //debug purpose
     private boolean freeUpgrade;
@@ -74,21 +74,21 @@ public class UpgradePanel extends ApplicationPanel {
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public void setup(int currentLife,int currentBullets,int totalCoin) {
-        this.totalCoin = totalCoin;
-        this.currentLife = currentLife;
-        this.currentBullet = currentBullets;
-        if(currentLife < MAX_LIFE)
-            lifePrice = String.valueOf(calculatePrice(currentLife));
-        if(currentBullet <MAX_BULLET)
-            bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+    public void setup(int currentLives,int currentBullets,int totalCoins) {
+        this.totalCoins = totalCoins;
+        this.currentLives = currentLives;
+        this.currentBullets = currentBullets;
+        if(currentLives < MAX_LIVES)
+            lifePrice = String.valueOf(calculatePrice(currentLives));
+        if(this.currentBullets < MAX_BULLETS)
+            bulletPrice = String.valueOf(calculatePrice(this.currentBullets - MIN_BULLETS));
 
     }
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
-        BG_DRAWER.update();
-        if(lowbudget){
+        background.update();
+        if(lowBudget){
             if(currentDissolutionStep == DISSOLUTION_STEP){
                 resetLowBudgetAnimation();
             }
@@ -113,8 +113,8 @@ public class UpgradePanel extends ApplicationPanel {
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
-        BG_DRAWER.updateFrames(true);
+        background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
+        background.updateFrames(true);
         pipi = new Animation("res\\images\\backgrounds\\upgrade\\Pipi");
         pedestal = new Animation("res\\images\\backgrounds\\upgrade\\Pedestal");
         heart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);
@@ -131,9 +131,9 @@ public class UpgradePanel extends ApplicationPanel {
 
         //draw bg, title, coin, player
 
-        BG_DRAWER.drawBackground(g2d);
+        background.drawBackground(g2d);
         StringDrawer.drawString(g2d, TITLE, TITLE_FONT, Color.BLACK, StringDrawer.TITLE_STROKE, DEFAULT_COLOR, this.getHeight() / 25, 0, this, StringDrawer.CENTER);
-        StringDrawer.drawString(g2d,"Coins: "+totalCoin, DEFAULT_FONT,Color.BLACK, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
+        StringDrawer.drawString(g2d,"Coins: "+ totalCoins, DEFAULT_FONT,Color.BLACK, StringDrawer.DEFAULT_STROKE,Color.YELLOW,this.getHeight()/4-minSize*0.05,this.getWidth()/4,this,StringDrawer.CENTER);
         g2d.drawImage(pedestal.getFrame(),(int)(this.getWidth()/4-minSize*0.15),this.getHeight()-(minSize/4),(int)(minSize*0.5),minSize/4,this);
         g2d.drawImage(pipi.getFrame(),(int)(this.getWidth()/4-minSize*0.09),this.getHeight()-((3*minSize/10)+(9*minSize/128)),3*minSize/10,3*minSize/10,this);
 
@@ -153,11 +153,11 @@ public class UpgradePanel extends ApplicationPanel {
 
         //draw fistLine placeholder
         StringDrawer.drawString(g2d,"0", BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2-minSize*0.07,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
-        StringDrawer.drawString(g2d,"3", BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2-minSize*0.07,this.getWidth()/4*3-minSize*0.16+minSize*0.08*MAX_LIFE-StringDrawer.getStringWidth(g2d,"3", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,String.valueOf(MAX_LIVES), BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2-minSize*0.07,this.getWidth()/4*3-minSize*0.16+minSize*0.08* MAX_LIVES -StringDrawer.getStringWidth(g2d,"3", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
 
         //draw secondLine placeholder
-        StringDrawer.drawString(g2d,"4", BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
-        StringDrawer.drawString(g2d,"10", BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16+minSize*0.04*(MAX_BULLET-4)-StringDrawer.getStringWidth(g2d,"10", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,String.valueOf(MIN_BULLETS), BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16,this,StringDrawer.PADDING);
+        StringDrawer.drawString(g2d,String.valueOf(MAX_BULLETS), BAR_PLACEHOLDER_FONT,Color.BLACK,0,Color.BLACK,this.getHeight()/2+minSize*0.14,this.getWidth()/4*3-minSize*0.16+minSize*0.04*(MAX_BULLETS -4)-StringDrawer.getStringWidth(g2d,"10", BAR_PLACEHOLDER_FONT),this,StringDrawer.PADDING);
 
         for(int i = 0; i < BUTTONS.size(); i++){
             Color boundColor = Color.BLACK;
@@ -170,24 +170,24 @@ public class UpgradePanel extends ApplicationPanel {
                 case 3: StringDrawer.drawString(g2d,"Play", DEFAULT_FONT,boundColor,StringDrawer.DEFAULT_STROKE,Color.yellow,this.getHeight()/2+minSize*0.29,this.getWidth()/4+minSize*0.1,this,StringDrawer.CENTER);
             }
         }
-        for(int i = 0; i < MAX_LIFE; i++) {
+        for(int i = 0; i < MAX_LIVES; i++) {
             g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.11),(int)(minSize*0.08),(int)(minSize*0.04));
-            if(currentLife>i){
+            if(currentLives >i){
                 g2d.setColor(Color.ORANGE);
                 g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.08*i),(int)(this.getHeight()/2-minSize*0.11),(int)(minSize*0.08),(int)(minSize*0.04));
                 g2d.setColor(Color.BLACK);
             }
 
         }
-        for(int i = 0; i < MAX_BULLET-MIN_BULLET;i++) {
+        for(int i = 0; i < MAX_BULLETS - MIN_BULLETS; i++) {
             g2d.drawRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.1),(int)(minSize*0.04),(int)(minSize*0.04));
-            if(currentBullet-MIN_BULLET>i){
+            if(currentBullets - MIN_BULLETS >i){
                 g2d.setColor(Color.ORANGE);
                 g2d.fillRect((int)(this.getWidth()/4*3-minSize*0.16+minSize*0.04*i),(int)(this.getHeight()/2+minSize*0.1),(int)(minSize*0.04),(int)(minSize*0.04));
                 g2d.setColor(Color.BLACK);
             }
         }
-        if(lowbudget) {
+        if(lowBudget) {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, dissolutionGrade));
             StringDrawer.drawString(g2d, "Not enough coins",ERROR_FONT,Color.BLACK,StringDrawer.DEFAULT_STROKE,Color.RED,this.getHeight()/4-minSize*0.01+StringDrawer.getStringHeight(g2d, DEFAULT_FONT),this.getWidth()/4,this,StringDrawer.CENTER);
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -217,10 +217,10 @@ public class UpgradePanel extends ApplicationPanel {
         //debug purpose
         if(e.getKeyCode() == KeyEvent.VK_C) {
             freeUpgrade = !freeUpgrade;
-            if(currentLife < MAX_LIFE)
-                lifePrice = String.valueOf(calculatePrice(currentLife));
-            if(currentBullet <MAX_BULLET)
-                bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+            if(currentLives < MAX_LIVES)
+                lifePrice = String.valueOf(calculatePrice(currentLives));
+            if(currentBullets < MAX_BULLETS)
+                bulletPrice = String.valueOf(calculatePrice(currentBullets - MIN_BULLETS));
 
         }
     }
@@ -250,40 +250,40 @@ public class UpgradePanel extends ApplicationPanel {
 
     private void select() {
         if(currentChoice == 0) {
-            if(currentLife < MAX_LIFE)
-                if(buy(calculatePrice(currentLife))){
+            if(currentLives < MAX_LIVES)
+                if(buy(calculatePrice(currentLives))){
                     AUDIO.get(SUCCESS_THEME).playOnce();
-                    currentLife++;
+                    currentLives++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
                     upgrading = true;
-                    if(currentLife < MAX_LIFE)
-                        lifePrice = String.valueOf(calculatePrice(currentLife));
+                    if(currentLives < MAX_LIVES)
+                        lifePrice = String.valueOf(calculatePrice(currentLives));
                     else
                         lifePrice = "MAX";
-                    GameEngine.getInstance().updateCurrentLife();
+                    GameEngine.getInstance().updateCurrentLives();
                 }else{
                     resetLowBudgetAnimation();
-                    lowbudget = true;
+                    lowBudget = true;
                     AUDIO.get(ERROR_THEME).playOnce();
                 }
         }
         if(currentChoice == 1) {
-            if(currentBullet <MAX_BULLET)
-                if(buy(calculatePrice(currentBullet-MIN_BULLET))){
+            if(currentBullets < MAX_BULLETS)
+                if(buy(calculatePrice(currentBullets - MIN_BULLETS))){
                     AUDIO.get(SUCCESS_THEME).playOnce();
-                    currentBullet++;
+                    currentBullets++;
                     pipi.resetAnimation();
                     pedestal.resetAnimation();
                     upgrading = true;
-                    if(currentBullet <MAX_BULLET)
-                        bulletPrice = String.valueOf(calculatePrice(currentBullet-MIN_BULLET));
+                    if(currentBullets < MAX_BULLETS)
+                        bulletPrice = String.valueOf(calculatePrice(currentBullets - MIN_BULLETS));
                     else
                         bulletPrice = "MAX";
                     GameEngine.getInstance().updateCurrentBullets();
                 }else{
                     resetLowBudgetAnimation();
-                    lowbudget = true;
+                    lowBudget = true;
                     AUDIO.get(ERROR_THEME).playOnce();
                 }
         }
@@ -299,11 +299,11 @@ public class UpgradePanel extends ApplicationPanel {
 
     private boolean buy(int price) {
         boolean bought = false;
-        if(price < totalCoin){
-            totalCoin-=price;
+        if(price < totalCoins){
+            totalCoins -=price;
             //todo useless if but semplify methods stack
             if(!freeUpgrade)
-                GameEngine.getInstance().updateTotalCoin(price);
+                GameEngine.getInstance().updateTotalCoins(price);
             bought = true;
         }
         return  bought;
@@ -319,7 +319,7 @@ public class UpgradePanel extends ApplicationPanel {
     private void resetLowBudgetAnimation()  {
         dissolutionGrade = 1f;
         currentDissolutionStep = 0;
-        lowbudget = false;
+        lowBudget = false;
     }
 
 }

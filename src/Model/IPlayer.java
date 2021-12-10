@@ -3,18 +3,21 @@ package model;
 import commons.*;
 
 public interface IPlayer {
+
     void moveBullets();
-    void updateBulletsIndex();
+    void updateBulletsMapIndex();
     void jump();
     void fall();
-    void setJumping(boolean isJumping);
-    void setFalling(boolean isFalling);
+    void setJumping(boolean jumping);
+    void setFalling(boolean falling);
     void shoot();
+
     void updateBulletStatus(int bulletID);
-    EntityCoordinates getBulletCoordinate(int bulletID, EntityStatus entityStatus);
+    EntityCoordinates getBulletCoordinates(int bulletID, EntityStatus entityStatus);
     AnimationData getBulletAnimation(int entityID);
-    int bulletCount();
+    int bulletsCount();
     boolean isBulletDead(int entityID);
-    void updateBulletAnimationData(int entityID, AnimationData animation);
+    void updateBulletAnimation(int entityID, AnimationData animation);
     void updateAnimationOpacity(float opacity);
+
 }

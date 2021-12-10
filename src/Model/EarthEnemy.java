@@ -26,10 +26,10 @@ public class EarthEnemy extends Enemy {
             }
             currentWalkingStep++;
             if (currentWalkingStep == walkingStep / 2) {
-                currentAnimation = commons.AnimationData.WALK_ANIMATION_LEFT;
+                currentAnimation = AnimationData.WALK_ANIMATION_LEFT;
             }
             if (currentWalkingStep == walkingStep) {
-                currentAnimation = commons.AnimationData.WALK_ANIMATION_RIGHT;
+                currentAnimation = AnimationData.WALK_ANIMATION_RIGHT;
                 currentWalkingStep = 0;
             }
         }
@@ -37,10 +37,10 @@ public class EarthEnemy extends Enemy {
 
     @Override
     public void setDeathAnimation() {
-        if(currentAnimation == commons.AnimationData.WALK_ANIMATION_RIGHT)
-            currentAnimation = commons.AnimationData.DEATH_ANIMATION_RIGHT;
+        if(currentAnimation == AnimationData.WALK_ANIMATION_RIGHT)
+            currentAnimation = AnimationData.DEATH_ANIMATION_RIGHT;
         else
-            currentAnimation = commons.AnimationData.DEATH_ANIMATION_LEFT;
+            currentAnimation = AnimationData.DEATH_ANIMATION_LEFT;
     }
 
     @Override

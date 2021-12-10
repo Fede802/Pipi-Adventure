@@ -17,17 +17,17 @@ public class CoinsHandler extends EntitiesHandler {
     //    --------------------------------------------------------
 
     @Override
-    protected void collideWithEnemy(int currentEntity, int outerCurrentEntity) {
+    protected void collideWithEnemy(int entity, int externalEntity) {
         //nothing to do
     }
 
     @Override
-    protected void collideWithCoin(int currentEntity, int outerCurrentEntity) {
+    protected void collideWithCoin(int entity, int externalEntity) {
         //nothing to do
     }
 
     @Override
-    protected void wallCollision(int currentEntity) {
+    protected void wallCollision(int entity) {
         //nothing to do
     }
 

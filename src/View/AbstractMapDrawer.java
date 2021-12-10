@@ -19,8 +19,8 @@ public abstract class AbstractMapDrawer {
     protected final int MAP_LENGTH = GameDataConfig.getInstance().getMapLength();
     protected final JPanel PARENT_PANEL;
 
-    protected ArrayList<ArrayList<Image>> tileSetsArray;
-    protected int renderedTileSize;
+    protected ArrayList<ArrayList<Image>> tileSetsArray = new ArrayList<>();
+    protected int renderingTileSize;
     protected int currentTileset;
 
     private boolean transition;
@@ -32,16 +32,16 @@ public abstract class AbstractMapDrawer {
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public AbstractMapDrawer(final JPanel PARENT_PANEL){
-        this.PARENT_PANEL = PARENT_PANEL;
+    public AbstractMapDrawer(JPanel parentPanel){
+        this.PARENT_PANEL = parentPanel;
     }
 
     //    --------------------------------------------------------
     //                      INSTANCE METHODS
     //    --------------------------------------------------------
 
-    public void updateRenderedTileSize(final int renderedTileSize){
-        this.renderedTileSize = renderedTileSize;
+    public void updateRenderingTileSize(int renderingTileSize){
+        this.renderingTileSize = renderingTileSize;
     }
 
     public void update() {
