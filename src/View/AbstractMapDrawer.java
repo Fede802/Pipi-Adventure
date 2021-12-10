@@ -76,7 +76,7 @@ public abstract class AbstractMapDrawer {
     //                      ABSTRACT METHODS
     //    --------------------------------------------------------
 
-    public abstract void drawMap(final Graphics2D g2d);
+    public abstract void drawMap(Graphics2D g2d);
 
     public abstract void loadResources();
 

@@ -25,19 +25,19 @@ public class BackgroundDrawer {
     private boolean transition;
     //images order when transition
     private boolean descending;
-    private boolean loop = false;
+    private boolean loop;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTORS
     //    --------------------------------------------------------
 
-    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, final int dx) {
+    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, int dx) {
         this.PARENT_PANEL = parentPanel;
         this.DX = dx;
         IMAGES = background;
     }
 
-    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, final int dx, final int paddingBottom) {
+    public BackgroundDrawer(ArrayList<Image> background, JPanel parentPanel, int dx, int paddingBottom) {
         this(background, parentPanel, dx);
         this.paddingBottom = paddingBottom;
     }

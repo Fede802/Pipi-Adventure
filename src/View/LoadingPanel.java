@@ -45,7 +45,7 @@ public class LoadingPanel extends ApplicationPanel {
     };
 
     private int currentFilesLoaded;
-    private boolean transition = false;
+    private boolean transition;
 
     //title transition vars
     private int titlePaddingTop = 2*this.getHeight()/5;

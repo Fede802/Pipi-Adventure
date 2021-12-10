@@ -49,8 +49,8 @@ public class GameOverPanel extends SlidableApplicationPanel {
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public GameOverPanel(ComponentContainer componentContainer) {
-        super(componentContainer);
+    public GameOverPanel(ComponentContainer container) {
+        super(container);
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/GameOverTheme.wav",SoundManager.SOUND));
         AUDIO.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));

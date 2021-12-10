@@ -37,15 +37,15 @@ public class PausePanel extends SlidableApplicationPanel {
     private final ArrayList<Rectangle2D.Double> BUTTONS = new ArrayList<>(){{add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());add(new Rectangle2D.Double());}};
 
     private Image pipiRun, frame;
-    private BackgroundDrawer BG_DRAWER;
+    private BackgroundDrawer background;
     private int currentChoice = 1;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public PausePanel(ComponentContainer componentContainer) {
-        super(componentContainer);
+    public PausePanel(ComponentContainer container) {
+        super(container);
         AUDIO.put(MUSIC_THEME,new SoundManager("res/audio/Pause_Theme.wav",SoundManager.SOUND));
         AUDIO.put(SCROLL_THEME,new SoundManager("res/audio/MenuScroll.wav",SoundManager.MUSIC));
         AUDIO.put(CONFIRM_THEME,new SoundManager("res/audio/MenuConfirm.wav",SoundManager.MUSIC));
@@ -57,13 +57,13 @@ public class PausePanel extends SlidableApplicationPanel {
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
-        BG_DRAWER.update();
+        background.update();
         super.timerActionEvent(e);
     }
 
     @Override
     public void loadResources() {
-        BG_DRAWER = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BG.png"), this, BG_DX);;
+        background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BG.png"), this, BG_DX);;
         pipiRun = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\pause\\Pause_BackGround_GIF.gif").get(0);
         frame = ImageLoader.getInstance().getImages("res\\images\\backgrounds\\PictureFrame.png").get(0);
     }
@@ -72,7 +72,7 @@ public class PausePanel extends SlidableApplicationPanel {
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        BG_DRAWER.drawBackground(g2d);
+        background.drawBackground(g2d);
         g2d.drawImage(pipiRun ,0,this.getHeight()/2-this.getHeight()/8,this.getWidth(),this.getHeight()/2,this);
         g2d.drawImage(frame,0 , 0,this.getWidth(),this.getHeight(), this );
         StringDrawer.drawString(g2d, TITLE, TITLE_FONT, DEFAULT_BOUND_COLOR,StringDrawer.TITLE_STROKE, DEFAULT_COLOR,this.getWidth()/4, 0, this,StringDrawer.CENTER);

@@ -1,6 +1,5 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -10,19 +9,19 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     //                      INSTANCE FIELDS
     //    --------------------------------------------------------
 
-    private final ComponentContainer componentContainer;
+    private final ComponentContainer CONTAINER;
 
     protected int currentSlidingStep;
-    protected boolean isSliding = false;
-    protected boolean isOnScreen = false;
+    protected boolean sliding;
+    protected boolean onScreen;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTOR
     //    --------------------------------------------------------
 
-    public SlidableApplicationPanel(ComponentContainer componentContainer) {
+    public SlidableApplicationPanel(ComponentContainer container) {
         super();
-        this.componentContainer = componentContainer;
+        this.CONTAINER = container;
         setPreferredSize(new Dimension(Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT));
     }
 
@@ -32,23 +31,23 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
 
     @Override
     protected void timerActionEvent(ActionEvent e) {
-        if(isSliding){
-            if(isOnScreen) {
+        if(sliding){
+            if(onScreen) {
                 setLocation(getX(), getY() + SLIDING_STEP);
                 currentSlidingStep-=SLIDING_STEP;
-                if (getY() > componentContainer.getHeight()) {
+                if (getY() > CONTAINER.getHeight()) {
                     stop();
-                    componentContainer.notifyResume();
+                    CONTAINER.notifyResume();
                 }
             }else{
                 setLocation(getX(), getY() - SLIDING_STEP);
                 currentSlidingStep+=SLIDING_STEP;
 
-                if (getY() <= (componentContainer.getHeight() - Slidable.DEFAULT_HEIGHT) / 2) {
+                if (getY() <= (CONTAINER.getHeight() - Slidable.DEFAULT_HEIGHT) / 2) {
                     currentSlidingStep = 0;
                     requestFocus();
-                    isSliding = false;
-                    isOnScreen = true;
+                    sliding = false;
+                    onScreen = true;
                 }
             }
         }
@@ -58,27 +57,27 @@ public abstract class SlidableApplicationPanel extends ApplicationPanel implemen
     @Override
     public void setSize(Dimension d) {
         super.setSize(d);
-        if(isOnScreen)
+        if(onScreen)
             setBounds( (getWidth()-Slidable.DEFAULT_WIDTH)/2,(getHeight()-Slidable.DEFAULT_HEIGHT)/2,Slidable.DEFAULT_WIDTH,Slidable.DEFAULT_HEIGHT);
-        else if(isSliding)
+        else if(sliding)
             setBounds( (getWidth() - Slidable.DEFAULT_WIDTH) / 2,  getHeight() - currentSlidingStep, Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
         else
-            setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, componentContainer.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
+            setBounds((getWidth() - Slidable.DEFAULT_WIDTH) / 2, CONTAINER.getHeight(), Slidable.DEFAULT_WIDTH, Slidable.DEFAULT_HEIGHT);
     }
 
     @Override
     public void stop() {
         super.stop();
         currentSlidingStep = 0;
-        isSliding = false;
-        isOnScreen = false;
-        setSize(componentContainer.getSize());
+        sliding = false;
+        onScreen = false;
+        setSize(CONTAINER.getSize());
     }
 
     @Override
     public void slide() {
-        isSliding = true;
-        if(!isOnScreen){
+        sliding = true;
+        if(!onScreen){
             super.start();
         }
     }

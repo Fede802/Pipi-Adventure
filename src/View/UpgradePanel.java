@@ -47,9 +47,9 @@ public class UpgradePanel extends ApplicationPanel {
     private Image coin;
     private String lifePrice = "MAX";
     private String bulletPrice = lifePrice;
-    private boolean lowBudget = false;
+    private boolean lowBudget;
     private BackgroundDrawer background;
-    private boolean upgrading = false;
+    private boolean upgrading;
     private Animation pipi;
     private Animation pedestal;
     private int totalCoins;
