@@ -1,9 +1,9 @@
 package view;
 
 import utils.GameConfig;
-import utils.GameDataConfig;
 
-import javax.swing.*;
+
+import javax.swing.JPanel;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class BackgroundDrawer {
     //images order when transition
     private boolean descending;
     private boolean loop;
-    private boolean changeFrameOrder;
+    private boolean changeFramesOrder;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTORS
@@ -79,9 +79,9 @@ public class BackgroundDrawer {
         this.updateFrames(loop, true);
     }
 
-    public void updateFrames(boolean loop, boolean changeFrameOrder) {
+    public void updateFrames(boolean loop, boolean changeFramesOrder) {
         this.loop = loop;
-        this.changeFrameOrder = changeFrameOrder;
+        this.changeFramesOrder = changeFramesOrder;
         transition = true;
     }
 
@@ -103,7 +103,7 @@ public class BackgroundDrawer {
                     if (!loop){
                         transition = false;
                     }
-                    if(changeFrameOrder)
+                    if(changeFramesOrder)
                         descending = !descending;
                     else
                         currentFrame = 0;
