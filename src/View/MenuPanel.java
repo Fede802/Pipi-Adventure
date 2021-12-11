@@ -81,7 +81,7 @@ public class MenuPanel extends ApplicationPanel {
         this.currentTitlePadding = currentTitlePaddingTop;
         background.setX(bgTransl);
         menuAnimation.setCurrentFrame(animationFrame);
-        menuAnimation.updateFrames(true);
+        menuAnimation.updateFrames(true, false);
         if(SoundManager.isMusicActive())
             music = musicON;
         else

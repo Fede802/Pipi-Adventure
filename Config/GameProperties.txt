@@ -9,3 +9,13 @@ dissolutionStep=40
 bulletsIncrementScore=100
 currentMaxLives=3
 flyingSpawnRange=10
+
+
+
+
+
+
+
+
+
+

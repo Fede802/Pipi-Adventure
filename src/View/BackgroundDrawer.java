@@ -26,6 +26,7 @@ public class BackgroundDrawer {
     //images order when transition
     private boolean descending;
     private boolean loop;
+    private boolean changeFrameOrder;
 
     //    --------------------------------------------------------
     //                       CONSTRUCTORS
@@ -75,7 +76,12 @@ public class BackgroundDrawer {
     }
 
     public void updateFrames(boolean loop) {
+        this.updateFrames(loop, true);
+    }
+
+    public void updateFrames(boolean loop, boolean changeFrameOrder) {
         this.loop = loop;
+        this.changeFrameOrder = changeFrameOrder;
         transition = true;
     }
 
@@ -97,7 +103,10 @@ public class BackgroundDrawer {
                     if (!loop){
                         transition = false;
                     }
-                    descending = !descending;
+                    if(changeFrameOrder)
+                        descending = !descending;
+                    else
+                        currentFrame = 0;
                 }
             }
         }

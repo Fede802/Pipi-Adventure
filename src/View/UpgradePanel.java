@@ -114,7 +114,7 @@ public class UpgradePanel extends ApplicationPanel {
     @Override
     public void loadResources() {
         background = new BackgroundDrawer(ImageLoader.getInstance().getImages("res\\images\\backgrounds\\upgrade\\Background"),this, 0);
-        background.updateFrames(true);
+        background.updateFrames(true, false);
         pipi = new Animation("res\\images\\backgrounds\\upgrade\\Pipi");
         pedestal = new Animation("res\\images\\backgrounds\\upgrade\\Pedestal");
         heart = ImageLoader.getInstance().getImages("res\\images\\gameImages\\Cuoret.png").get(0);

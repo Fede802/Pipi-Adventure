@@ -79,7 +79,7 @@ public class LoadingPanel extends ApplicationPanel {
         for(int i = 0; i < animationFrames;i++)
             tempBGAnimation.add(new ImageIcon("res/images/backgrounds/menu/Animation/New_Menu_Animation"+(i+1)+".png").getImage());
         BACKGROUND_ANIMATION = new BackgroundDrawer(tempBGAnimation,this,0);
-        BACKGROUND_ANIMATION.updateFrames(true);
+        BACKGROUND_ANIMATION.updateFrames(true, false);
         System.out.println(TOTAL_IMG_FILES);
         ImageLoader.getInstance().loadImages(IMG_RES_PATH, BAR_UPDATE);
     }
