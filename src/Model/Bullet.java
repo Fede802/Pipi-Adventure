@@ -1,7 +1,9 @@
 package model;
 
-import commons.*;
-import utils.GameDataConfig;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import commons.RenderingType;
 
 public class Bullet extends GameEntity {
 
