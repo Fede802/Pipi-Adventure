@@ -2,10 +2,9 @@ package view;
 
 import controller.GameEngine;
 import utils.ImageLoader;
-
 import javax.swing.JPanel;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
+
 
 public class MapDrawer extends AbstractMapDrawer {
 

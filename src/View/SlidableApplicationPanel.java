@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 public abstract class SlidableApplicationPanel extends ApplicationPanel implements Slidable {

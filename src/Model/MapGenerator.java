@@ -1,8 +1,10 @@
 package model;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
 import utils.GameDataConfig;
-
 import java.util.ArrayList;
 import java.util.Random;
 

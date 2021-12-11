@@ -1,6 +1,9 @@
 package model;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.RenderingType;
 
 public class FlyingEnemy extends Enemy {
 

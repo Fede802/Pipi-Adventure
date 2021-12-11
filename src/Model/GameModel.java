@@ -1,6 +1,9 @@
 package model;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
 import utils.GameDataConfig;
 
 public class GameModel implements IGameModel {

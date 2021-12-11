@@ -1,10 +1,9 @@
 package view;
 
 import utils.GameConfig;
-
-
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 
 public class BackgroundDrawer {

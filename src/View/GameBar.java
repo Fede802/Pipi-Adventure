@@ -3,9 +3,11 @@ package view;
 import utils.FontLoader;
 import utils.GameDataConfig;
 import utils.ImageLoader;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 
 public class GameBar {

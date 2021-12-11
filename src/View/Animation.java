@@ -1,8 +1,7 @@
 package view;
 
 import utils.ImageLoader;
-
-import java.awt.*;
+import java.awt.Image;
 import java.util.ArrayList;
 
 public class Animation {

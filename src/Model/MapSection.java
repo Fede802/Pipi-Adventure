@@ -4,7 +4,6 @@ import commons.EntityCoordinates;
 import commons.RenderingType;
 import utils.GameConfig;
 import utils.GameDataConfig;
-
 import java.util.ArrayList;
 import java.util.Random;
 

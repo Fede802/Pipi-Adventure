@@ -1,6 +1,10 @@
 package controller;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import commons.Pair;
 import model.GameData;
 import model.GameModel;
 import utils.GameConfig;

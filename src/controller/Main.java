@@ -1,11 +1,7 @@
 package controller;
 
-
 import utils.FontLoader;
-
 import javax.swing.SwingUtilities;
-import java.util.Random;
-
 
 public class Main {
 

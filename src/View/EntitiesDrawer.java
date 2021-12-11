@@ -1,12 +1,16 @@
 package view;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.Pair;
+import commons.RenderingType;
 import controller.GameEngine;
 import utils.GameDataConfig;
 import utils.ImageLoader;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.HashMap;
 

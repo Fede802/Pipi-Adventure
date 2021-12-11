@@ -1,6 +1,6 @@
 package utils;
 
-import javax.swing.*;
+import javax.swing.SwingWorker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;

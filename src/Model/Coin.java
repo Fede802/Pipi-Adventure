@@ -1,6 +1,10 @@
 package model;
 
-import commons.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import commons.RenderingType;
 
 public class Coin extends GameEntity {
 

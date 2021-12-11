@@ -1,3 +1,2 @@
+isMusicActive=true
 isSoundActive=false
-isMusicActive=false
-

@@ -2,9 +2,9 @@ package view;
 
 import utils.GameConfig;
 import utils.GameDataConfig;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
 
 public abstract class AbstractMapDrawer {

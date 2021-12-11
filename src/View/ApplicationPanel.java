@@ -1,11 +1,14 @@
 package view;
 
 import utils.SoundManager;
-
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 

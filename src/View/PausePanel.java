@@ -5,7 +5,6 @@ import controller.GameStateHandler;
 import utils.FontLoader;
 import utils.ImageLoader;
 import utils.SoundManager;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;

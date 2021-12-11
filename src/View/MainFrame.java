@@ -1,9 +1,9 @@
 package view;
 
 import controller.GameStateHandler;
-
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import java.awt.Dimension;
 
 public class MainFrame extends JFrame {
 
