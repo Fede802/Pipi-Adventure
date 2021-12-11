@@ -31,6 +31,7 @@ public class GameData implements IGameData {
     //    --------------------------------------------------------
 
     private GameData(){
+        //check data input
         int temp = GameDataConfig.getInstance().getMinBullets();
         if(currentMaxBullets < temp)
             currentMaxBullets = temp;

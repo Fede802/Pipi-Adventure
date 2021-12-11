@@ -1,10 +1,10 @@
 scoreIncrement=2
 tickToUpdateAnimation=3
-currentMaxBullets=10
-recordScore=3438
+currentMaxBullets=0
+recordScore=0
 updateTickDelay=40
-currentMaxLives=3
-totalCoins=2147483647
+currentMaxLives=0
+totalCoins=0
 flyingSpawnRange=10
 changeDaytimeScore=1000
 dissolutionStep=40

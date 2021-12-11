@@ -36,7 +36,7 @@ public abstract class MapSection {
     //    --------------------------------------------------------
 
     protected MapSection(){
-        //eventually load map from file
+        //maybe load map from file here
         map = new int[SECTION_SIZE][SECTION_SIZE];
     }
 

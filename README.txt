@@ -1,5 +1,5 @@
 # Pipi-Adventure
-Developed with jave15
+Developed with java15
 Tested on Windows 10,11
 
 To run the application, jar must be in the same folder of config and res

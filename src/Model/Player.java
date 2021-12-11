@@ -6,7 +6,6 @@ import commons.EntityStatus;
 import commons.EntityType;
 import commons.RenderingType;
 import utils.GameDataConfig;
-
 import java.util.ArrayList;
 
 public class Player extends GameEntity implements IPlayer {
