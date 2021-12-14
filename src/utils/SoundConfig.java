@@ -25,7 +25,7 @@ public class SoundConfig extends Config {
         return PROPERTIES.getProperty("isSoundActive").equals("true");
     }
 
-    public void setSoundActive(final boolean isSoundActive) {
+    public void setSoundActive(boolean isSoundActive) {
         PROPERTIES.setProperty("isSoundActive",String.valueOf(isSoundActive));
         saveData();
     }
@@ -34,7 +34,7 @@ public class SoundConfig extends Config {
         return PROPERTIES.getProperty("isMusicActive").equals("true");
     }
 
-    public void setMusicActive(final boolean isMusicActive) {
+    public void setMusicActive(boolean isMusicActive) {
         PROPERTIES.setProperty("isMusicActive",String.valueOf(isMusicActive));
         saveData();
     }

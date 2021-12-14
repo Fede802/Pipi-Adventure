@@ -1,6 +1,6 @@
 scoreIncrement=2
 tickToUpdateAnimation=3
-currentMaxBullets=0
+currentMaxBullets=4
 recordScore=0
 updateTickDelay=40
 currentMaxLives=0
