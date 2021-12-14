@@ -7,6 +7,7 @@ public class PlainStartSection extends MapSection {
     //    --------------------------------------------------------
 
     public PlainStartSection(){
+        super();
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},

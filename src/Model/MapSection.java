@@ -23,7 +23,7 @@ public abstract class MapSection {
     //                      INSTANCE FIELD
     //    --------------------------------------------------------
 
-    private final int SPAWN_RANGE = GameConfig.getInstance().getFlyingSpawnRange();
+    private int SPAWN_RANGE = GameConfig.getInstance().getFlyingSpawnRange();
     private final Random RANDOM = new Random();
 
     protected final ArrayList<GameEntity> MAP_ENTITIES = new ArrayList<>();
@@ -37,7 +37,9 @@ public abstract class MapSection {
 
     protected MapSection(){
         //maybe load map from file here
-        map = new int[SECTION_SIZE][SECTION_SIZE];
+        if (SPAWN_RANGE < 1)
+            SPAWN_RANGE = 1;
+        //map = new int[SECTION_SIZE][SECTION_SIZE];
     }
 
     //    --------------------------------------------------------

@@ -9,6 +9,7 @@ public class PlainSection1 extends MapSection {
     //    --------------------------------------------------------
 
     public PlainSection1(){
+        super();
         map = new int[][]{
                 /*
                      0 start grass
