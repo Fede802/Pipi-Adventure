@@ -1,43 +1,141 @@
-package View;
+package view;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
-import Controller.GameEngine;
-
-import javax.swing.*;
-import java.awt.*;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.Pair;
+import commons.RenderingType;
+import controller.GameEngine;
+import utils.GameDataConfig;
+import utils.ImageLoader;
+import javax.swing.JPanel;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class EntitiesDrawer {
-    private static final int TICK_TO_UPDATE_ANIMATION = 3;
-    private static ArrayList<Pair<EntityCoordinates, Animation>> entitiesCoordinates;
-    private static EntityCoordinates entityPos;
-    private static Animation animation;
-    private static int tick;
-    private EntitiesDrawer(){}
-    public static void drawEntities(Graphics2D g2d, JPanel panel){
-        //TODO get entitiesID
-        entitiesCoordinates = GameEngine.getInstance().getEntitiesCoordinates();
 
-        for(int i = 0; i < entitiesCoordinates.size(); i++){
-            entityPos = entitiesCoordinates.get(i).getKey();
-            animation = entitiesCoordinates.get(i).getValue();
-            if(entitiesCoordinates.get(i).getKey().getID() == 0){
-                g2d.drawImage(animation.getFrame(), entityPos.getSTART_MAP_X() * MapDrawer.RENDERED_TILE_SIZE, panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-            }else if(entitiesCoordinates.get(i).getKey().getID() == 3){
-                //drawBullets
-            }else{
-                g2d.drawImage(animation.getFrame(), (entityPos.getMapX() + GameEngine.getInstance().getSectionSize() * entityPos.getMapIndex()) * MapDrawer.RENDERED_TILE_SIZE - GameEngine.getInstance().getMapTraslX() + entityPos.getTraslX(), panel.getHeight() - (GameEngine.getInstance().getSectionSize() - entityPos.getMapY()) * MapDrawer.RENDERED_TILE_SIZE + entityPos.getTraslY(), MapDrawer.RENDERED_TILE_SIZE, MapDrawer.RENDERED_TILE_SIZE, null);
-            }
-            if(tick == TICK_TO_UPDATE_ANIMATION){
-                animation.update();
-            }
-        }
-        if(tick == TICK_TO_UPDATE_ANIMATION){
-            tick = 0;
-        }
-        tick++;
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELDS
+    //    --------------------------------------------------------
 
+    private final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
+    private final JPanel PARENT_PANEL;
+
+    private HashMap<RenderingType,HashMap<Integer, ArrayList<Image>>> entityFrames;
+    private Image gun;
+    private int renderingTileSize;
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    public EntitiesDrawer(JPanel parentPanel){
+        this.PARENT_PANEL = parentPanel;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
+    public void drawEntities(Graphics2D g2d) {
+        int entityNum = GameEngine.getInstance().getTotalEntities();
+        double mapTranslX = GameEngine.getInstance().getMapTranslX();
+        for(int i = 0; i < entityNum; i++){
+            Pair<EntityCoordinates, AnimationData> temp = GameEngine.getInstance().getEntityForRendering(i);
+            EntityCoordinates tempPosition = temp.getKey();
+            AnimationData tempAnimation = temp.getValue();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, tempAnimation.getOpacity()));
+            ArrayList<Image> frameArray = entityFrames.get(tempAnimation.getRenderingType()).get(tempAnimation.getAnimationType());
+            if(tempAnimation.isHasToUpdate()){
+                updateAnimation(tempAnimation,frameArray.size());
+                GameEngine.getInstance().updateAnimation(temp.getValue(),i);
+            }
+            Image tempFrame;
+            if(tempAnimation.getCurrentAnimationStep() == AnimationData.LAST_FRAME){
+                tempFrame = frameArray.get(frameArray.size()-1);
+            }else{
+                tempFrame = frameArray.get(temp.getValue().getCurrentAnimationStep());
+            }
+            g2d.drawImage(tempFrame,
+                    Math.toIntExact(Math.round((tempPosition.getMapX() + SECTION_SIZE * tempPosition.getMapIndex()) * renderingTileSize - mapTranslX + tempPosition.getTranslX())),
+                    Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderingTileSize + tempPosition.getTranslY())),
+                    renderingTileSize,
+                    renderingTileSize,
+                    null
+            );
+            if(temp.getValue().getRenderingType() == RenderingType.PLAYER && temp.getValue().getAnimationType() != AnimationData.DEATH_ANIMATION_RIGHT)
+                g2d.drawImage(gun,
+                        Math.toIntExact(Math.round((tempPosition.getMapX()+ 1 + SECTION_SIZE * tempPosition.getMapIndex()) * renderingTileSize - mapTranslX -(renderingTileSize /10) + tempPosition.getTranslX())),
+                        Math.toIntExact(Math.round(PARENT_PANEL.getHeight() - (SECTION_SIZE - tempPosition.getMapY()) * renderingTileSize + tempPosition.getTranslY())),
+                        renderingTileSize,
+                        renderingTileSize,
+                        null
+                );
+        }
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+    }
+
+    public void updateRenderingTileSize(int renderingTileSize){
+        this.renderingTileSize = renderingTileSize;
+    }
+
+    public void loadResources() {
+        gun = ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Pistola.png").get(0);
+        HashMap<Integer,ArrayList<Image>> player = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Walk") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Death"));
+            put(AnimationData.JUMPING_ANIMATION, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Jump"));
+        }};
+        HashMap<Integer,ArrayList<Image>> coin = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta.gif") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\coin\\Moneta_img.png"));
+        }};
+        HashMap<Integer,ArrayList<Image>> bullet = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\player\\Guns") );
+        }};
+        HashMap<Integer,ArrayList<Image>> snail = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_R") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_R"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Animazione\\Luma_Walk_L") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Luma\\Morte\\Luma_Death_L"));
+
+        }};
+        HashMap<Integer,ArrayList<Image>> slime = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_R") );
+            put(AnimationData.DEATH_ANIMATION_RIGHT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_R"));
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Animazione\\Slime_Walk_L") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Slime\\Morte\\Slime_Death_L"));
+        }};
+        HashMap<Integer,ArrayList<Image>> bee = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Ape\\Animazione") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Ape\\Morte"));
+        }};
+        HashMap<Integer,ArrayList<Image>> bat = new HashMap<>(){{
+            put(AnimationData.WALK_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Pipistrello\\Animazione") );
+            put(AnimationData.DEATH_ANIMATION_LEFT, ImageLoader.getInstance().getImages("res\\images\\entities\\enemy\\Pipistrello\\Morte"));
+        }};
+
+        entityFrames = new HashMap<>(){{
+            put(RenderingType.PLAYER,player);
+            put(RenderingType.COIN,coin);
+            put(RenderingType.BULLET,bullet);
+            put(RenderingType.SNAIL,snail);
+            put(RenderingType.SLIME,slime);
+            put(RenderingType.BEE,bee);
+            put(RenderingType.BAT,bat);
+        }};
+    }
+
+    private void updateAnimation(AnimationData animation, int animationLength){
+        animation.updateCurrentAnimationStep();
+        if(animation.getCurrentAnimationStep() == animationLength-1 || animationLength == 1){
+            animation.updateCurrentNumLoop();
+            animation.setCurrentAnimationStep(AnimationData.LAST_FRAME);
+        }
+        if(animation.getCurrentAnimationStep() == animationLength)
+            animation.setCurrentAnimationStep(0);
+    }
+
 }

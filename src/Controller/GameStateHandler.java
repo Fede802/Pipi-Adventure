@@ -1,32 +1,39 @@
-package Controller;
+package controller;
 
-import View.GameView;
+import model.GameData;
+import view.GameView;
 
 public class GameStateHandler implements IGameStateHandler {
+
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
 
     public final static int MENU_STATE = 0;
     public final static int GAME_STATE = 1;
     public final static int PAUSE_STATE = 2;
     public final static int GAME_OVER_STATE = 3;
+    public final static int UPGRADE_STATE = 4;
+    public final static int HELP_STATE = 5;
+    public final static int LOADING_STATE = 6;
 
-    private int currentState = MENU_STATE;
-    private int previousState = currentState;
+    private static IGameStateHandler instance;
 
-    private static GameStateHandler instance = null;
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
 
-    private GameStateHandler() {
-    }
+    private int currentState = LOADING_STATE;
 
-    public static GameStateHandler getInstance() {
-        if (instance == null)
-            instance = new GameStateHandler();
-        return instance;
-    }
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
-    @Override
-    public int getPreviousState() {
-        return previousState;
-    }
+    private GameStateHandler() {}
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public int getCurrentState() {
@@ -34,31 +41,77 @@ public class GameStateHandler implements IGameStateHandler {
     }
 
     @Override
-    public void startGame() {
-        previousState = currentState;
-        currentState = GAME_STATE;
-        GameView.getInstance().openGameWindow();
-    }
-
-
-    @Override
-    public void menu() {
-        previousState = currentState;
+    public void startApplication() {
         currentState = MENU_STATE;
-        GameView.getInstance().openMenuWindow();
+        GameView.getInstance().startApplication();
     }
 
     @Override
-    public void gameOver() {
-        previousState = currentState;
+    public void loadResources() {
+        GameView.getInstance().loadResources();
+    }
+
+    @Override
+    public void startGame() {
+        currentState = GAME_STATE;
+        GameView.getInstance().hasToNotifyChangingScreen(true);
+        GameView.getInstance().openWindow();
+    }
+
+    @Override
+    public void openMenuPanel() {
+        currentState = MENU_STATE;
+        GameView.getInstance().openWindow();
+    }
+
+    @Override
+    public void openUpgradePanel() {
+        currentState = UPGRADE_STATE;
+        GameView.getInstance().setupUpgradePanel(
+                GameData.getInstance().getCurrentMaxLives(),
+                GameData.getInstance().getCurrentMaxBullets(),
+                GameData.getInstance().getTotalCoins()
+                );
+        GameView.getInstance().openWindow();
+    }
+
+    @Override
+    public void openHelpPanel() {
+        currentState = HELP_STATE;
+        GameView.getInstance().openWindow();
+    }
+
+    @Override
+    public void openGameOverPanel() {
         currentState = GAME_OVER_STATE;
-        GameView.getInstance().openGameOverWindow();
+        GameView.getInstance().openWindow();
     }
 
     @Override
-    public void pause() {
-        previousState = currentState;
+    public void openPausePanel() {
         currentState = PAUSE_STATE;
-        GameView.getInstance().openPauseWindow();
+        GameView.getInstance().openWindow();
     }
+
+    @Override
+    public void resumeGame() {
+        currentState = GAME_STATE;
+        GameView.getInstance().resumeWindow();
+    }
+
+    @Override
+    public void notifyChangingScreen() {
+        GameEngine.getInstance().setupGame();
+    }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
+
+    public static IGameStateHandler getInstance() {
+        if (instance == null)
+            instance = new GameStateHandler();
+        return instance;
+    }
+
 }

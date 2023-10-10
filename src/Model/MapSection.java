@@ -1,27 +1,76 @@
-package Model;
+package model;
 
+import commons.EntityCoordinates;
+import commons.RenderingType;
+import utils.GameConfig;
+import utils.GameDataConfig;
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class MapSection {
+
     //TODO ADD SPAWNER CLASS TO SPAWN ENTITIES
-    public static final int SECTION_SIZE = 16;
-    protected ArrayList<GameEntity> mapEntities;
+
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
+    public static final int DAY = 0;
+    public static final int NIGHT = 1;
+    public static final int SECTION_SIZE = GameDataConfig.getInstance().getMapSectionSize();
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
+    private final int SPAWN_RANGE = GameConfig.getInstance().getFlyingSpawnRange();
+    private final Random RANDOM = new Random();
+
+    protected final ArrayList<GameEntity> MAP_ENTITIES = new ArrayList<>();
+    protected final int Y_SPAWN_GAP = 2;
 
     protected int[][] map;
 
-    public MapSection(){
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    protected MapSection(){
+        //maybe load map from file here
         map = new int[SECTION_SIZE][SECTION_SIZE];
     }
 
-    public int getCell(final int mapX,final int mapY){
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
+    public int getCell(int mapX, int mapY){
         return map[mapY][mapX];
     }
 
-    public ArrayList<GameEntity> getMapEntities(){
-        mapEntities = new ArrayList<>();
-        spawnEntities();
-        return mapEntities;
+    public ArrayList<GameEntity> getMapEntities(int daytime){
+        MAP_ENTITIES.clear();
+        spawnEntities(daytime);
+        return MAP_ENTITIES;
     }
 
-    protected abstract void spawnEntities();
+    public GameEntity spawnFlyingEnemy(int daytime) {
+        GameEntity temp = null;
+        if (RANDOM.nextInt(SPAWN_RANGE) == 0) {
+            int step = RANDOM.nextInt(2);
+            if (daytime == DAY) {
+                temp = new FlyingEnemy(RenderingType.BEE,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());
+            }else {
+                temp = new FlyingEnemy(RenderingType.BAT,new EntityCoordinates.Builder(6, 10- Y_SPAWN_GAP *step).build());
+            }
+        }
+        return temp;
+    }
+
+    //    --------------------------------------------------------
+    //                      ABSTRACT METHOD
+    //    --------------------------------------------------------
+
+    protected abstract void spawnEntities(int daytime);
+
 }

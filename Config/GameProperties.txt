@@ -1,0 +1,11 @@
+scoreIncrement=2
+tickToUpdateAnimation=3
+currentMaxBullets=10
+recordScore=5400
+updateTickDelay=40
+currentMaxLives=3
+totalCoins=32
+flyingSpawnRange=10
+changeDaytimeScore=1000
+dissolutionStep=40
+bulletsIncrementScore=100

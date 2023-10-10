@@ -1,14 +1,16 @@
-package Controller;
+package controller;
 
-import Model.GameModel;
-import Utils.FontLoader;
-import View.GameView;
+import utils.FontLoader;
+import javax.swing.SwingUtilities;
 
 public class Main {
+
+    //    --------------------------------------------------------
+    //                       MAIN METHOD
+    //    --------------------------------------------------------
+
     public static void main(String[] args) {
         FontLoader.loadFonts();
-//        GameModel.getInstance();
-//        GameEngine.getInstance();
-        GameView.getInstance().openMenuWindow();
+        SwingUtilities.invokeLater(() -> GameStateHandler.getInstance().loadResources());
     }
 }

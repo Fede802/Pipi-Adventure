@@ -1,17 +1,41 @@
-package Utils;
+package utils;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
 
 public class SoundManager {
 
-    private static boolean isAudioActive = Config.getInstance().isAudioActive();
-    private static int audioVolume = Config.getInstance().getAudioVolume();
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
+
+    public static final int SOUND = 0;
+    public static final int MUSIC = 1;
+
+    private static boolean isSoundActive = SoundConfig.getInstance().isSoundActive();
+    private static boolean isMusicActive = SoundConfig.getInstance().isMusicActive();
+
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
 
     private Clip clip;
+    private int audioType;
 
-    public SoundManager(String s) {
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
+    public SoundManager(String s,int audioType) {
+        this.audioType = audioType;
         File audio = new File(s);
         AudioFileFormat aff = null;
         try {
@@ -22,7 +46,6 @@ public class SoundManager {
         assert aff != null;
         AudioFormat af = aff.getFormat();
         AudioInputStream ais = null;
-
         try {
             ais = AudioSystem.getAudioInputStream(audio);
         } catch (UnsupportedAudioFileException | IOException e) {
@@ -46,7 +69,6 @@ public class SoundManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         try {
             ais.close();
         } catch (IOException e) {
@@ -54,29 +76,49 @@ public class SoundManager {
         }
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
     public void playOnce() {
-        if(isAudioActive)
-        this.clip.stop();
-        this.clip.setMicrosecondPosition(0);
-        this.clip.start();
+        if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive) {
+            this.clip.stop();
+            this.clip.setMicrosecondPosition(0);
+            this.clip.start();
+        }
     }
 
-    public  void startLoop(){
-        if(isAudioActive)
-        this.clip.setMicrosecondPosition(0);
-        this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+    public void startLoop() {
+        if(audioType == SOUND && isSoundActive || audioType == MUSIC && isMusicActive){
+            this.clip.setMicrosecondPosition(0);
+            this.clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     public  void stopLoop(){
         this.clip.stop();
     }
 
-    public static void setIsAudioActive(boolean isAudioActive) {
-        SoundManager.isAudioActive = isAudioActive;
+    //    --------------------------------------------------------
+    //                      STATIC METHODS
+    //    --------------------------------------------------------
+
+    public static boolean isSoundActive() {
+        return isSoundActive;
     }
 
-    public static void setAudioVolume(int audioVolume) {
-        SoundManager.audioVolume = audioVolume;
+    public static void switchSoundConfig() {
+        isSoundActive = !isSoundActive;
+        SoundConfig.getInstance().setSoundActive(isSoundActive);
     }
+
+    public static boolean isMusicActive() {
+        return isMusicActive;
+    }
+
+    public static void switchMusicConfig() {
+        isMusicActive = !isMusicActive;
+        SoundConfig.getInstance().setMusicActive(isMusicActive);
+    }
+
 }
-

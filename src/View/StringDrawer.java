@@ -1,32 +1,47 @@
-package View;
+package view;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 
 public class StringDrawer {
 
-    public static final int CENTER = 0;
-    //TODO change name
-    public static final int PADDALO = 1;
+    //    --------------------------------------------------------
+    //                       STATIC FIELDS
+    //    --------------------------------------------------------
 
+    public static final int CENTER = 0;
+    public static final int PADDING = 1;
     public static final int TITLE_STROKE=10;
     public static final int DEFAULT_STROKE=4;
 
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     private StringDrawer(){}
 
-    public static double getStringWidth(final Graphics2D g2d, final String text, final Font textFont){
+    //    --------------------------------------------------------
+    //                      STATIC METHODS
+    //    --------------------------------------------------------
+
+    public static double getStringWidth(final Graphics2D g2d, final String text, final Font textFont) {
         return g2d.getFontMetrics(textFont).stringWidth(text);
     }
 
-    public static double getStringHeight(final Graphics2D g2d, final Font textFont){
+    public static double getStringHeight(final Graphics2D g2d, final Font textFont) {
         return g2d.getFontMetrics(textFont).getHeight();
     }
-    //TODO maybePanel field non serve
-    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor, int strokeWidth, Color fillColor, final double paddingTop, final double paddingRight, final JPanel panel, int position){
+
+    public static void drawString(Graphics2D g2d, String text, Font font, Color boundColor, int strokeWidth, Color fillColor, final double paddingTop, final double paddingRight, final JPanel panel, int position) {
         Color prevColor = g2d.getColor();
         Font prevFont = g2d.getFont();
         AffineTransform affineTransform = g2d.getTransform();
@@ -34,7 +49,7 @@ public class StringDrawer {
         FontMetrics fm = g2d.getFontMetrics(font);
         int downShift = fm.getAscent();
         if(position == CENTER){
-            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2,downShift+paddingTop);
+            affineTransform.translate(panel.getWidth()/2- fm.stringWidth(text)/2+paddingRight,downShift+paddingTop);
         }else{
             affineTransform.translate(paddingRight,downShift+paddingTop);
         }
@@ -42,6 +57,7 @@ public class StringDrawer {
         FontRenderContext frc = g2d.getFontRenderContext();
         TextLayout tl = new TextLayout(text, g2d.getFont(), frc);
         Shape shape = tl.getOutline(null);
+        Stroke ds = g2d.getStroke();
         g2d.setStroke(new BasicStroke(strokeWidth));
         g2d.setColor(boundColor);
         g2d.draw(shape);
@@ -49,7 +65,9 @@ public class StringDrawer {
         g2d.fill(shape);
         affineTransform.translate(-affineTransform.getTranslateX(),-affineTransform.getTranslateY());
         g2d.setTransform(affineTransform);
+        g2d.setStroke(ds);
         g2d.setFont(prevFont);
         g2d.setColor(prevColor);
     }
+
 }

@@ -1,25 +1,45 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import commons.RenderingType;
 
-import java.util.ArrayList;
+public class Bullet extends GameEntity {
 
-public class Bullet extends GameEntity{
-    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
-        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation("Resources/Entities/Player/Guns/Proiettile2.gif"));
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
-    }};
     public Bullet(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
+        super(EntityType.BULLET, RenderingType.BULLET, entityCoordinates);
+        tileStep = 2.5;
+        walkingStep = 2*(int)(MapSection.SECTION_SIZE* tileStep);
+        velX = RENDERING_TILE_SIZE / tileStep;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {
-        //TODO movement logic
+        if(entityStatus == EntityStatus.ALIVE){
+            defaultWalkMovement(RIGHT_DIR);
+            currentWalkingStep++;
+            if(currentWalkingStep == walkingStep)
+                updateEntityStatus();
+        }
     }
+
     @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
+    public void setDeathAnimation() {
+        //nothing to do, no death animation at the moment
     }
+
+    @Override
+    public void resetEntity() {
+        //nothing to do
+    }
+
 }

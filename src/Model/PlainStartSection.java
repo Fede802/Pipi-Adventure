@@ -1,8 +1,12 @@
-package Model;
+package model;
 
-public class PlainStartSection extends MapSection{
+public class PlainStartSection extends MapSection {
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     public PlainStartSection(){
-        //super();
         map = new int[][]{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
@@ -18,15 +22,19 @@ public class PlainStartSection extends MapSection{
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8},
+                {8,8,32,8,8,8,8,8,8,29,8,8,8,8,8,8},
                 {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
         };
     }
 
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
+
+
     @Override
-    protected void spawnEntities() {
-
+    protected void spawnEntities(int daytime) {
+        //nothing to spawn
     }
+
 }
-
-

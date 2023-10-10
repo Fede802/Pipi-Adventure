@@ -1,35 +1,40 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import commons.RenderingType;
 
-import java.util.ArrayList;
+public class Coin extends GameEntity {
 
-public class Coin extends GameEntity{
-
-    private static final ArrayList<Animation> animationList = new ArrayList<>(){{
-        add(GameEntity.WALK_ANIMATION_RIGHT,new Animation("Resources/Entities/Coin/Monetina.gif"));
-        add(GameEntity.WALK_ANIMATION_LEFT,null);
-        add(GameEntity.DEATH_ANIMATION,new Animation("Resources/Entities/Coin/Monetona.png"));
-    }};
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
     public Coin(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
+        super(EntityType.COIN, RenderingType.COIN,entityCoordinates);
+        deathLoop = 5;
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {
-        //TODO check maybe isDying is not necessary
-        if (!isAlive && isDying){
-            currentAnimation = GameEntity.DEATH_ANIMATION;
-            entityCoordinates.setTraslY(entityCoordinates.getTraslY()-5);
-            currentDeathStep++;
-            if(currentDeathStep == DEATH_STEP)
-                isDying = false;
-        }
+        if(entityStatus == EntityStatus.DYING)
+            entityCoordinates.updateTranslY(-velY);
     }
+
     @Override
-    public Animation getAnimation() {
-        return animationList.get(currentAnimation);
+    public void setDeathAnimation() {
+        currentAnimation = AnimationData.DEATH_ANIMATION_RIGHT;
     }
+
+    @Override
+    public void resetEntity() {
+        //nothing to do
+    }
+
 }

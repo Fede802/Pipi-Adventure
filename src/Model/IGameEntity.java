@@ -1,18 +1,22 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
 
 public interface IGameEntity {
+
+    EntityType getType();
+    EntityStatus getEntityStatus();
+    void updateEntityStatus();
+    boolean isDead();
     void move();
     EntityCoordinates getEntityCoordinates();
-    boolean collide(IGameEntity entity);
-    Animation getAnimation();
-    boolean isAlive();
-    void setAlive(boolean isAlive);
-    int getID();
-    void setID(int id);
-    boolean isDying();
-    void setDying(boolean isDying);
+    AnimationData getAnimation();
+    void updateAnimation(AnimationData animation);
+    void setDeathAnimation();
+    void resetEntity();
+    void changeCoordinate(int renderingTileSize);
 
 }

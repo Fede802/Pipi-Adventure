@@ -1,113 +1,67 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Commons.Pair;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.EntityType;
+import utils.GameDataConfig;
 
-import java.util.ArrayList;
+public class GameModel implements IGameModel {
 
-public class GameModel implements IGameModel{
+    //    --------------------------------------------------------
+    //                       STATIC FIELD
+    //    --------------------------------------------------------
 
-    private static final MapGenerator MAP_GENERATOR = new MapGenerator();
-    private static final GameStatus GAME_STATUS = new GameStatus();
-    private static final Player PLAYER = new Player(new EntityCoordinates.Builder(2,12,GameEntity.PLAYER_ID)
-                                                    .setMapIndex(0)
-                                                    .build());
+    private static IGameModel instance;
 
-    private static GameModel instance = null;
+    //    --------------------------------------------------------
+    //                      INSTANCE FIELD
+    //    --------------------------------------------------------
+
+    private final MapGenerator MAP_GENERATOR = new MapGenerator();
+    private final Player PLAYER = new Player(
+            new EntityCoordinates.Builder(
+                    GameDataConfig.getInstance().getPlayerStartMapX(),
+                    GameDataConfig.getInstance().getPlayerStartMapY())
+                    .build()
+            );
+
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
+
     private GameModel(){}
-    public static IGameModel getInstance() {
-        if (instance == null){
-            instance = new GameModel();
-        }
-        return instance;
-    }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void updateMap() {
         MAP_GENERATOR.updateMap();
+        PLAYER.updateBulletsMapIndex();
     }
 
     @Override
-    public int getMapTraslX() {
-        return MAP_GENERATOR.getMapTraslX();
-    }
-
-    @Override
-    public void setMapTraslX(final int mapTraslX) {
-        MAP_GENERATOR.setMapTraslX(mapTraslX);
-    }
-
-    @Override
-    public void updateMapTraslX() {
-        MAP_GENERATOR.updateMapTraslX();
-    }
-
-    @Override
-    public int getTileData(final int mapIndex, final int mapX, final int mapY) {
+    public int getTileData(int mapIndex, int mapX, int mapY) {
         return MAP_GENERATOR.getTileData(mapIndex,mapX,mapY);
     }
 
     @Override
-    public int getSectionSize() {
-        return MapSection.SECTION_SIZE;
+    public void changeDaytime() {
+        MAP_GENERATOR.updateDaytime();
     }
 
     @Override
-    public int getMapLength() {
-        return MapGenerator.MAP_LENGHT;
-    }
-
-    @Override
-    public EntityCoordinates getPlayerCoordinates() {
-        return PLAYER.getEntityCoordinates();
-    }
-
-    @Override
-    public ArrayList<Pair<Integer,EntityCoordinates>> getPlayerBullets() {
-        return PLAYER.getBullets();
-    }
-
-    @Override
-    public ArrayList<Pair<Integer, EntityCoordinates>> getEntities() {
-        return MAP_GENERATOR.getEntities();
-    }
-
-    @Override
-    public ArrayList<Pair<EntityCoordinates, Animation>> getEntitiesCoordinates() {
-        ArrayList<Pair<EntityCoordinates, Animation>> entitiesCoordinates = MAP_GENERATOR.getMapEntitiesCoordinates();
-        entitiesCoordinates.add(new Pair<>(PLAYER.getEntityCoordinates(), PLAYER.getAnimation()));
-        for(int i = 0; i < PLAYER.getBullets().size();i++)
-            entitiesCoordinates.add(new Pair<>(PLAYER.getBullets().get(i).getValue(), PLAYER.getBulletAnimation(i)));
-        return entitiesCoordinates;
-    }
-
-    @Override
-    public void updateEntitiesStatus(final int entityID) {
-        MAP_GENERATOR.updateEntitiesStatus(entityID);
-    }
-
-    @Override
-    public void updatePlayerStatus(int entityID) {
-        if(entityID == -1){
-            PLAYER.setAlive(false);
-            PLAYER.setDying(true);
-        }
-    }
-
-    @Override
-    public void updatePlayerMapPosition() {
+    public void moveEntities() {
         PLAYER.move();
+        PLAYER.moveBullets();
+        MAP_GENERATOR.moveEntities();
     }
 
     @Override
-    public boolean isPlayerJumping() {
-        return PLAYER.isJumping();
-    }
-
-    @Override
-    public void setPlayerJumping(boolean isPlayerJumping) {
-        PLAYER.setJumping(isPlayerJumping);
+    public void setPlayerJumping(boolean jumping) {
+        PLAYER.setJumping(jumping);
     }
 
     @Override
@@ -116,52 +70,109 @@ public class GameModel implements IGameModel{
     }
 
     @Override
+    public void setPlayerFalling(boolean falling) {
+        PLAYER.setFalling(falling);
+    }
+
+    @Override
     public void playerFall() {
         PLAYER.fall();
     }
 
     @Override
-    public void updateEntitiesMapPosition() {
-        MAP_GENERATOR.updateEntitiesMapPosition();
+    public void shoot() {
+        PLAYER.shoot();
     }
 
     @Override
-    public void addCoin() {
-        GAME_STATUS.addCoin();
+    public int getEntityCount(EntityType entityType) {
+        int count = 0;
+        switch(entityType){
+            case PLAYER -> count = 1;
+            case COIN, ENEMY -> count = MAP_GENERATOR.entityCount(entityType);
+            case BULLET -> count = PLAYER.bulletsCount();
+        }
+        return count;
     }
 
     @Override
-    public void updateScore() {
-        GAME_STATUS.updateScore();
+    public void updateEntityStatus(EntityType entityType, int entityID) {
+        switch(entityType){
+            case PLAYER -> PLAYER.updateEntityStatus();
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntityStatus(entityType,entityID);
+            case BULLET -> PLAYER.updateBulletStatus(entityID);
+        }
     }
 
     @Override
-    public int getScore() {
-        return GAME_STATUS.getScore();
+    public EntityCoordinates getEntityCoordinates(EntityType entityType, int entityID, EntityStatus entityStatus) {
+        EntityCoordinates entity = null;
+        switch(entityType){
+            case PLAYER -> entity = PLAYER.getEntityCoordinates();
+            case COIN, ENEMY -> entity = MAP_GENERATOR.getEntityCoordinates(entityType,entityID,entityStatus);
+            case BULLET -> entity = PLAYER.getBulletCoordinates(entityID,entityStatus);
+        }
+        return entity;
     }
 
     @Override
-    public int getCoin() {
-        return GAME_STATUS.getCoin();
+    public AnimationData getEntityAnimation(EntityType entityType, int entityID) {
+        AnimationData animation= null;
+        switch(entityType){
+            case PLAYER -> animation = PLAYER.getAnimation();
+            case COIN, ENEMY -> animation = MAP_GENERATOR.getEntityAnimation(entityType,entityID);
+            case BULLET -> animation = PLAYER.getBulletAnimation(entityID);
+        }
+        return animation;
     }
 
     @Override
-    public void looseLife() {
-        GAME_STATUS.looseLife();
+    public void updateEntityAnimation(EntityType entityType, int entityID, AnimationData animation) {
+        switch(entityType){
+            case PLAYER -> PLAYER.updateAnimation(animation);
+            case COIN, ENEMY -> MAP_GENERATOR.updateEntityAnimation(entityType,entityID,animation);
+            case BULLET ->  PLAYER.updateBulletAnimation(entityID,animation);
+        }
     }
 
     @Override
-    public int getLife() {
-        return GAME_STATUS.getLife();
+    public void updatePlayerAnimationOpacity(float opacity) {
+        PLAYER.updateAnimationOpacity(opacity);
     }
 
     @Override
-    public boolean isPlayerDead() {
-        return PLAYER.isDead();
+    public boolean isEntityDead(EntityType entityType, int entityID) {
+        boolean dead = false;
+        switch(entityType){
+            case PLAYER -> dead = PLAYER.isDead();
+            case COIN, ENEMY -> dead = MAP_GENERATOR.isEntityDead(entityType,entityID);
+            case BULLET -> dead = PLAYER.isBulletDead(entityID);
+        }
+        return dead;
     }
 
     @Override
-    public boolean isPlayerDying() {
-        return PLAYER.isDying();
+    public void changeEntitiesCoordinates(int renderingTileSize) {
+        PLAYER.changeCoordinate(renderingTileSize);
+        MAP_GENERATOR.changeEntitiesCoordinates(renderingTileSize);
     }
+
+    @Override
+    public void setup() {
+        MAP_GENERATOR.generateMap();
+        PLAYER.resetEntity();
+    }
+
+    //    --------------------------------------------------------
+    //                      STATIC METHOD
+    //    --------------------------------------------------------
+
+    public static IGameModel getInstance() {
+        if (instance == null){
+            instance = new GameModel();
+        }
+        return instance;
+    }
+
 }
+

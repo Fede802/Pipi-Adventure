@@ -1,10 +1,20 @@
-package Controller;
+package controller;
 
 public interface IGameStateHandler {
-    int getPreviousState();
+
     int getCurrentState();
+
+    void startApplication();
+    void loadResources();
+
     void startGame();
-    void menu();
-    void gameOver();
-    void pause();
+    void openMenuPanel();
+    void openUpgradePanel();
+    void openHelpPanel();
+    void openGameOverPanel();
+    void openPausePanel();
+    void resumeGame();
+
+    void notifyChangingScreen();
+
 }

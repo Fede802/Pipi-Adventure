@@ -1,46 +1,54 @@
-package Model;
+package model;
 
-import Commons.Animation;
-import Commons.EntityCoordinates;
-import Utils.Config;
+import commons.AnimationData;
+import commons.EntityCoordinates;
+import commons.EntityStatus;
+import commons.RenderingType;
 
-public abstract class EarthEnemy extends GameEntity{
+public class EarthEnemy extends Enemy {
 
-    private static final int MOVING_STEP = 80;
-    private static final int VEL_X = 2;
-    private int currentStep = 0;
+    //    --------------------------------------------------------
+    //                       CONSTRUCTOR
+    //    --------------------------------------------------------
 
-    public EarthEnemy(EntityCoordinates entityCoordinates) {
-        super(entityCoordinates);
+    public EarthEnemy(RenderingType R_ID, EntityCoordinates entityCoordinates) {
+        super(R_ID, entityCoordinates);
     }
+
+    //    --------------------------------------------------------
+    //                      INSTANCE METHODS
+    //    --------------------------------------------------------
 
     @Override
     public void move() {
-
-        //TODO debug movement coords update
-
-        if (currentStep < MOVING_STEP/2){
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()+VEL_X);
-        }else{
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()-VEL_X);
-        }
-        if(entityCoordinates.getTraslX() >= RENDERED_TILE_SIZE){
-            entityCoordinates.setTraslX(entityCoordinates.getTraslX()-RENDERED_TILE_SIZE);
-            entityCoordinates.setMapX(entityCoordinates.getMapX()+1);
-        }
-        if(entityCoordinates.getTraslX() == -VEL_X){
-            entityCoordinates.setTraslX(RENDERED_TILE_SIZE-VEL_X);
-            entityCoordinates.setMapX(entityCoordinates.getMapX()-1);
-        }
-        currentStep++;
-        if (currentStep == MOVING_STEP/2){
-            currentAnimation = WALK_ANIMATION_LEFT;
-        }
-        if (currentStep == MOVING_STEP){
-            currentAnimation = WALK_ANIMATION_RIGHT;
-            currentStep = 0;
+        if(entityStatus == EntityStatus.ALIVE) {
+            if (currentWalkingStep < walkingStep / 2) {
+                defaultWalkMovement(RIGHT_DIR);
+            } else {
+               defaultWalkMovement(GameEntity.LEFT_DIR);
+            }
+            currentWalkingStep++;
+            if (currentWalkingStep == walkingStep / 2) {
+                currentAnimation = AnimationData.WALK_ANIMATION_LEFT;
+            }
+            if (currentWalkingStep == walkingStep) {
+                currentAnimation = AnimationData.WALK_ANIMATION_RIGHT;
+                currentWalkingStep = 0;
+            }
         }
     }
 
+    @Override
+    public void setDeathAnimation() {
+        if(currentAnimation == AnimationData.WALK_ANIMATION_RIGHT)
+            currentAnimation = AnimationData.DEATH_ANIMATION_RIGHT;
+        else
+            currentAnimation = AnimationData.DEATH_ANIMATION_LEFT;
+    }
+
+    @Override
+    public void resetEntity() {
+        //nothing to do
+    }
 
 }
